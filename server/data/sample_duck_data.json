@@ -1,0 +1,151 @@
+{
+  "cuts": {
+    "head": true,
+    "headDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 25,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 50,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 100,
+        "img": "img3"
+      }
+    ]
+  },
+  
+  "neck": false,
+
+  "breast": true,
+  "breastDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 15,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 30,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 60,
+        "img": "img3"
+      }
+    ]
+  },
+
+  "drumstick": true,
+  "drumstickDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 20,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  },
+
+  "thigh": true,
+  "thighDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 20,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  },
+  "tenderLoin": true,
+  "tenderLoinDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 20,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  },
+  "back": true,
+  "backDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 20,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  },
+  "wing": true,
+  "wingDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 20,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  },
+  "tip": false,
+  "tail": false
+  }
+}
