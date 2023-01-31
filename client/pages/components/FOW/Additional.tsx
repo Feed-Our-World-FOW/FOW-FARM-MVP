@@ -39,7 +39,7 @@ function Additional() {
     inputBox: `w-full bg-slate-300/[.9] shadow-2xl border-white-900/75 p-2 rounded-md`,
     input: `w-full w-full bg-slate-300/[.0] border-white-900/75 p-1 rounded-md focus:outline-none`,
     space: `w-10 h-2 rounded-md bg-blue-300 mt-1.5`,
-    submit: `text-white capitalize w-full p-1 max-w-md`,
+    submit: `text-white capitalize w-full p-1 max-w-md bg-sky-600`,
   }
 
   return (
