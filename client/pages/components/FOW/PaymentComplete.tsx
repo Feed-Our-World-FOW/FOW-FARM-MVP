@@ -21,7 +21,7 @@ function PaymentComplete() {
     one: `h-36 w-36 rounded-full bg-slate-300/[.9] shadow-xl border-white-900/75`,
     two: `h-24 w-9/12 flex flex-col justify-around items-center`,
     three: `h-16 w-9/12 flex flex-col justify-around items-center`,
-    button: `h-3/6 w-10/12`,
+    button: `h-3/6 w-10/12 bg-sky-600`,
   }
 
   return (
