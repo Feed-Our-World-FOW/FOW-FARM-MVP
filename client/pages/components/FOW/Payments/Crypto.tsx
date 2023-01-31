@@ -175,7 +175,7 @@ function Crypto() {
               <button className={styles.donationbtn} onClick={() => setDonationAmount(1)}>1.00$</button>
             </div>
             
-            {!click ? <Button variant="contained" className='w-20' onClick={donate}><p className='normal-case'>Donate</p></Button> :
+            {!click ? <Button variant="contained" className='w-20 bg-sky-600' onClick={donate}><p className='normal-case'>Donate</p></Button> :
             <Button variant="contained" className='w-30' onClick={cancellDonate}><p className='normal-case text-xs'>Cancell Donate</p></Button>}
 
           </div>
@@ -217,7 +217,7 @@ function Crypto() {
         <div className={styles.btn}>
           <span className='font-semibold'>Fees: {!click ? usdAmount : Number(usdAmount) + donationAmount}$</span>
           <div className="w-full flex justify-center items-center">
-            <Button variant="contained" disabled={disabled} className='p-2 w-11/12 focus:bg-sky-500' onClick={sendCELO}>Send</Button>
+            <Button variant="contained" disabled={disabled} className='p-2 w-11/12 focus:bg-sky-500 bg-sky-600' onClick={sendCELO}>Send</Button>
           </div>
         </div>
       </div>
