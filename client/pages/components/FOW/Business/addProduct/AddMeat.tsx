@@ -22,7 +22,7 @@ function AddMeat() {
 
   const handleClick = async () => {
     try {
-      const token = JSON.parse(localStorage.getItem("Token")).value
+      const token = JSON.parse(localStorage.getItem("Token") || '{}').value
       let decodedToken = {} as any
       decodedToken = jwt(token)
       
@@ -93,7 +93,7 @@ function AddMeat() {
     addMeat: `w-full flex flex-col justify-center items-center max-w-sm p-5`,
     subNameBox: `w-full flex justify-between bg-slate-300/[.9] shadow-2xl border-white-900/75 p-2 rounded-md max-w-sm mb-10`,
     subInput: `focus:outline-none w-full bg-slate-300/[.0] border-white-900/75 ml-5 max-w-sm`,
-    smallBtn: `w-10/12`
+    smallBtn: `w-10/12 bg-sky-600`
   }
   return (
     <div className={styles.addMeat}>
@@ -123,7 +123,7 @@ function AddMeat() {
             <FileBase64 
               type="file" 
               multiple={false} 
-              onDone={({ base64 }) => setMeatDetails({ ...meatDetails, image: `${base64}` })}  
+              onDone={(el: any) => setMeatDetails({ ...meatDetails, image: `${el.base64}` })}  
             />
           </div>
         </div>
