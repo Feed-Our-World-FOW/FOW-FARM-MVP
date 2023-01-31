@@ -1,0 +1,91 @@
+{
+  "cuts": {
+    "wholeChicken": true,
+  "wholeChickenDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 25,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 50,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 100,
+        "img": "img3"
+      }
+    ]
+  },
+  
+  "chickenLeg": false,
+
+  "breast": true,
+  "breastDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 15,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 30,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 60,
+        "img": "img3"
+      }
+    ]
+  },
+
+  "wings": true,
+  "wingsDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 20,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  },
+
+  "dramstick": false,
+
+  "thigh": true,
+  "thighDetails": {
+    "details": [
+      {
+        "packsWeight": "25gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "50gm",
+        "price": 20,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "1kg",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  }
+  }
+}
