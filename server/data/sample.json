@@ -1,0 +1,62 @@
+{
+  "farmName": "Ankush Banik Farm",
+  "createAt": "12 feb 2021",
+  "farmImage": "WEB2IMG",
+  "farmLocation": "Texus US",
+  "rating": 3.9,
+  "produce": true,
+  "produceDetails": {
+    "details": [
+      {
+        "name": "potato",
+        "image": "IMGP",
+        "paksWeight": "250gm",
+        "price": "$20"
+      },
+      {
+        "name": "potato",
+        "image": "IMGP",
+        "paksWeight": "500gm",
+        "price": "$40"
+      },
+      {
+        "name": "tomato",
+        "image": "IMGP",
+        "paksWeight": "250gm",
+        "price": "$20"
+      },
+      {
+        "name": "onion",
+        "image": "IMGP",
+        "paksWeight": "250gm",
+        "price": "$16"
+      }
+    ]
+  },
+  "meat": true,
+  "meatDetails": {
+    "details": [
+      {
+        "name": "goat",
+        "cuts": "leg ramp",
+        "image": "IMGG",
+        "weight": "1kg",
+        "price": "$30"
+      },
+      {
+        "name": "duck",
+        "cuts": "thigh",
+        "image": "IMGG",
+        "weight": "1kg",
+        "price": "$20"
+      },
+      {
+        "name": "goat",
+        "cuts": "tender loin",
+        "image": "IMGG",
+        "weight": "1kg",
+        "price": "$40"
+      }
+    ]
+  }
+}
