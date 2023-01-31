@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Button from '@mui/material/Button';
 
-function berries() {
+function Berries() {
 
   const [count1, setCount1] = useState(0)
   const [count2, setCount2] = useState(0)
@@ -142,4 +142,4 @@ function berries() {
   )
 }
 
-export default berries
+export default Berries

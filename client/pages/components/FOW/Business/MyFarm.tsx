@@ -205,7 +205,7 @@ function MyFarm() {
           </div>
         </div>
         :
-        <span className='font-bold text-lg'>You don't have any listed farm yet</span>
+        <span className='font-bold text-lg'>You do not have any listed farm yet</span>
       }
 
     </div>

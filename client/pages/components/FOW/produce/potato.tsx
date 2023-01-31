@@ -8,7 +8,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Button from '@mui/material/Button';
 
 
-function potato() {
+function Potato() {
 
   const [count1, setCount1] = useState(0)
   const [count2, setCount2] = useState(0)
@@ -143,4 +143,4 @@ function potato() {
   )
 }
 
-export default potato
+export default Potato
