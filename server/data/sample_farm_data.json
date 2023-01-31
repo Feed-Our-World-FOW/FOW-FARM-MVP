@@ -1,0 +1,197 @@
+[
+  {
+    "farmName": "Web3 Farm",
+    "farmImage": "WEB2IMG",
+    "farmLocation": "Texus US",
+    "rating": 3.9,
+    "produce": true,
+    "produceDetails": {
+      "potato": true,
+      "berry": true,
+      "rice": false,
+      "tomato": false,
+      "lemon": true,
+      "nuts": false,
+      "onion": true,
+      "carrot": true
+    },
+    "meat": true,
+    "meatDetails": {
+      "chicken": true,
+      "pork": true,
+      "beef": false,
+      "goat": true,
+      "lamb": false,
+      "turkey": true,
+      "duck": true
+    }
+  },
+  {
+    "farmName": "Joe Doe Farm",
+    "farmImage": "WEB34IMG",
+    "farmLocation": "US",
+    "rating": 4.1,
+    "produce": false,
+    "meat": true,
+    "meatDetails": {
+      "chicken": true,
+      "pork": true,
+      "beef": false,
+      "goat": true,
+      "lamb": false,
+      "turkey": true,
+      "duck": true
+    }
+  },
+  {
+    "farmName": "Ankush Farm",
+    "farmImage": "WEB289IMG",
+    "farmLocation": "Pundibari Coochbehar",
+    "rating": 4.9,
+    "produce": true,
+    "produceDetails": {
+      "potato": true,
+      "berry": true,
+      "rice": false,
+      "tomato": false,
+      "lemon": true,
+      "nuts": false,
+      "onion": true,
+      "carrot": true
+    },
+    "meat": false
+  },
+  {
+    "farmName": "Avalanch Farm",
+    "farmImage": "WEB2IMG",
+    "farmLocation": "Brazil",
+    "rating": 3.2,
+    "produce": true,
+    "produceDetails": {
+      "potato": true,
+      "berry": true,
+      "rice": false,
+      "tomato": false,
+      "lemon": true,
+      "nuts": false,
+      "onion": true,
+      "carrot": true
+    },
+    "meat": false
+  },
+  {
+    "farmName": "Fun Food Farm",
+    "farmImage": "WEB234IMG",
+    "farmLocation": "Texus US",
+    "rating": 2.9,
+    "produce": false,
+    "meat": true,
+    "meatDetails": {
+      "chicken": true,
+      "pork": true,
+      "beef": false,
+      "goat": true,
+      "lamb": false,
+      "turkey": true,
+      "duck": true
+    }
+  },
+  {
+    "farmName": "Golem Farm",
+    "farmImage": "WEB2I32MG",
+    "farmLocation": "BHUTAN",
+    "rating": 3.9,
+    "produce": true,
+    "produceDetails": {
+      "potato": true,
+      "berry": true,
+      "rice": false,
+      "tomato": false,
+      "lemon": true,
+      "nuts": false,
+      "onion": true,
+      "carrot": true
+    },
+    "meat": true,
+    "meatDetails": {
+      "chicken": true,
+      "pork": true,
+      "beef": false,
+      "goat": true,
+      "lamb": false,
+      "turkey": true,
+      "duck": true
+    }
+  },
+  {
+    "farmName": "ABC Farm",
+    "farmImage": "WEB2I45MG",
+    "farmLocation": "Srilanka",
+    "rating": 3.9,
+    "produce": false,
+    "meat": true,
+    "meatDetails": {
+      "chicken": true,
+      "pork": true,
+      "beef": false,
+      "goat": true,
+      "lamb": false,
+      "turkey": true,
+      "duck": true
+    }
+  },
+  {
+    "farmName": "GB Farm",
+    "farmImage": "WEB2IMG",
+    "farmLocation": "Texus US",
+    "rating": 3.9,
+    "produce": true,
+    "produceDetails": {
+      "potato": true,
+      "berry": true,
+      "rice": false,
+      "tomato": false,
+      "lemon": true,
+      "nuts": false,
+      "onion": true,
+      "carrot": true
+    },
+    "meat": true,
+    "meatDetails": {
+      "chicken": true,
+      "pork": true,
+      "beef": false,
+      "goat": true,
+      "lamb": false,
+      "turkey": true,
+      "duck": true
+    }
+  },
+  {
+    "farmName": "QWER Farm",
+    "farmImage": "WEB2IMG",
+    "farmLocation": "US",
+    "rating": 4.4,
+    "produce": true,
+    "produceDetails": {
+      "potato": true,
+      "berry": true,
+      "rice": false,
+      "tomato": false,
+      "lemon": true,
+      "nuts": false,
+      "onion": true,
+      "carrot": true
+    },
+    "meat": true,
+    "meatDetails": {
+      "chicken": true,
+      "pork": true,
+      "beef": false,
+      "goat": true,
+      "lamb": false,
+      "turkey": true,
+      "duck": true
+    }
+  }
+]
