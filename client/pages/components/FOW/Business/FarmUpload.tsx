@@ -25,7 +25,7 @@ function FarmUpload() {
 
   const handleSubmit = async () => {
     try {
-      const token = JSON.parse(localStorage.getItem("Token")).value
+      const token = JSON.parse(localStorage.getItem("Token") || '{}').value
       let decodedToken = {} as any
       decodedToken = jwt(token)
       const add = {
@@ -64,7 +64,7 @@ function FarmUpload() {
     btnBox: ` w-full max-w-sm mt-auto`,
     check: `w-5 h-5`,
     checkbox: `w-11/12 flex justify-between items-center max-w-sm bg-slate-300/[.9] shadow-2xl border-white-900/75 p-2 mb-5 rounded-md`,
-    smallBtn: `w-28`,
+    smallBtn: `w-28 bg-sky-600`,
     subBox: `w-full flex justify-between items-center bg-slate-300/[.9] shadow-2xl border-white-900/75 p-2 rounded-md max-w-sm mb-1 mt-1`,
     meatname: `text-md font-semibold text-gray-500`,
     subInput: `focus:outline-none w-full bg-slate-300/[.0] border-white-900/75 ml-5 max-w-sm`
@@ -99,7 +99,7 @@ function FarmUpload() {
         <FileBase64 
           type="file" 
           multiple={false} 
-          onDone={({ base64 }) => setFarmDetails({ ...farmDetails, farmImg: `${base64}` })}  
+          onDone={(el: any) => setFarmDetails({ ...farmDetails, farmImg: `${el.base64}` })}  
         />
       </div>
 
