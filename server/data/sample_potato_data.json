@@ -1,0 +1,68 @@
+{
+  "cherryTomato": true,
+  "cherryTomatoDetails": {
+    "details": 
+    [
+      {
+        "packsWeight": "250gm",
+        "price": 10,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "500gm",
+        "price": 12,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "750gm",
+        "price": 20,
+        "img": "img3"
+      }
+    ]
+  },
+  "plumTomato": false,
+  "globeTomato": true,
+  "globeTomatoDetails": {
+    "details": 
+    [
+      {
+        "packsWeight": "250gm",
+        "price": 120,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "500gm",
+        "price": 132,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "750gm",
+        "price": 420,
+        "img": "img3"
+      }
+    ]
+  },
+  "beefSteak": false,
+  "oxheartTomato": true,
+  "oxheartTomatoDetails": {
+    "details": 
+    [
+      {
+        "packsWeight": "250gm",
+        "price": 20,
+        "img": "img1"
+      },
+      {
+        "packsWeight": "500gm",
+        "price": 12,
+        "img": "img2"
+      },
+      {
+        "packsWeight": "750gm",
+        "price": 40,
+        "img": "img3"
+      }
+    ]
+  },
+  "yellowTomato": false
+}
