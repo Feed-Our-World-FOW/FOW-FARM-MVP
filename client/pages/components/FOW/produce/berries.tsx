@@ -37,7 +37,7 @@ function berries() {
     items: `w-10/12 flex justify-between items-center`,
     item: `font-semibold text-gray-500 text-sm pt-1.5`,
     products: `w-full h-3/6 flex justify-center items-center`,
-    btn: `p-2 w-10/12 text-xs`,
+    btn: `p-2 w-10/12 text-xs bg-sky-600`,
     small: ``,
     left: `w-9/12 h-full flex justify-around items-center ml-2`,
     box: `w-24 h-5/6 rounded-xl bg-transparent flex justify-center items-center`,
@@ -125,15 +125,15 @@ function berries() {
         </div>
       </div>
       <div className={styles.bellow}>
-        <Link 
-        href={{
-          pathname: "/components/FOW/CheckOutVeggies",
-          query: data,
+        <Button variant="contained" className={styles.btn}>
+          <Link 
+            href={{
+            pathname: "/components/FOW/CheckOutVeggies",
+            query: data,
           }}>
-          <Button variant="contained" className={styles.btn}>
             <p className='text-xs'>Checkout ({totalCount}{totalCount < 1 ? <span className='lowercase'>gm</span> : <span className='lowercase'>kg</span>})</p>
-          </Button>
-        </Link>
+          </Link>
+        </Button>
         <div className="bg-slate-300/[.9] shadow-xl border-white-900/75 p-0.5 rounded-md mt-1">
           <span className='text-xs'>Minimum Order $$</span>
         </div>
