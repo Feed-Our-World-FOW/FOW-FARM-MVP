@@ -33,7 +33,7 @@ function CheckOut() {
     nav: `w-full h-1/6 bg-slate-300/[.9] shadow-xl border-white-900/75 flex justify-around items-center max-w-screen-sm`,
     address: `w-11/12 h-2/6 rounded-xl flex flex-col justify-around items-center bg-slate-300/[.9] shadow-xl border-white-900/75 max-w-screen-sm`,
     item: `w-11/12 h-2/6 rounded-xl flex justify-around items-start bg-slate-300/[.9] shadow-xl border-white-900/75 max-w-screen-sm`,
-    btn: `w-11/12 h-20 rounded-xl flex justify-center items-center max-w-screen-sm`,
+    btn: `w-11/12 h-10 rounded-xl flex justify-center items-center max-w-screen-sm`,
     sub_nav: `w-full h-10 flex justify-around items-center`,
     inputs: `w-11/12 h-4/5 flex flex-col justify-around items-center mb-3`,
     input: `bg-transparent focus:outline-none p-1 w-full h-full rounded-xl`,
@@ -109,15 +109,19 @@ function CheckOut() {
           </div>
         </div>
       </div>
-      <Link 
-        href={{
-          pathname: "/components/FOW/Payments/Crypto",
-          query: sendData
+      <div className={styles.btn}>
+        <Link 
+          href={{
+            pathname: "/components/FOW/Payments/Crypto",
+            query: sendData
         }}>
-        <div className={styles.btn}>
-          <Button variant="contained" className='p-2 w-11/12' onClick={() => console.log("data: ", data)}>Proceed to pay</Button>
-        </div>
-      </Link>
+          <Button variant="contained" className='w-full h-8 bg-sky-600' onClick={() => console.log("data: ", data)}>
+            <span className='text-xs'>
+              Proceed to pay
+            </span>
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }
