@@ -28,9 +28,11 @@ function MyFarm() {
 
   const fetch = async () => {
     try {
-      const token: any = JSON.parse(localStorage.getItem("Token")).value
+      const token: any = JSON.parse(localStorage.getItem("Token") || '{}').value
       let decodedToken = {} as any
       decodedToken = jwt(token)
+
+      console.log("token: ", token)
 
       const response = await axios.get(
         URL + "?creatorID=" + decodedToken.id,
@@ -139,19 +141,19 @@ function MyFarm() {
           <div className="mt-2 flex justify-around w-screen max-w-sm">
             {
               farmData.meat && !farmData.produce ? 
-              <Button variant="contained" onClick={handleAddMeat}>
+              <Button variant="contained" onClick={handleAddMeat} className='bg-sky-600'>
                 <span className='capitalize'>Add Meat</span>
               </Button> :
               !farmData.meat && farmData.produce ?
-              <Button variant="contained">
+              <Button variant="contained" className='bg-sky-600'>
                 <span className='capitalize' onClick={handleAddProduce}>Add Produce</span>
               </Button> :
               farmData.meat && farmData.produce ?
               <div className="mt-2 flex justify-around w-screen max-w-sm">
-                <Button variant="contained" onClick={handleAddMeat}>
+                <Button variant="contained" onClick={handleAddMeat} className='bg-sky-600'>
                   <span className='capitalize'>Add Meat</span>
                 </Button>
-                <Button variant="contained">
+                <Button variant="contained" className='bg-sky-600'>
                   <span className='capitalize' onClick={handleAddProduce}>Add Produce</span>
                 </Button>
               </div> :
