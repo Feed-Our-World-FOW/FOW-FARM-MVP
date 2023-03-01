@@ -14,11 +14,13 @@ function Additional() {
       if (typeof window.ethereum !== 'undefined') {
         const chainid = await window.ethereum.request({ method: 'eth_chainId' })
   
-        if(chainid !== '0xaef3') {
+        // if(chainid !== '0xaef3') {
+        if(chainid !== '0xfa2') {
   
           await window.ethereum.request({   // This gives alert Incorrect network!, switch into Alfajores
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0xaef3' }],
+            // params: [{ chainId: '0xaef3' }],
+            params: [{ chainId: '0xfa2' }],
           })
         }
   
