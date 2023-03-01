@@ -10,7 +10,7 @@ import axios from 'axios';
 
 
 function Signup() {
-  const URL = `https://fow-api-production.up.railway.app/api/v1/user/signup`
+  const URL = `http://localhost:5000/api/v1/user/signup`
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
