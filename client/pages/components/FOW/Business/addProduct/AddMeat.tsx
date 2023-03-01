@@ -10,7 +10,7 @@ import FileBase64 from 'react-file-base64';
 
 
 function AddMeat() {
-  const URL = `https://fow-api-production.up.railway.app/api/v1/farm`
+  const URL = `http://localhost:5000/api/v1/farm`
 
   const [meatDetails, setMeatDetails] = useState({
     animalName: '',
