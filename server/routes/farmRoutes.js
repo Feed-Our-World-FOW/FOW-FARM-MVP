@@ -19,6 +19,7 @@ router.route("/farm-stats").get(getFarmStats)
 router
   .route("/")
     .get(protect, getAllFarms)
+    // .get(getAllFarms)
     .post(createFarm)
 
 
