@@ -12,7 +12,7 @@ import jwt from 'jwt-decode';
 
 
 function FarmUpload() {
-  const URL = `https://fow-api-production.up.railway.app/api/v1/farm`
+  const URL = `http://localhost:5000/api/v1/farm`
   const [farmDetails, setFarmDetails] = useState({
     createAt: '',
     farmName: '',
