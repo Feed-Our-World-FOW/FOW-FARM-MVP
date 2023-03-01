@@ -9,7 +9,7 @@ import AddProduce from './addProduct/AddProduce';
 
 
 function MyFarm() {
-  const URL = `https://fow-api-production.up.railway.app/api/v1/farm`
+  const URL = `http://localhost:5000/api/v1/farm`
 
   const [addmeat, setAddmeat] = useState(false)
   const [addproduce, setAddproduce] = useState(false)
