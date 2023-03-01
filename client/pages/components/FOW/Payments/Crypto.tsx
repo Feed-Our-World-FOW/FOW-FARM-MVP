@@ -11,7 +11,8 @@ import Link from 'next/link';
 
 function Crypto() {
 
-  const deployAddress = '0xb6b8869F2717ee5F5bdFDd03bE7121D0dbc1E6bf'
+  // const deployAddress = '0xb6b8869F2717ee5F5bdFDd03bE7121D0dbc1E6bf'
+  const deployAddress = '0x7d4C650c02DBABa1D2097a1B98710933Ba632C05'
   const [walletAddress, setWalletAddress] = useState('')
   const [donationAmount, setDonationAmount] = useState(0)
   const [click, setClick] = useState(false)
@@ -121,15 +122,15 @@ function Crypto() {
               </div>
             </div>
             <div className={styles.boxHold}>
-              <img src="/images/celo-logo.png" className='w-10 h-10'/>
+              <img src="/images/fantom.png" className='w-10 h-10'/>
               {/* <div className={styles.smallBox}>{celoAmount} CELO</div> */}
               <div className={styles.smallBox}>
-                {!click ? celoAmount : Number(celoAmount) + donationInCelo} CELO
+                {!click ? celoAmount : Number(celoAmount) + donationInCelo} FTM
               </div>
             </div>
 
             <div className={styles.boxHold}>
-              <img src="/images/cusd.png" className='w-10 h-10'/>
+              <img src="/images/USDC.png" className='w-10 h-10'/>
               <div className={styles.smallBox}>
                 {!click ? usdAmount : Number(usdAmount) + donationAmount} CUSD
               </div>
