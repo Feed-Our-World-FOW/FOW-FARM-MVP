@@ -1,1 +1,1 @@
-# FOW--Hackathon of Hope with Celo
+# FOW--FARM
