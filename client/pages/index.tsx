@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
-import SignInPage from './components/SignInPage'
+import AllFarms from './Components/AllFarms'
 
 const Home: NextPage = () => {
   return (
-    <div>
-      <SignInPage />
+    <div className='flex flex-col justify-center items-center'>
+      <AllFarms />
     </div>
   )
 }
