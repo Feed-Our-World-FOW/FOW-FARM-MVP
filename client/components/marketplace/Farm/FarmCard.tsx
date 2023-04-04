@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
+import { FarmCardInterface } from '../../../interface/AllFarmsInterface'
 
-function FarmCard() {
 
-  const [value, setValue] = useState<number | null>(0);
+function FarmCard(props: FarmCardInterface) {
 
   const styles = {
     wholeCard: `w-36 h-44 bg-white border-1 drop-shadow-1.5lg rounded-md`,
@@ -27,34 +27,36 @@ function FarmCard() {
         />
       </div>
       <div className={styles.infoBox}>
-        <span className={styles.bigText}>{`Chicago’s Pizza With A Twist`}</span>
-        <span className={styles.smallText}>{`2734 United state, 362812...`}</span>
+        <span className={styles.bigText}>{props.name}</span>
+        <span className={styles.smallText}>{props.location?.address}</span>
         <div className="flex w-full">
           <Stack spacing={1}>
             <Rating 
-              name="half-rating" 
-              defaultValue={0} 
+              name="read-only" 
               precision={0.1} 
               size='small' 
-              value={value} 
-              onChange={(event: any, newValue) => {
-                setValue(newValue)
-                console.log(event.target.value)
-              }}
+              value={props.ratingsAverage} 
             />
           </Stack>
-          <Image 
-            src="/images/veg.png" 
-            alt="image" 
-            width={19}
-            height={4}
-          />
-          <Image 
-            src="/images/nonveg1.png" 
-            alt="image" 
-            width={25}
-            height={15}
-          />
+          {
+            props.meat &&
+            <Image 
+              src="/images/nonveg1.png" 
+              alt="image" 
+              width={25}
+              height={15}
+            />
+          }
+
+          {
+            props.produce &&
+            <Image 
+              src="/images/veg.png" 
+              alt="image" 
+              width={19}
+              height={4}
+            />
+          }
         </div>
       </div>
     </div>

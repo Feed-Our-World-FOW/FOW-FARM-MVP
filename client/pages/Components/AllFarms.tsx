@@ -1,20 +1,53 @@
-import React from 'react'
-import { getAllFarms } from '../../components/marketplace/API'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { getAllFarms, filterAllFarms } from '../../components/marketplace/API'
 import Navbar from '../../components/marketplace/Navbar'
 import FarmCard from '../../components/marketplace/Farm/FarmCard'
 import Image from 'next/image'
 import Link from 'next/link'
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"
+import { Carousel } from 'react-responsive-carousel'
 import TopFarms from '../../components/marketplace/Farm/TopFarms'
+import { AllFarmsInterface, FarmDetailsInterface, FarmCardInterface } from '../../interface/AllFarmsInterface'
 
 
 function AllFarms() {
 
-  const handleClick = async () => {
-    const farms: any = await getAllFarms()
-    console.log(farms)
+  const [allFarms, setAllFarms] = useState([{}])
+
+  const fetchAllFarms = async () => {
+    try {
+      const x: AllFarmsInterface = await getAllFarms()
+      const data = x.data.data.data
+      setAllFarms(data)
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  const fetchMeatFarm = async () => {
+    try {
+      const x: AllFarmsInterface = await filterAllFarms("meat")
+      const data = x.data.data.data
+      setAllFarms(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchProduceFarm = async () => {
+    try {
+      const x: AllFarmsInterface = await filterAllFarms("produce")
+      const data = x.data.data.data
+      setAllFarms(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchAllFarms()
+  }, [])
 
   const styles = {
     page: `w-screen flex flex-col justify-around items-center mb-10 max-w-md`,
@@ -38,7 +71,7 @@ function AllFarms() {
       </div>
       <div className={styles.scrollingBox}>
 
-        <div className={styles.bannerBox}>
+        <div className={styles.bannerBox} onClick={fetchAllFarms}>
           <Image
             alt=''
             width={100}
@@ -51,21 +84,23 @@ function AllFarms() {
         <span className='text-3sm font-bold w-11/12 mt-5 mb-3'>Catagories</span>
 
         <div className={styles.catagorieBox}>
-          <div className="w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg">
+          <div className="w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg">
             <Image
               alt=''
               width={50}
               height={50}
               src={'/images/grocery.png'}
+              onClick={fetchProduceFarm}
             />
           </div>
-          <div className="w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg">
+          <div className="w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg">
             <Image
               alt=''
               width={100}
               height={100}
               src={'/images/meatlogo.png'}
               className='w-full h-full'
+              onClick={fetchMeatFarm}
             />
           </div>
         </div>
@@ -104,29 +139,36 @@ function AllFarms() {
 
         <div className={styles.farmCardBox}>
           <div className={styles.allFarms}>
-            <Link href={'/Components/FarmPage'}>
-              <FarmCard />
-            </Link>
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
-            <FarmCard />
+            {
+              allFarms.map((farm: any) => {
+                const sendData = {
+                  data: farm._id
+                }
+                return (
+                  <Link 
+                    href={{
+                      pathname: '/Components/FarmPage',
+                      query: sendData
+                    }}
+                    
+                    key={farm._id}
+                  >
+                    <FarmCard 
+                      key={farm._id}
+                      name={farm.name}
+                      images={farm.images}
+                      location={farm.location}
+                      meat={farm.meat}
+                      produce={farm.produce}
+                      ratingsAverage={farm.ratingsAverage}                
+                    />
+                  </Link>
+                )
+              })
+            }
           </div>
         </div>
       </div>
-      {/* <Farm />
-      <Farm />
-    <Farm /> */}
-    {/* <Farm /> */}
     </div>
   )
 }

@@ -1,12 +1,40 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 import Navbar from '../../components/marketplace/Navbar'
 import Image from 'next/image'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
 import CommentCard from '../../components/marketplace/Farm/CommentCard'
 import Link from 'next/link'
+import { getSingleProduct } from '../../components/marketplace/API'
+import { RouterQueryInterface, AllFarmsInterface } from '../../interface/AllFarmsInterface'
 
 function ProductPage() {
+  const router = useRouter()
+  const id = router.query as RouterQueryInterface
+
+  const [productDetails, setProductDetails] = useState({
+
+  })
+
+  const fetch = async () => {
+    try {
+      // const ID = id.data
+      // const x: AllFarmsInterface = await getSingleProduct(ID)
+      // const data = x.data.data.data
+      const token = await axios.get(`http://localhost:5000/api/v1/farm`)
+
+      console.log(document.cookie)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    // fetch()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id.data])
 
   const styles = {
     page: `w-screen flex flex-col justify-around items-center max-w-md`,
@@ -27,6 +55,7 @@ function ProductPage() {
           width={100}
           height={100}
           className='w-full h-full'
+          onClick={() => fetch()}
         />
       </div>
 

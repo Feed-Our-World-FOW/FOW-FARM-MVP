@@ -1,75 +1,123 @@
-import React from 'react'
+import React, { ChangeEvent, useState, FormEvent } from 'react'
 import Image from 'next/image'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { LoginFormInterface } from '../../interface/AllFarmsInterface'
+
+
+
 
 function LoginPage() {
+  const [signupForm, setSignupForm] = useState<LoginFormInterface>({
+    email: '',
+    password: ''
+  })
+
+  const theme = createTheme();
+
+  const handleClick = async () => {
+    
+    try {
+      console.log(signupForm)
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    setSignupForm((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
   const styles = {
-    page: `w-screen flex justify-center items-center`,
-    bgCover: `w-screen h-screen backdrop-blur-sm flex flex-col justify-around items-center`,
-    subBg: `w-11/12 h-5/6 flex flex-col justify-center items-center`,
-    inputSubBox: `border-2 w-full`,
-    inputBox: `w-9/12 flex flex-col justify-center items-start`,
-    input: `focus:outline-none border-b-2 placeholder:font-semibold placeholder:text-black placeholder:text-center bg-transparent w-full`,
-    btn: `w-10/12 h-full rounded-xl bg-pearl border-2`,
-    optionText: `text-2sm font-semibold mt-5 mb-5`,
-    bellowBox: `w-10/12 h-16 flex justify-center items-center`,
-    round: `w-16 h-16 rounded-full`,
-    btnBox: `w-full mt-5 h-8 flex justify-center`
+    round: `w-32 h-32 rounded-full bg-white drop-shadow-lg`,
   }
 
   return (
-    <div id="bg-image" className={styles.page}>
-      <div className={styles.bgCover}>  
-        <div className={styles.subBg}>
-          <div>
-            <Image
-              src={'/images/fow.png'}
-              alt=''
-              width={150}
-              height={150}
-              className='w-full h-full'
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div className={styles.round}>
+           <Image
+            alt=''
+            width={100}
+            height={100}
+            src={'/images/fow.png'}
+            className='w-full h-full'
+          />
+          </div>
+
+          {/* <Typography component="h5" variant="h5">
+            Sign in
+          </Typography> */}
+          <Box component="form" onSubmit={handleClick} noValidate sx={{ mt: 1 }}>
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={signupForm.email}
+              onChange={handleInputChange}
+            />           
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={signupForm.password}
+              onChange={handleInputChange}
             />
-          </div>
-          <div className={styles.inputBox}>
-            <span className='font-bold'>Email:</span>
-            <div className={styles.inputSubBox}>
-              <input type="text" className={styles.input} />
-            </div>
+            <Button
+              // type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              className='bg-dark-blue'
+              onClick={handleClick}
+            >
+              Log In
+            </Button>
+            <Grid container  className='mb-10'>
+              <Grid item>
+                <Link href="/Auth/SignupPage" variant="body2">
+                  {"Don't have an account? Sign up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
+    )
+  }
 
-            <span className='font-bold'>Password:</span>
-            <div className={styles.inputSubBox}>
-              <input type="password" className={styles.input} />
-            </div>
-            <span className='text-sm ml-auto'>forget password</span>
-          </div>
-
-          <div className={styles.btnBox}>
-            <button className={styles.btn}>Login</button>
-          </div>
-          <span className={styles.optionText}>or login using</span>
-          <div className={styles.bellowBox}>
-            <div className={styles.round}>
-              <Image
-                src={'/images/google-logo.png'}
-                alt=''
-                width={200}
-                height={200}
-                className='w-full h-full'
-              />
-            </div>
-            <div className={styles.round}>
-              <Image
-                src={'/images/facebook-icon.png'}
-                alt=''
-                width={200}
-                height={200}
-                className='w-full h-full'
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default LoginPage
+  export default LoginPage
+  

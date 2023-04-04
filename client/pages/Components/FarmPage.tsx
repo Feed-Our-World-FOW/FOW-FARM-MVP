@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Navbar from '../../components/marketplace/Navbar'
 import StarIcon from '@mui/icons-material/Star'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
@@ -8,8 +9,62 @@ import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
 import CommentCard from '../../components/marketplace/Farm/CommentCard'
 import Link from 'next/link'
+import { getSingleFarm } from '../../components/marketplace/API'
+import { AllFarmsInterface, FarmDetailsInterface, RouterQueryInterface } from '../../interface/AllFarmsInterface'
+
 
 function FarmPage() {
+  const router = useRouter()
+  const id = router.query as RouterQueryInterface
+
+  const [farmDetails, setFarmDetails] = useState<any>({
+    _id: '',
+    name: '',
+    location: {
+      address: ''
+    },
+    ratingsAverage: 0,
+    ratingsQuantity: 0,
+    allProduct: [
+      {
+        name: '',
+        ratingsAverage: 0,
+        ratingsQuantity: 0,
+        weight: '',
+        price: ''
+      }
+    ],
+    reviews: [
+      {
+        createdAt: '',
+        rating: 0,
+        review: '',
+        user: {
+          name: '',
+          photo: ''
+        }
+      }
+
+    ]
+  })
+
+  const fetch = async () => {
+    try {
+      const x: AllFarmsInterface = await getSingleFarm(id.data)
+      const data = x.data.data.data
+      console.log(data)
+      setFarmDetails(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetch()
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id.data])
+
 
   const styles = {
     page: `w-screen flex flex-col justify-around items-center max-w-md`,
@@ -41,22 +96,22 @@ function FarmPage() {
 
         </div>
         <div className={styles.shopDescBox}>
-          <div className={styles.shopImg}>
+          <div className={styles.shopImg} onClick={() => fetch()}>
 
           </div>
           <div className={styles.shopDesc}>
-            <p className={styles.bigText}>ABC Market, Meat & Grocory Store</p>
+            <p className={styles.bigText}>{farmDetails.name}</p>
             {/* <br /> */}
-            <p className={styles.smallText}>41 keshar road, md USA 234213</p>
+            <p className={styles.smallText}>{farmDetails?.location?.address}</p>
           </div>
         </div>
         <div className={styles.statBox}>
           <div className={styles.iconBox}>
             <div className="flex">
               <StarIcon fontSize='small' />
-              <span className={styles.smallBoldText}>(0)</span>
+              <span className={styles.smallBoldText}>({farmDetails.ratingsAverage})</span>
             </div>
-            <span className="text-2sm font-bold mt-1">0 ratings</span>
+            <span className="text-2sm font-bold mt-1">{farmDetails.ratingsQuantity} ratings</span>
           </div>
           <div className={styles.iconBox}>
             <div className="flex">
@@ -90,21 +145,33 @@ function FarmPage() {
         </div>
 
         <div className={styles.productsBox}>
-          <Link href={`/Components/ProductPage`} className='w-11/12'>
-            <ProductCard />
-          </Link>
-          <div className="w-7/12 border-b-2 mb-3 ml-3"></div>
-          <ProductCard />
-          <div className="w-7/12 border-b-2 mb-3 ml-3"></div>
-          <ProductCard />
-          <div className="w-7/12 border-b-2 mb-3 ml-3"></div>
-          <ProductCard />
-          <div className="w-7/12 border-b-2 mb-3 ml-3"></div>
-          <ProductCard />
-          <div className="w-7/12 border-b-2 mb-3 ml-3"></div>
-          <ProductCard />
-          <div className="w-7/12 border-b-2 mb-3 ml-3"></div>
-          <ProductCard />
+          {
+            farmDetails.allProduct.map((product: any, index: any) => {
+              const sendData = {
+                data: product._id
+              }
+              return (
+                <Link key={product._id} 
+                  href={{
+                    pathname: '/Components/ProductPage',
+                    query: sendData
+                  }} 
+                  className='w-11/12'
+                >
+                  <ProductCard 
+                    key={product._id} 
+                    name={product.name}
+                    weight={product.weight}
+                    price={product.price}
+                    ratingsAverage={product.ratingsAverage}
+                    ratingsQuantity={product.ratingsQuantity}
+                  />
+                  <div key={index+2} className="w-11/12 border-b-2 mb-3 ml-3"></div>
+                </Link>
+              )
+            })
+          }
+
         </div>
 
         <div className='border-b-2 w-11/12 mb-3'></div>
@@ -127,12 +194,27 @@ function FarmPage() {
         <div className="border-b-2 w-11/12 mt-3 mb-5"></div>
 
         <div className="w-full mb-5 p-3">
+
+          {
+            farmDetails.reviews.map((farm: any) => {
+              return (
+                <CommentCard 
+                  key={farm.id}
+                  createdAt={farm.createdAt}
+                  rating={farm.rating}
+                  review={farm.review}
+                  userName={farmDetails?.user?.name}
+                />
+              )
+            })
+          }
+
+          
+          {/* <CommentCard />
           <CommentCard />
           <CommentCard />
           <CommentCard />
-          <CommentCard />
-          <CommentCard />
-          <CommentCard />
+          <CommentCard /> */}
         </div>
       </div>
     </div>

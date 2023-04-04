@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 
 function Navbar() {
 
-  const [signup, setSignup] = useState(true)
+  // const [signup, setSignup] = useState(true)
 
   const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -41,7 +41,7 @@ function Navbar() {
               <input type="text" placeholder='Joe Doe Farm' className={styles.input} />
             </div>
 
-            {
+            {/*
               signup ?
 
               <Link href={'/Auth/SignupPage'} className="flex flex-col justify-center items-center h-20 w-20">
@@ -52,13 +52,13 @@ function Navbar() {
               </Link> 
               :
 
-              <Link href={'/Auth/LoginPage'} className="flex flex-col justify-center items-center h-20 w-20">
-                <div className={styles.imgCover}>
-                  <AccountCircleIcon className='w-full h-full' color='primary' />
-                </div>
-                <span className='font-semi-bold text-2sm'>Login</span>
-              </Link>
-            }
+  */}
+            <Link href={'/Auth/LoginPage'} className="flex flex-col justify-center items-center h-20 w-20">
+              <div className={styles.imgCover}>
+                <AccountCircleIcon className='w-full h-full' color='primary' />
+              </div>
+              <span className='font-semi-bold text-2sm'>Login</span>
+            </Link>
 
 
           </div>

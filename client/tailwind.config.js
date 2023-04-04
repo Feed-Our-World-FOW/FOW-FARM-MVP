@@ -23,6 +23,7 @@ module.exports = {
     },
     dropShadow: {
       'md': '3px 3px 0px rgba(0, 0, 0, 0.5)',
+      '0.5lg': '0px 2px 2px rgba(0, 0, 0, 0.25)',
       'lg': '0px 4px 4px rgba(0, 0, 0, 0.25)',
       '1.5lg': '0px 6px 6px rgba(0, 0, 0, 0.25)',
       '2lg': '0px 10px 8px rgba(0, 0, 0, 1)',
@@ -50,7 +51,8 @@ module.exports = {
       'light-white': '#F9F0F0',
       'golden': '#ebca3b',
       'black': '#000000',
-      'light-gray': '#D9D9D9'
+      'light-gray': '#D9D9D9',
+      'dark-blue': '#0f53bf'
     }
   },
   plugins: [],

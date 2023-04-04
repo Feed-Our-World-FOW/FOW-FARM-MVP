@@ -1,75 +1,179 @@
-import React from 'react'
+import React, { ChangeEvent, useState, FormEvent } from 'react'
+import Swal from 'sweetalert2'
+import Image from 'next/image'
 import Button from '@mui/material/Button'
-import Link from 'next/link'
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { SignupFormInterface } from '../../interface/AllFarmsInterface'
+import { signupMethod } from '../../components/marketplace/API'
+
 
 function SignupPage() {
+  const [disabled, setDisabled] = useState(false)
+  const [signupForm, setSignupForm] = useState<SignupFormInterface>({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: ''
+  })
 
+  const theme = createTheme()
+
+  const handleClick = async () => {
+    setDisabled(true)
+    
+    try {
+      const signup = await signupMethod({
+        name: signupForm.name,
+        email: signupForm.email,
+        password: signupForm.password,
+        passwordConfirm: signupForm.passwordConfirm
+      })
+
+      console.log(signup)
+
+      signupForm.name = ''
+      signupForm.email = ''
+      signupForm.password = ''
+      signupForm.passwordConfirm = ''
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Successfully signed in',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      // window.location.replace('/')
+
+    } catch (error: any) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `${error.response.data.message}`,
+        footer: '<a href="">Please submit the sign up form again</a>'
+      })
+    }
+  }
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    setSignupForm((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   const styles = {
-    page: `w-screen flex justify-center items-center`,
-    bgCover: `w-screen h-screen backdrop-blur-sm flex flex-col justify-around items-center`,
-    profileImage: `h-20 w-28 flex flex-col items-center mt-10`,
-    round: `w-20 h-20 rounded-full`,
-    imgBox: `ml-14 block fixed mt-10`,
-    signupBtn: `bg-pearl text-black w-full h-full border-4 border-black drop-shadow-2xl active:drop-shadow-xl`,
-    inputBox: `border-2`,
-    input: `focus:outline-none border-b-2 placeholder:font-semibold placeholder:text-black placeholder:text-center bg-transparent`,
-    addBtnBox: `w-7/12 border-2 flex justify-center items-center rounded-xl`,
-    btn: `w-full h-full border-b-4 rounded-xl active:border-b-2 text-2sm font-semibold p-1 bg-pearl`,
+    round: `w-32 h-32 rounded-full bg-white drop-shadow-lg`,
   }
+
   return (
-    <div id="bg-image" className={styles.page}>
-      <div className={styles.bgCover}>
-        <div className={styles.profileImage}>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <div className={styles.round}>
-            <AccountCircleIcon className='w-full h-full' />
+           <Image
+            alt=''
+            width={100}
+            height={100}
+            src={'/images/fow.png'}
+            className='w-full h-full'
+          />
           </div>
-          <div className={styles.imgBox}>
-            <label htmlFor="">
-              <AddAPhotoIcon color='primary' fontSize='large' />
-              <input type="file" className='hidden' />
-            </label>
-          </div>
-        </div>
-        <div className={styles.inputBox}>
-          <input type="text" placeholder='Name' className={styles.input} />
-        </div>
-        <div className="flex flex-col justify-around h-20 mt-5 w-48">
-          <span className='font-semibold'>Account Type:</span>
-          <div className="flex w-full justify-between items-center">
-            <div className="flex w-full justify-between">
-              <div className="">
-                <input type="radio" name='user' value="user" />
-                <label htmlFor="user" className='font-semibold mr-2'>User</label>
-              </div>
-              <div className="">
-                <input type="radio" name='business' value="business" />
-                <label htmlFor="business" className='font-semibold mr-2'>Business</label>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        <Link href={'/Auth/AddLocation'} className={styles.addBtnBox}>
-          <button className={styles.btn}>Add Location</button>
-        </Link>
-        <div className={styles.inputBox}>
-          <input type="email" placeholder='Email' className={styles.input} />
-        </div>
-        <div className={styles.inputBox}>
-          <input type="password" placeholder='Password' className={styles.input} />
-        </div>
-        <div className={styles.inputBox}>
-          <input type="password" placeholder='Confirm Password' className={styles.input} />
-        </div>
-        <Link href={'/'} className="border-2 h-8 w-36">
-          <Button variant="contained" className={styles.signupBtn}>Sign Up</Button>
-        </Link>
-      </div>
-    </div>
+
+          {/* <Typography component="h5" variant="h5">
+            Sign in
+          </Typography> */}
+          <Box component="form" onSubmit={handleClick} noValidate sx={{ mt: 1 }}>
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="text"
+              label="Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+              value={signupForm.name}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={signupForm.email}
+              onChange={handleInputChange}
+            />           
+            <TextField
+              margin="normal"
+              error={ signupForm.password.length > 0 && signupForm.password.length < 8 }
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={signupForm.password}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="normal"
+              error={ signupForm.passwordConfirm.length > 0 && signupForm.password !== signupForm.passwordConfirm }
+              required
+              fullWidth
+              name="passwordConfirm"
+              label="Confirm Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={signupForm.passwordConfirm}
+              onChange={handleInputChange}
+            />
+            <Button
+              // type="submit"
+              disabled={disabled}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              className='bg-dark-blue'
+              onClick={handleClick}
+            >
+              Sign Up
+            </Button>
+            <Grid container  className='mb-10'>
+              <Grid item>
+                <Link href="/Auth/LoginPage" variant="body2">
+                  {"Already have an account? Log in"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   )
 }
+
 
 export default SignupPage
