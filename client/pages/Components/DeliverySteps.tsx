@@ -6,7 +6,7 @@ import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import ConfirmAddressCard from '../../components/marketplace/Farm/ConfirmAddressCard'
-import ChoosePaymentOptionCard from '../../components/marketplace/Farm/ChoosePaymentOptionCard'
+import ChoosePaymentOptionCard from '../../components/marketplace/Farm/Payment/ChoosePaymentOptionCard'
 import DebitCard from '../../components/marketplace/Farm/Payment/DebitCard'
 import PlaceOrderCard from '../../components/marketplace/Farm/PlaceOrderCard'
 

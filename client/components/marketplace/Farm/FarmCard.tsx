@@ -3,12 +3,13 @@ import Image from 'next/image'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
 import { FarmCardInterface } from '../../../interface/AllFarmsInterface'
+import ImageCard from './ImageCard'
 
 
 function FarmCard(props: FarmCardInterface) {
 
   const styles = {
-    wholeCard: `w-36 h-44 bg-white border-1 drop-shadow-1.5lg rounded-md`,
+    wholeCard: `w-36 h-44 bg-white drop-shadow-1.5lg rounded-md`,
     imgBox: `w-full h-24 rounded-xl`,
     infoBox: `flex flex-col p-2`,
     bigText: `text-sm indent-0 font-semibold`,
@@ -18,12 +19,9 @@ function FarmCard(props: FarmCardInterface) {
   return (
     <div className={styles.wholeCard}>
       <div className={styles.imgBox}>
-        <Image 
-          src="/images/fow.png" 
-          alt="image" 
-          width={144}
-          height={50}
-          className='w-full h-full'
+        <ImageCard 
+          image={props.images}
+          type='farms'
         />
       </div>
       <div className={styles.infoBox}>

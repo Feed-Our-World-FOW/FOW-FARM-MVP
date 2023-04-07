@@ -14,13 +14,14 @@ import { signupMethod } from '../../components/marketplace/API'
 
 
 function SignupPage() {
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState<boolean>(false)
   const [signupForm, setSignupForm] = useState<SignupFormInterface>({
     name: '',
     email: '',
     password: '',
     passwordConfirm: ''
   })
+  const expireTime = process.env.NEXT_PUBLIC_TOKEN_EXPIRE_TIME || 0
 
   const theme = createTheme()
 
@@ -35,7 +36,9 @@ function SignupPage() {
         passwordConfirm: signupForm.passwordConfirm
       })
 
-      console.log(signup)
+      const token = signup.data.token
+      const expire = new Date().getTime() + Number(expireTime)
+      localStorage.setItem("Token", JSON.stringify({ value: `${token}`, expires: expire }))
 
       signupForm.name = ''
       signupForm.email = ''
@@ -50,7 +53,7 @@ function SignupPage() {
         timer: 1500
       })
 
-      // window.location.replace('/')
+      window.location.replace('/')
 
     } catch (error: any) {
       Swal.fire({

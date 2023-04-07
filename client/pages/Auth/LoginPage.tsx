@@ -10,7 +10,8 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { LoginFormInterface } from '../../interface/AllFarmsInterface'
-
+import Swal from 'sweetalert2'
+import { loginMethod } from '../../components/marketplace/API'
 
 
 
@@ -19,16 +20,40 @@ function LoginPage() {
     email: '',
     password: ''
   })
+  const [disabled, setDisabled] = useState<boolean>(false)
+  const expireTime = process.env.NEXT_PUBLIC_TOKEN_EXPIRE_TIME || 0
 
   const theme = createTheme();
 
   const handleClick = async () => {
-    
+    setDisabled(true)
     try {
-      console.log(signupForm)
+      const login = await loginMethod({
+        email: signupForm.email,
+        password: signupForm.password
+      })
+
+      const token = login.data.token
+      const expire = new Date().getTime() + Number(expireTime)
+      localStorage.setItem("Token", JSON.stringify({ value: `${token}`, expires: expire }))
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Successfully signed in',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      window.location.replace('/')
       
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `${error.response.data.message}`,
+        footer: '<a href="">Please submit the sign up form again</a>'
+      })
     }
   }
 
@@ -97,6 +122,7 @@ function LoginPage() {
             />
             <Button
               // type="submit"
+              disabled={disabled}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}

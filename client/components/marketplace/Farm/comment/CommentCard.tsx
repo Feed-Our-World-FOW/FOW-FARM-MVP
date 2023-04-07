@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
+
 
 function CommentCard(props:any) {
 
@@ -25,9 +26,9 @@ function CommentCard(props:any) {
           />
         </Stack>
       </div>
-      <span className="font-bold ">{`Good but Can Be Better`}</span>
+      <span className="font-bold ">{props.title}</span>
       <div className="mt-1">
-        <p className='font-semibold text-2sm'>{`Reviewed on 18 February 2023`}</p>
+        <p className='font-semibold text-2sm'>{`Reviewed on ${props.createdAt}`}</p>
         <p className='text-sm'>{props.review}</p>
       </div>
       {/* <div className="border-b-2 w-10/12"></div> */}

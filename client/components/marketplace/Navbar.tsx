@@ -1,16 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Link from 'next/link'
-import Badge, { BadgeProps } from '@mui/material/Badge';
-import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
+import Badge, { BadgeProps } from '@mui/material/Badge'
+import { styled } from '@mui/material/styles'
+import IconButton from '@mui/material/IconButton'
+import UserProfile from '../../pages/Auth/UserProfile'
 
 function Navbar() {
 
   // const [signup, setSignup] = useState(true)
+  const [token, setToken] = useState('')
+
+  const fetch = async () => {
+    try {
+      const tokenObj = localStorage.getItem('Token') || null
+      let Token
+      if(tokenObj) {
+        Token = JSON.parse(tokenObj).value
+      }
+      setToken(Token)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -20,6 +35,10 @@ function Navbar() {
       padding: '0 4px',
     },
   }))
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   const styles = {
     fullPage: `w-screen h-36 flex flex-col justify-between items-center fixed top-0 left-0`,
@@ -53,12 +72,29 @@ function Navbar() {
               :
 
   */}
-            <Link href={'/Auth/LoginPage'} className="flex flex-col justify-center items-center h-20 w-20">
+            {/* <Link href={'/Auth/UserProfile'} className="flex flex-col justify-center items-center h-20 w-20">
               <div className={styles.imgCover}>
                 <AccountCircleIcon className='w-full h-full' color='primary' />
               </div>
               <span className='font-semi-bold text-2sm'>Login</span>
-            </Link>
+            </Link> */}
+
+            {
+              token ?
+              <Link href={'/Auth/UserProfile'} className="flex flex-col justify-center items-center h-20 w-20">
+                <div className={styles.imgCover}>
+                  <AccountCircleIcon className='w-full h-full' color='primary' />
+                </div>
+                <span className='font-semi-bold text-2sm'>Profile</span>
+              </Link>
+              :
+              <Link href={'/Auth/LoginPage'} className="flex flex-col justify-center items-center h-20 w-20">
+                <div className={styles.imgCover}>
+                  <AccountCircleIcon className='w-full h-full' color='primary' />
+                </div>
+                <span className='font-semi-bold text-2sm'>Login</span>
+              </Link>
+            }
 
 
           </div>

@@ -160,7 +160,7 @@ function AllFarms() {
                       location={farm.location}
                       meat={farm.meat}
                       produce={farm.produce}
-                      ratingsAverage={farm.ratingsAverage}                
+                      ratingsAverage={farm.ratingsAverage}   
                     />
                   </Link>
                 )

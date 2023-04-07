@@ -7,10 +7,15 @@ import TimerIcon from '@mui/icons-material/Timer'
 import ProductCard from '../../components/marketplace/Farm/ProductCard'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
-import CommentCard from '../../components/marketplace/Farm/CommentCard'
+import CommentCard from '../../components/marketplace/Farm/comment/CommentCard'
 import Link from 'next/link'
 import { getSingleFarm } from '../../components/marketplace/API'
 import { AllFarmsInterface, FarmDetailsInterface, RouterQueryInterface } from '../../interface/AllFarmsInterface'
+import ImageCard from '../../components/marketplace/Farm/ImageCard'
+import WriteCommentCard from '../../components/marketplace/Farm/comment/WriteCommentCard'
+import CommentIcon from '@mui/icons-material/Comment';
+import { createReviewOfAFarm } from '../../components/marketplace/API'
+import Swal from 'sweetalert2'
 
 
 function FarmPage() {
@@ -48,13 +53,54 @@ function FarmPage() {
     ]
   })
 
+  const [value, setValue] = useState<number>(0)
+  const [title, setTitle] = useState('')
+  const [review, setReview] = useState('')
+  const [Token, setToken] = useState('')
+  const [comment, setComment] = useState(false)
+
   const fetch = async () => {
     try {
+      const tokenObj = localStorage.getItem('Token') || null
+      let token
+      if(tokenObj) {
+        token = JSON.parse(tokenObj).value
+        setToken(token)
+      }
       const x: AllFarmsInterface = await getSingleFarm(id.data)
       const data = x.data.data.data
-      console.log(data)
       setFarmDetails(data)
     } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const commentFunction = async () => {
+    try {
+      console.log(value, title, review, farmDetails._id)
+      const response = await createReviewOfAFarm(Token, {
+        title: title,
+        review: review,
+        rating: value,
+        farm: farmDetails._id
+      })
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Successfully submit your comment',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setValue(0)
+      setTitle('')
+      setReview('')
+      window.location.reload()
+    } catch (error: any) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `${error.response.data.message}`,
+      })
       console.log(error)
     }
   }
@@ -71,7 +117,7 @@ function FarmPage() {
     navBox: `w-full px-4 z-50`,
     bannerImg: `w-full h-44 mt-36 bg-light-white max-w-md`,
     shopDescBox: `w-full h-20 flex mt-2 pl-2`,
-    shopImg: `border-2 w-20 h-20`,
+    shopImg: `w-20 h-20`,
     shopDesc: `ml-3 flex flex-col justify-center items-start`,
     bigText: `font-bold text-2sm`,
     smallText: `font-bold text-xs`,
@@ -82,7 +128,8 @@ function FarmPage() {
     btnBox: `w-full h-10 flex justify-center items-center mt-5`,
     upperBtnSubBox: `w-5/12 h-8 rounded-2xl flex justify-between items-center bg-light-gray`,
     lowerBtnSubBox: `w-full h-8 rounded-2xl flex justify-between items-center bg-light-gray overflow-x-auto scrollbar-hide`,
-    btn: `h-full w-20 rounded-2xl p-2 capitalize text-2sm bg-transparent outline-none text-black focus:border-b-2`
+    btn: `h-full w-20 rounded-2xl p-2 capitalize text-2sm bg-transparent outline-none text-black focus:border-b-2`,
+    commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
   }
 
   return (
@@ -93,11 +140,17 @@ function FarmPage() {
           <Navbar />
         </div>
         <div className={styles.bannerImg}>
-
+          <ImageCard 
+            image={farmDetails.imageCover}
+            type='farms'
+          />
         </div>
         <div className={styles.shopDescBox}>
           <div className={styles.shopImg} onClick={() => fetch()}>
-
+            <ImageCard 
+              image={farmDetails.images}
+              type={"farms"}
+            />
           </div>
           <div className={styles.shopDesc}>
             <p className={styles.bigText}>{farmDetails.name}</p>
@@ -165,6 +218,7 @@ function FarmPage() {
                     price={product.price}
                     ratingsAverage={product.ratingsAverage}
                     ratingsQuantity={product.ratingsQuantity}
+                    image={product.image && product.image[(product.image).length - 1]}
                   />
                   <div key={index+2} className="w-11/12 border-b-2 mb-3 ml-3"></div>
                 </Link>
@@ -186,12 +240,39 @@ function FarmPage() {
               size='small' 
               />
           </Stack>
-          <span className='text-2sm ml-3 font-semibold'>3.3 out of 5</span>
+          <span className='text-2sm ml-3 font-semibold'>{farmDetails.ratingsAverage} out of 5</span>
           </div>
-          <span className="text-sm font-semibold">{`1,167 total ratings`}</span>
+          <span className="text-sm font-semibold">{`${farmDetails.ratingsQuantity} total ratings`}</span>
         </div>
 
         <div className="border-b-2 w-11/12 mt-3 mb-5"></div>
+
+        <div className={styles.commentBox}>
+          {
+            comment ?
+            <div className={styles.commentBox}>
+              <WriteCommentCard
+                comment={comment}
+                setComment={setComment}
+                value={value}
+                setValue={setValue}
+                title={title}
+                setTitle={setTitle}
+                review={review}
+                setReview={setReview}
+                commentFunction={commentFunction}
+              />
+            </div>
+            :
+            <div className="w-11/12 flex justify-end">
+              <span className='w-full font-semibold mr-auto ml-2 '>Add a Comment</span>
+              <CommentIcon
+                color='primary'
+                onClick={() => setComment(true)}
+              />
+            </div>
+          }
+        </div>
 
         <div className="w-full mb-5 p-3">
 
@@ -201,6 +282,7 @@ function FarmPage() {
                 <CommentCard 
                   key={farm.id}
                   createdAt={farm.createdAt}
+                  title={farm.title}
                   rating={farm.rating}
                   review={farm.review}
                   userName={farmDetails?.user?.name}
@@ -208,13 +290,6 @@ function FarmPage() {
               )
             })
           }
-
-          
-          {/* <CommentCard />
-          <CommentCard />
-          <CommentCard />
-          <CommentCard />
-          <CommentCard /> */}
         </div>
       </div>
     </div>
