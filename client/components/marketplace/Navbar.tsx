@@ -8,11 +8,13 @@ import Badge, { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import UserProfile from '../../pages/Auth/UserProfile'
+import { getMyCart } from './API'
 
-function Navbar() {
+function Navbar(props: any) {
 
   // const [signup, setSignup] = useState(true)
   const [token, setToken] = useState('')
+  const [cartItems, setCartItems] = useState([])
 
   const fetch = async () => {
     try {
@@ -22,6 +24,13 @@ function Navbar() {
         Token = JSON.parse(tokenObj).value
       }
       setToken(Token)
+      const response = await getMyCart(Token)
+      const cartData = response.data.data.data[0].items
+
+      setCartItems(cartData)
+
+      console.log(cartData)
+      console.log(cartData.length)
     } catch (error) {
       console.log(error)
     }
@@ -60,25 +69,6 @@ function Navbar() {
               <input type="text" placeholder='Joe Doe Farm' className={styles.input} />
             </div>
 
-            {/*
-              signup ?
-
-              <Link href={'/Auth/SignupPage'} className="flex flex-col justify-center items-center h-20 w-20">
-                <div className={styles.imgCover}>
-                  <AccountCircleIcon className='w-full h-full' color='primary' />
-                </div>
-                <span className='font-semi-bold text-2sm'>Sign up</span>
-              </Link> 
-              :
-
-  */}
-            {/* <Link href={'/Auth/UserProfile'} className="flex flex-col justify-center items-center h-20 w-20">
-              <div className={styles.imgCover}>
-                <AccountCircleIcon className='w-full h-full' color='primary' />
-              </div>
-              <span className='font-semi-bold text-2sm'>Login</span>
-            </Link> */}
-
             {
               token ?
               <Link href={'/Auth/UserProfile'} className="flex flex-col justify-center items-center h-20 w-20">
@@ -99,7 +89,7 @@ function Navbar() {
 
           </div>
         </div>
-        <div className={styles.lowerNav}>
+        <div className={styles.lowerNav} onClick={() => console.log(props.itemId)}>
           <div className="">
             <LocationOnIcon color='primary' className='' />
             <span className='text-2sm ml-2'>KL Ranch, Park street, Townswap, USA</span>
@@ -107,7 +97,7 @@ function Navbar() {
 
           <Link href={'/Components/CartPage'} className="mr-2">
             <IconButton aria-label="cart">
-              <StyledBadge badgeContent={5} color="secondary">
+              <StyledBadge badgeContent={cartItems.length} color="secondary">
                 <ShoppingCartIcon color='primary' />
               </StyledBadge>
             </IconButton>

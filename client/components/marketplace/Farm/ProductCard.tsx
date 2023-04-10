@@ -3,13 +3,19 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
 import ImageCard from './ImageCard'
+import PeopleIcon from '@mui/icons-material/People'
+import Link from 'next/link'
 
 function ProductCard(props: any) {
 
+  const sendData = {
+    data: props._id
+  }
+
   const styles = {
-    card: `w-full max-w-md h-20 mb-5 flex justify-around`,
+    card: `w-full max-w-md h-20 flex justify-around text-black`,
     imgBox: `h-20 w-20`,
-    productdesc: `flex flex-col justify-center items-start ml-2 p-2`
+    productdesc: `flex flex-col justify-center items-start`
   }
   return (
     <div className={styles.card}>
@@ -32,11 +38,19 @@ function ProductCard(props: any) {
             />
             {/* <span>12</span> */}
           </Stack>
+          {/* <div className="flex justify-center items-center w-10">
+            <span className='text-2sm ml-3 mr-2'>({props.ratingsQuantity})</span>
+            <PeopleIcon fontSize='small' />
+          </div> */}
         </span>
+        <div className="flex justify-center items-center w-10">
+          <span className='text-2sm ml-3 mr-2'>({props.ratingsQuantity})</span>
+          <PeopleIcon fontSize='small' />
+        </div>
         <span className='font-bold text-sm'>${props.price}</span>
       </div>
       <div className="flex justify-center items-center">
-        <AddShoppingCartIcon fontSize='small' />
+        {/* <AddShoppingCartIcon fontSize='small' /> */}
       </div>
     </div>
   )

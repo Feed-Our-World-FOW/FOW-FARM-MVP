@@ -13,9 +13,11 @@ import { getSingleFarm } from '../../components/marketplace/API'
 import { AllFarmsInterface, FarmDetailsInterface, RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Farm/ImageCard'
 import WriteCommentCard from '../../components/marketplace/Farm/comment/WriteCommentCard'
-import CommentIcon from '@mui/icons-material/Comment';
+import CommentIcon from '@mui/icons-material/Comment'
 import { createReviewOfAFarm } from '../../components/marketplace/API'
 import Swal from 'sweetalert2'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+
 
 
 function FarmPage() {
@@ -124,12 +126,14 @@ function FarmPage() {
     smallBoldText: `text-2sm font-bold`,
     iconBox: `flex flex-col`,
     statBox: `w-full h-12 mt-4 flex justify-around items-start`,
-    productsBox: `w-full mt-5 flex flex-col justify-between items-center`,
+    productsBox: `w-full mt-20 mb-10 flex flex-col justify-center items-center`,
     btnBox: `w-full h-10 flex justify-center items-center mt-5`,
     upperBtnSubBox: `w-5/12 h-8 rounded-2xl flex justify-between items-center bg-light-gray`,
     lowerBtnSubBox: `w-full h-8 rounded-2xl flex justify-between items-center bg-light-gray overflow-x-auto scrollbar-hide`,
     btn: `h-full w-20 rounded-2xl p-2 capitalize text-2sm bg-transparent outline-none text-black focus:border-b-2`,
     commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
+    itemcard: `w-11/12 flex jusity-between items-center mb-5 rounded-md border-1 bg-white drop-shadow-lg`,
+    linkCard: `w-full text-black flex justify-center items-center p-3 no-underline`
   }
 
   return (
@@ -181,7 +185,7 @@ function FarmPage() {
           </div>
         </div>
 
-        <div className={styles.btnBox}>
+        {/* <div className={styles.btnBox}>
           <div className={styles.upperBtnSubBox}>
             <button className={styles.btn}>Meat</button>
             <button className={styles.btn}>Grocery</button>
@@ -195,7 +199,7 @@ function FarmPage() {
             <button className={styles.btn}>Rice</button>
             <button className={styles.btn}>Dal</button>
           </div>
-        </div>
+        </div> */}
 
         <div className={styles.productsBox}>
           {
@@ -204,24 +208,32 @@ function FarmPage() {
                 data: product._id
               }
               return (
-                <Link key={product._id} 
-                  href={{
-                    pathname: '/Components/ProductPage',
-                    query: sendData
-                  }} 
-                  className='w-11/12'
-                >
-                  <ProductCard 
-                    key={product._id} 
-                    name={product.name}
-                    weight={product.weight}
-                    price={product.price}
-                    ratingsAverage={product.ratingsAverage}
-                    ratingsQuantity={product.ratingsQuantity}
-                    image={product.image && product.image[(product.image).length - 1]}
+                <div className={styles.itemcard} key={product._id}>
+                  <Link key={product._id} 
+                    href={{
+                      pathname: '/Components/ProductPage',
+                      query: sendData
+                    }} 
+                    className={styles.linkCard}
+                  >
+                    
+                    <ProductCard 
+                      key={product._id} 
+                      name={product.name}
+                      weight={product.weight}
+                      price={product.price}
+                      ratingsAverage={product.ratingsAverage}
+                      ratingsQuantity={product.ratingsQuantity}
+                      image={product.image && product.image[(product.image).length - 1]}
+                    />
+                        {/* <div key={index+2} className="w-11/12 border-b-2 mb-3 ml-3"></div> */}
+                  </Link>
+                  <AddShoppingCartIcon 
+                    color='primary' 
+                    className='mr-1'
+                    onClick={() => console.log(product._id)}
                   />
-                  <div key={index+2} className="w-11/12 border-b-2 mb-3 ml-3"></div>
-                </Link>
+                </div>
               )
             })
           }

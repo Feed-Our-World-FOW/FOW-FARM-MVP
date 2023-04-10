@@ -5,11 +5,13 @@ const FARM_URL = `http://localhost:5000/api/v1/farm/`
 const PRODUCT_URL = `http://localhost:5000/api/v1/addProduct/`
 const USER_URL = `http://localhost:5000/api/v1/user/`
 const COMMENT_FARM_URL = `http://localhost:5000/api/v1/reviews`
+const CART_URL = `http://localhost:5000/api/v1/cart`
 
 const FARM_API = axios.create({ baseURL: FARM_URL })
 const PRODUCT_API = axios.create({ baseURL: PRODUCT_URL })
 const USER_API = axios.create({ baseURL: USER_URL })
 const COMMENT_FARM_API = axios.create({ baseURL: COMMENT_FARM_URL })
+const CART_API = axios.create({ baseURL: CART_URL })
 
 USER_API.interceptors.request.use((req) => {
   const token = localStorage.getItem('Token')
@@ -39,3 +41,5 @@ export const createReviewOfAProduct = (productId: string, _token: string, commen
 
 export const createReviewOfAFarm = (_token: string, comment: { title: string, review: string, rating: number, farm: string }) => 
   COMMENT_FARM_API.post(`/`, comment, { headers: { Authorization: `Bearer ${_token}` } })
+
+export const getMyCart = (_token: string) => CART_API.get(`/mycart`, { headers: { Authorization: `Bearer ${_token}` } })

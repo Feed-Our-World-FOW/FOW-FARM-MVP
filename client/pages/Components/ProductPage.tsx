@@ -44,7 +44,24 @@ function ProductPage() {
   const [review, setReview] = useState('')
 
   const [comment, setComment] = useState(false)
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0)
+  
+
+
+
+
+
+  const [itemId, setItemId] = useState([''])
+
+  const handleSetCartItems = async () => {
+    try {
+      setItemId((prev) => [...prev, productDetails._id])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
 
   const handleSelect = (selectedIndex: any, e: any) => {
     setIndex(selectedIndex);
@@ -116,6 +133,8 @@ function ProductPage() {
     commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
     btnBox: `w-full flex justify-center items-center`,
     btn: `border-1 bg-pearl drop-shadow-lg active:drop-shadow-0.5lg w-28 h-10 rounded-md ml-auto flex justify-center items-center mt-5`,
+    add_cart_btn: `w-7/12 h-8 rounded-md mb-3 bg-light-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg`,
+    buy_now_btn: `w-7/12 h-8 rounded-md mb-3 bg-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg`,
   }
 
   return (
@@ -123,7 +142,9 @@ function ProductPage() {
 
       <div className={styles.page}>
         <div className={styles.navBox}>
-          <Navbar />
+          <Navbar
+            itemId={itemId}
+          />
         </div>
         <div className={styles.imgBox}>
           <Carousel activeIndex={index} onSelect={handleSelect} className='w-full h-full'>
@@ -168,10 +189,13 @@ function ProductPage() {
           </div>
           
           <span className='text-3sm mb-5 font-semibold'>{productDetails.description}</span>
-          <button className='w-7/12 rounded-2xl mb-1 bg-light-pearl text-2sm p-1'>Add To Cart</button>
-          <Link href={'/Components/DeliverySteps'} className='w-7/12 rounded-2xl'>
-            <button className='w-full rounded-2xl bg-pearl text-2sm p-1'>Buy Now</button>
-          </Link>
+          <button 
+            className={styles.add_cart_btn} 
+            onClick={handleSetCartItems}
+          >Add To Cart</button>
+          {/* <Link href={'/Components/DeliverySteps'} className='w-7/12 rounded-2xl'> */}
+            <button className={styles.buy_now_btn}>Buy Now</button>
+          {/* </Link> */}
         </div>
 
         <div className="border-b-2 w-11/12 mt-3"></div>
