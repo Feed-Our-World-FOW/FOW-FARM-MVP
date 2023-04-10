@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from 'react'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
 import CloseIcon from '@mui/icons-material/Close';
-import { WriteCommentInterface } from '../../../../interface/AllFarmsInterface';
+import { WriteCommentInterface } from '../../../interface/AllFarmsInterface';
 
 function WriteCommentCard(props: WriteCommentInterface) {
 

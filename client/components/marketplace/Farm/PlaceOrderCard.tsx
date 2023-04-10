@@ -1,5 +1,5 @@
 import React from 'react'
-import FinalItemCard from './FinalItemCard'
+import FinalItemCard from '../product/FinalItemCard'
 
 function PlaceOrderCard() {
 

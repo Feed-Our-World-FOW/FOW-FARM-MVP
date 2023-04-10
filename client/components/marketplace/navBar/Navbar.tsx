@@ -7,8 +7,8 @@ import Link from 'next/link'
 import Badge, { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
-import UserProfile from '../../pages/Auth/UserProfile'
-import { getMyCart } from './API'
+import UserProfile from '../../../pages/Auth/UserProfile'
+import { getMyCart } from '../API'
 
 function Navbar(props: any) {
 

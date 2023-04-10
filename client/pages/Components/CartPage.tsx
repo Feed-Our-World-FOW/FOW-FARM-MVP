@@ -1,11 +1,19 @@
 import React, { useState } from 'react'
-import Navbar from '../../components/marketplace/Navbar'
-import CartProductCard from '../../components/marketplace/Farm/CartProductCard'
+import Navbar from '../../components/marketplace/navBar/Navbar'
+import CartProductCard from '../../components/marketplace/shoppingCart/CartProductCard'
 import Image from 'next/image'
 
 function CartPage() {
 
   const [empty, setEmpty] = useState(true)
+
+  const handleFetchCart = async () => {
+    try {
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const styles = {
     page: `w-screen flex flex-col justify-center items-center max-w-md`,
@@ -33,6 +41,7 @@ function CartPage() {
           <span className='font-semibold text-lg'>Oops...</span>
           <span className='font-semibold text-lg'>Your FOW Cart is empty</span>
           <span className='font-semibold text-2sm'>Pick up where you left off</span>
+          <button onClick={handleFetchCart}>click</button>
         </div>
         :
         <>

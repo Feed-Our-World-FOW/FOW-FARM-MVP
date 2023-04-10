@@ -2,7 +2,7 @@ import React from 'react'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
-import ImageCard from './ImageCard'
+import ImageCard from '../Img/ImageCard'
 import PeopleIcon from '@mui/icons-material/People'
 import Link from 'next/link'
 

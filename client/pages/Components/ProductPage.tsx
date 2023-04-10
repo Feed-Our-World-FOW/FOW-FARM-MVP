@@ -1,19 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Navbar from '../../components/marketplace/Navbar'
+import Navbar from '../../components/marketplace/navBar/Navbar'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
-import CommentCard from '../../components/marketplace/Farm/comment/CommentCard'
+import CommentCard from '../../components/marketplace/comment/CommentCard'
 import Link from 'next/link'
 import PeopleIcon from '@mui/icons-material/People';
 import { getSingleProduct } from '../../components/marketplace/API'
 import { RouterQueryInterface, ItemInterface } from '../../interface/AllFarmsInterface'
-import ImageCard from '../../components/marketplace/Farm/ImageCard'
+import ImageCard from '../../components/marketplace/Img/ImageCard'
 import { getReviewOfAProduct, createReviewOfAProduct } from '../../components/marketplace/API'
 import Carousel from 'react-bootstrap/Carousel'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import WriteCommentCard from '../../components/marketplace/Farm/comment/WriteCommentCard'
+import WriteCommentCard from '../../components/marketplace/comment/WriteCommentCard'
 import CommentIcon from '@mui/icons-material/Comment';
 import Swal from 'sweetalert2'
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { getAllFarms, filterAllFarms } from '../../components/marketplace/API'
-import Navbar from '../../components/marketplace/Navbar'
+import Navbar from '../../components/marketplace/navBar/Navbar'
 import FarmCard from '../../components/marketplace/Farm/FarmCard'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -56,7 +56,7 @@ function AllFarms() {
     bannerBox: `w-full h-full border-1 w-11/12 h-44 rounded-xl drop-shadow-lg bg-white flex justify-center items-center`,
     catagorieBox: `w-full h-20 drop-shadow-lg bg-white flex items-center`,
     top5: `rounded-xl bg-white ml-5 w-full h-70`,
-
+    catagorieSubImg: `w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg`,
     allFarms: `w-full grid grid-cols-2 gap-y-3 gap-x-2 mobile:ml-2 mobileL:ml-4 z-0`,
     filterBox: `border-2 w-full h-20 mb-2 flex justify-start items-center`,
     scrollingBox: `w-full flex flex-col justify-around items-center max-w-md relative z-0 mt-44`,
@@ -84,7 +84,7 @@ function AllFarms() {
         <span className='text-3sm font-bold w-11/12 mt-5 mb-3'>Catagories</span>
 
         <div className={styles.catagorieBox}>
-          <div className="w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg">
+          <div className={styles.catagorieSubImg}>
             <Image
               alt=''
               width={50}
@@ -93,7 +93,7 @@ function AllFarms() {
               onClick={fetchProduceFarm}
             />
           </div>
-          <div className="w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg">
+          <div className={styles.catagorieSubImg}>
             <Image
               alt=''
               width={100}
@@ -150,7 +150,7 @@ function AllFarms() {
                       pathname: '/Components/FarmPage',
                       query: sendData
                     }}
-                    
+                    className='text-black no-underline'
                     key={farm._id}
                   >
                     <FarmCard 

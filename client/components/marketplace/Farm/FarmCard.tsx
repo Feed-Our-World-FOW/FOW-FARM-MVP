@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
 import { FarmCardInterface } from '../../../interface/AllFarmsInterface'
-import ImageCard from './ImageCard'
+import ImageCard from '../Img/ImageCard'
 
 
 function FarmCard(props: FarmCardInterface) {
