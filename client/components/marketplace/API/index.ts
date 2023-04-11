@@ -43,3 +43,12 @@ export const createReviewOfAFarm = (_token: string, comment: { title: string, re
   COMMENT_FARM_API.post(`/`, comment, { headers: { Authorization: `Bearer ${_token}` } })
 
 export const getMyCart = (_token: string) => CART_API.get(`/mycart`, { headers: { Authorization: `Bearer ${_token}` } })
+
+export const removeItemsFromCart = (_token: string, _id: string) => 
+  CART_API.delete(`/${_id}/remove`, { headers: { Authorization: `Bearer ${_token}` } })
+
+export const addItemToCart = (_token: string, _id: string) => 
+  CART_API.post(`/${_id}/add`, {}, { headers: { Authorization: `Bearer ${_token}` } })
+
+export const decreaseItemFromCart = (_token: string, _id: string) =>
+  CART_API.patch(`/${_id}/decrease`, {}, { headers: { Authorization: `Bearer ${_token}` } })

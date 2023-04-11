@@ -15,6 +15,7 @@ function Navbar(props: any) {
   // const [signup, setSignup] = useState(true)
   const [token, setToken] = useState('')
   const [cartItems, setCartItems] = useState([])
+  const [totalAmount, setTotalAmount] = useState(0)
 
   const fetch = async () => {
     try {
@@ -28,6 +29,11 @@ function Navbar(props: any) {
       const cartData = response.data.data.data[0].items
 
       setCartItems(cartData)
+
+      let total = 0
+
+      cartData.forEach((i: any) => total += i.quantity)
+      setTotalAmount(total)
 
       console.log(cartData)
       console.log(cartData.length)
@@ -47,7 +53,7 @@ function Navbar(props: any) {
 
   useEffect(() => {
     fetch()
-  }, [])
+  }, [props.load])
 
   const styles = {
     fullPage: `w-screen h-36 flex flex-col justify-between items-center fixed top-0 left-0`,
@@ -89,7 +95,7 @@ function Navbar(props: any) {
 
           </div>
         </div>
-        <div className={styles.lowerNav} onClick={() => console.log(props.itemId)}>
+        <div className={styles.lowerNav} onClick={() => console.log(cartItems)}>
           <div className="">
             <LocationOnIcon color='primary' className='' />
             <span className='text-2sm ml-2'>KL Ranch, Park street, Townswap, USA</span>
@@ -97,7 +103,7 @@ function Navbar(props: any) {
 
           <Link href={'/Components/CartPage'} className="mr-2">
             <IconButton aria-label="cart">
-              <StyledBadge badgeContent={cartItems.length} color="secondary">
+              <StyledBadge badgeContent={totalAmount} color="secondary">
                 <ShoppingCartIcon color='primary' />
               </StyledBadge>
             </IconButton>

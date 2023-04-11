@@ -1,67 +1,127 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/marketplace/navBar/Navbar'
 import CartProductCard from '../../components/marketplace/shoppingCart/CartProductCard'
 import Image from 'next/image'
+import { getMyCart } from '../../components/marketplace/API'
+import { fetchToken } from '../../components/marketplace/token'
 
 function CartPage() {
 
   const [empty, setEmpty] = useState(true)
+  const [cartItems, setCartItems] = useState([])
+  const [subTotal, setSubTotal] = useState(0)
+  const [reloadComponent, setReloadComponent] = useState(false)
 
-  const handleFetchCart = async () => {
+  const handleReload = () => {
+    setReloadComponent(prevState => !prevState);
+  }
+
+  const totalItems = (): number => {
     try {
-      
+      let total = 0
+      cartItems.map((item: any) => {
+        total += item.quantity
+      })
+      return total
+    } catch (error) {
+      console.log(error)
+      return 0
+    }
+  }
+
+
+
+
+  const fetch = async () => {
+    try {
+      const Token = fetchToken()
+      const response = await getMyCart(Token)
+      console.log(response.data.data.data[0])
+      setSubTotal(response.data.data.data[0].subTotal)
+      setCartItems(response.data.data.data[0].items)
+      if(response.data.data.data[0].items.length > 0) {
+        setEmpty(false)
+      }else {
+        setEmpty(true)
+      }
     } catch (error) {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    fetch()
+  }, [reloadComponent])
 
   const styles = {
     page: `w-screen flex flex-col justify-center items-center max-w-md`,
     navBox: `w-full px-4 z-50`,
     totalBox: `mt-36 flex pt-5 pb-5 pl-3 w-11/12`,
     btnBox: `w-full flex justify-center items-center`,
-    btn: `w-10/12 rounded-md p-1 bg-pearl font-semibold`
+    btn: `w-10/12 rounded-md p-1 bg-pearl font-semibold`,
+    cartProductBox: `flex flex-col justify-center items-center w-screen mb-10 mt-10`
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.navBox}>
-        <Navbar />
-      </div>
-      {
-        empty ?
-        <div className='mt-44 flex flex-col justify-center items-center'>
-          <Image 
-            alt="rice"
-            src={`/images/emptycart.png`}
-            width={200}
-            height={200}
-            className='w-full h-full'
-          />
-          <span className='font-semibold text-lg'>Oops...</span>
-          <span className='font-semibold text-lg'>Your FOW Cart is empty</span>
-          <span className='font-semibold text-2sm'>Pick up where you left off</span>
-          <button onClick={handleFetchCart}>click</button>
+    <div className="w-screen flex justify-center items-center">
+
+      <div className={styles.page}>
+        <div className={styles.navBox}>
+          <Navbar load={handleReload} />
         </div>
-        :
-        <>
-          <div className={styles.totalBox}>
-            <span className='mr-1 text-3sm'>Subtotal: </span> 
-            <span className='font-bold'>$ 1,289</span>
+        {
+          empty ?
+          <div className='mt-44 flex flex-col justify-center items-center'>
+            <Image 
+              alt="#"
+              src={`/images/emptycart.png`}
+              width={200}
+              height={200}
+              className='w-full h-full'
+            />
+            <span className='font-semibold text-lg'>Oops...</span>
+            <span className='font-semibold text-lg'>Your FOW Cart is empty</span>
+            <span className='font-semibold text-2sm'>Pick up where you left off</span>
           </div>
-          <div className={styles.btnBox}>
-            <button className={styles.btn}>{`Proceed to Buy ( 2 items)`}</button>
-          </div>
-          <div className="flex flex-col justify-center items-center w-screen mb-10">
-            <CartProductCard />
-            <div className="border-b-2 w-10/12 mt-10 mb-2 max-w-md"></div>
-            <CartProductCard />
-            <div className="border-b-2 w-10/12 mt-10 mb-2 max-w-md"></div>
-            <CartProductCard />
-            <div className="border-b-2 w-10/12 mt-10 mb-2 max-w-md"></div>
-          </div>
-        </>
-      }
+          :
+          <>
+            <div className={styles.totalBox}>
+              <span className='mr-1 text-3sm'>Subtotal: </span> 
+              <span className='font-bold'>$ {subTotal}</span>
+            </div>
+            <div className={styles.btnBox}>
+              <button 
+                className={styles.btn} 
+                onClick={fetch}
+              >
+                {`Proceed to Buy ( ${totalItems()} items)`}
+              </button>
+            </div>
+            <div className={styles.cartProductBox}>
+              {
+                cartItems.map((item: any) => {
+                  return (
+                    <div className="w-full h-full flex flex-col justify-center items-center" key={item._id}>
+                      <CartProductCard 
+                        key={item._id}
+                        quantity={item.quantity}
+                        id={item.product._id}
+                        price={item.product.price}
+                        name={item.product.name}
+                        summary={item.product.summery}
+                        weight={item.product.weight}
+                        image={item.product.image[0]}
+                        loadFunc={handleReload}
+                      />
+                      <div className="border-b-2 w-10/12 mt-10 mb-2 max-w-md"></div>
+                    </div>
+                  )
+                })
+              }
+            </div>
+          </>
+        }
+      </div>
     </div>
   )
 }

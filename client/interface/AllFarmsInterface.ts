@@ -111,3 +111,14 @@ export interface WriteCommentInterface {
   setReview: Function,
   commentFunction: Function
 }
+
+export interface CartItemsInterface {
+  quantity: number, 
+  price: number, 
+  name: string, 
+  summary: string, 
+  weight: string, 
+  image: string,
+  id: string,
+  loadFunc: Function
+}

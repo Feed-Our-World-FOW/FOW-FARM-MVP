@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import WriteCommentCard from '../../components/marketplace/comment/WriteCommentCard'
 import CommentIcon from '@mui/icons-material/Comment';
 import Swal from 'sweetalert2'
+import { fetchToken } from '../../components/marketplace/token'
 
 
 function ProductPage() {
@@ -70,12 +71,8 @@ function ProductPage() {
 
   const fetch = async () => {
     try {
-      const tokenObj = localStorage.getItem('Token') || null
-      let token
-      if(tokenObj) {
-        token = JSON.parse(tokenObj).value
-        setToken(token)
-      }
+      const token = fetchToken()
+      setToken(token)
       const ID = id.data
       const x = await getSingleProduct(ID, token)
       const data = x.data.data.data

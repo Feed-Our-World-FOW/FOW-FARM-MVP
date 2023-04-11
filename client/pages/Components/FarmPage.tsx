@@ -17,8 +17,13 @@ import CommentIcon from '@mui/icons-material/Comment'
 import { createReviewOfAFarm } from '../../components/marketplace/API'
 import Swal from 'sweetalert2'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-
-
+import { getMyCart } from '../../components/marketplace/API'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { removeItemsFromCart, addItemToCart } from '../../components/marketplace/API'
+import 'animate.css'
+import { red } from '@mui/material/colors'
+import IconButton from '@mui/material/IconButton'
+import { fetchToken } from '../../components/marketplace/token'
 
 function FarmPage() {
   const router = useRouter()
@@ -60,19 +65,97 @@ function FarmPage() {
   const [review, setReview] = useState('')
   const [Token, setToken] = useState('')
   const [comment, setComment] = useState(false)
+  const [cartItems, setCartItems] = useState([])
+  const [reloadComponent, setReloadComponent] = useState(false)
+
+  const handleReload = () => {
+    setReloadComponent(prevState => !prevState);
+  }
 
   const fetch = async () => {
     try {
-      const tokenObj = localStorage.getItem('Token') || null
-      let token
-      if(tokenObj) {
-        token = JSON.parse(tokenObj).value
-        setToken(token)
-      }
+      const token = fetchToken()
+      setToken(token)
       const x: AllFarmsInterface = await getSingleFarm(id.data)
       const data = x.data.data.data
+
+      const response = await getMyCart(token)
+      const cartData = response.data.data.data[0].items
+      setCartItems(cartData)
+      console.log("cartItems",cartItems)
+
       setFarmDetails(data)
     } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const itemExists = (_id: string): boolean => {
+    const cartData: any = cartItems
+    
+    for(let i = 0; i < cartData.length; i++) {
+      if(cartData[i].product.id === _id) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  const handleDeleteFromCart = async (_id: string) => {
+    try {
+      const token = fetchToken()
+      const response = await removeItemsFromCart(token, _id)
+      fetch()
+      handleReload()
+      Swal.fire({
+        icon: `success`,
+        html: `
+          <span>Your Item got deleted from cart</span>
+        `,
+        showClass: {
+          popup: 'animate__animated animate__bounceInLeft'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__bounceOutRight'
+        }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const handleAddToCart = async (_id: string) => {
+    try {
+      const token = fetchToken()
+      const response = await addItemToCart(token, _id)
+      fetch()
+      handleReload()
+      Swal.fire({
+        icon: 'success',
+        html: `<span>Your Item has been added to cart</span>`,
+        showConfirmButton: false,
+        timer: 2000
+      })
+    } catch (error: any) {
+      if(error.response.data.message == "You can only add items from a single farm") {
+        Swal.fire({
+          icon: 'warning',
+          html: `
+          <h1>Oops...</h1>
+          <span>${error.response.data.message}</span>`,
+  
+        })
+      }else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          html: `
+          <span>${error.response.data.message}</span>`,
+  
+        })
+      }
       console.log(error)
     }
   }
@@ -141,7 +224,7 @@ function FarmPage() {
 
       <div className={styles.page}>
         <div className={styles.navBox}>
-          <Navbar />
+          <Navbar load={reloadComponent} />
         </div>
         <div className={styles.bannerImg}>
           <ImageCard 
@@ -228,11 +311,31 @@ function FarmPage() {
                     />
                         {/* <div key={index+2} className="w-11/12 border-b-2 mb-3 ml-3"></div> */}
                   </Link>
-                  <AddShoppingCartIcon 
+                  {
+                    itemExists(product.id) 
+                    ? 
+                    <IconButton aria-label="delete">
+                      <DeleteIcon 
+                        // color='primary' 
+                        sx={{ color: red[500] }}
+                        className='mr-1'
+                        onClick={() => handleDeleteFromCart(product._id)}
+                      />
+                    </IconButton>
+                    : 
+                    <IconButton color="primary" aria-label="add to shopping cart">
+                      <AddShoppingCartIcon 
+                        color='primary' 
+                        className='mr-1'
+                        onClick={() => handleAddToCart(product._id)}
+                      />
+                    </IconButton>
+                  }
+                  {/* <AddShoppingCartIcon 
                     color='primary' 
                     className='mr-1'
-                    onClick={() => console.log(product._id)}
-                  />
+                    onClick={() => itemExists(product._id)}
+                  /> */}
                 </div>
               )
             })
