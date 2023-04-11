@@ -9,17 +9,24 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"
 import { Carousel } from 'react-responsive-carousel'
 import TopFarms from '../../components/marketplace/Farm/TopFarms'
 import { AllFarmsInterface, FarmDetailsInterface, FarmCardInterface } from '../../interface/AllFarmsInterface'
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
+import Typography, { TypographyProps } from '@mui/material/Typography'
+import Stack from '@mui/material/Stack'
 
 
 function AllFarms() {
 
   const [allFarms, setAllFarms] = useState([{}])
+  const [loading, setLoading] = useState(true)
+  let array = [1, 2, 3, 4, 5]
 
   const fetchAllFarms = async () => {
     try {
       const x: AllFarmsInterface = await getAllFarms()
       const data = x.data.data.data
       setAllFarms(data)
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -109,7 +116,7 @@ function AllFarms() {
 
         <div className="w-full mb-5 flex justify-center items-center">
 
-          <Carousel 
+          <Carousel
             autoPlay={true}
             infiniteLoop={true}
             interval={2500}
@@ -140,12 +147,26 @@ function AllFarms() {
         <div className={styles.farmCardBox}>
           <div className={styles.allFarms}>
             {
+              loading ?
+              array.map(i => {
+                return (
+                  <Stack className='mb-3' key={i}>
+
+                    <Skeleton animation="wave" variant="rectangular" height={70} />
+                    <Skeleton animation="wave" />
+                    <Skeleton animation="wave" />
+                    <Skeleton animation="wave" variant="rectangular" height={40} />
+
+                  </Stack>
+                )
+              })
+              :
               allFarms.map((farm: any) => {
                 const sendData = {
                   data: farm._id
                 }
                 return (
-                  <Link 
+                  <Link
                     href={{
                       pathname: '/Components/FarmPage',
                       query: sendData
@@ -153,19 +174,19 @@ function AllFarms() {
                     className='text-black no-underline'
                     key={farm._id}
                   >
-                    <FarmCard 
+                    <FarmCard
                       key={farm._id}
                       name={farm.name}
                       images={farm.images}
                       location={farm.location}
                       meat={farm.meat}
                       produce={farm.produce}
-                      ratingsAverage={farm.ratingsAverage}   
+                      ratingsAverage={farm.ratingsAverage}
                     />
                   </Link>
                 )
               })
-            }
+            }     
           </div>
         </div>
       </div>
