@@ -1,26 +1,21 @@
 import axios from "axios"
 import { LoginFormInterface, SignupFormInterface } from "../../../interface/AllFarmsInterface"
 
-const FARM_URL = `http://localhost:5000/api/v1/farm/`
-const PRODUCT_URL = `http://localhost:5000/api/v1/addProduct/`
-const USER_URL = `http://localhost:5000/api/v1/user/`
-const COMMENT_FARM_URL = `http://localhost:5000/api/v1/reviews`
-const CART_URL = `http://localhost:5000/api/v1/cart`
+const URL = `http://localhost:5000`
+
+const FARM_URL = `${URL}/api/v1/farm`
+const PRODUCT_URL = `${URL}/api/v1/addProduct`
+const USER_URL = `${URL}/api/v1/user`
+const COMMENT_FARM_URL = `${URL}/api/v1/reviews`
+const CART_URL = `${URL}/api/v1/cart`
+const ADDRESS_URL = `${URL}/api/v1/address`
 
 const FARM_API = axios.create({ baseURL: FARM_URL })
 const PRODUCT_API = axios.create({ baseURL: PRODUCT_URL })
 const USER_API = axios.create({ baseURL: USER_URL })
 const COMMENT_FARM_API = axios.create({ baseURL: COMMENT_FARM_URL })
 const CART_API = axios.create({ baseURL: CART_URL })
-
-USER_API.interceptors.request.use((req) => {
-  const token = localStorage.getItem('Token')
-  if(token) {
-    req.headers.Authorization = `Bearer ${JSON.parse(token).token}`
-  }
-
-  return req
-})
+const ADDRESS_API = axios.create({ baseURL: ADDRESS_URL })
 
 
 export const getAllFarms = () => FARM_API.get('/')
@@ -52,3 +47,33 @@ export const addItemToCart = (_token: string, _id: string) =>
 
 export const decreaseItemFromCart = (_token: string, _id: string) =>
   CART_API.patch(`/${_id}/decrease`, {}, { headers: { Authorization: `Bearer ${_token}` } })
+
+export const getMySelf = (_token: string) => USER_API.get(`/me`, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const getMyAddress = (_token: string) => ADDRESS_API.get('/myAddress', { headers: { Authorization: `Bearer ${_token}`}})
+
+export const setMyAddress = 
+  (
+    _token: string,
+    details: {
+      country: string,
+      mobileNumber: number,
+      pincode: number,
+      flatDetails: string,
+      landMark: string,
+      town: string
+    }
+  ) => ADDRESS_API.post(`/`, details, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const updateMyAddress = 
+  (
+    _token: string,
+    details: {
+      country: string,
+      mobileNumber: number,
+      pincode: number,
+      flatDetails: string,
+      landMark: string,
+      town: string
+    }
+  ) => ADDRESS_API.patch(`/myAddress`, details, { headers: { Authorization: `Bearer ${_token}`}})

@@ -1,7 +1,97 @@
-import React from 'react'
+/* eslint-disable @next/next/no-img-element */
+import React, { useState, useEffect } from 'react'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { Alert, AlertColor, Box, Button, Paper, Snackbar } from '@mui/material'
+import TextField from '@mui/material/TextField';
+import { getMyAddress, setMyAddress, updateMyAddress } from '../../components/marketplace/API';
+import { fetchToken } from '../../components/marketplace/token';
 
 function AddLocation() {
+
+  const [address, setAddress] = useState({
+    country: '',
+    mobileNumber: 0,
+    pincode: 0,
+    flatDetails: '',
+    landMark: '',
+    town: ''
+  })
+  const [alertData, setAlertData] = useState<string>('')
+  const [open, setOpen] = useState<boolean>(false)
+  const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [myAddress, setmyAddress] = useState([])
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  }
+
+  const handleClick = async () => {
+    try {
+      const token = fetchToken()
+      const res = await setMyAddress(token, address)
+      setOpen(true)
+      setAlertData("Your address successfully Added")
+      setalertType("success")
+      setAddress({
+        country: '',
+        mobileNumber: 0,
+        pincode: 0,
+        flatDetails: '',
+        landMark: '',
+        town: ''
+      })
+      history.back()
+    } catch (error: any) {
+      console.log(error)
+      setOpen(true)
+      setAlertData(`${error.response.data.message}`)
+      setalertType("error")
+    }
+  }
+
+  const handleClickUpdate = async () => {
+    try {
+      const token = fetchToken()
+      const res = await updateMyAddress(token, address)
+      setOpen(true)
+      setAlertData("Your address successfully updated")
+      setalertType("success")
+      setAddress({
+        country: '',
+        mobileNumber: 0,
+        pincode: 0,
+        flatDetails: '',
+        landMark: '',
+        town: ''
+      })
+      history.back()
+    } catch (error: any) {
+      console.log(error)
+      setOpen(true)
+      setAlertData(`${error.response.data.message}`)
+      setalertType("error")
+    }
+  }
+
+  const fetch = async () => {
+    try {
+      const token = fetchToken()
+      const res = await getMyAddress(token)
+      const data = res.data.data.data
+      setmyAddress(data)
+      console.log("data: ", data.length)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   const styles = {
     page: `w-screen flex flex-col justify-start items-center max-w-md`,
@@ -9,22 +99,27 @@ function AddLocation() {
     inputBg: `rounded-lg drop-shadow-xl border-1`,
     text: `text-3sm font-semibold mt-5`,
     input: `w-full h-full rounded-lg p-1 focus:outline-none `,
-    btn: `border-2 rounded-lg w-9/12 h-full flex justify-center items-center p-1 text-2sm font-semibold bg-pearl`,
+    btn: `border-2 bg-pearl capitalize text-black focus:bg-light-pearl drop-shadow-lg focus:drop-shadow-0.5lg`,
     bottomBox: `w-full h-8 mt-12 mb-10 flex justify-center items-center`
   }
   return (
-    <div className="w-screen flex justify-center items-center">
+    <Box className="w-screen flex justify-center items-center">
 
-      <div className={styles.page}>
-        <div className={styles.nav}>
+      <Box className={styles.page}>
+        <Paper elevation={2} className={styles.nav} onClick={() => history.back()}>
           <ArrowBackIosIcon fontSize='small' />
           <span className='text-2sm font-semibold'>CANCEL</span>
-        </div>
-        <div className="w-full flex flex-col p-5">
+        </Paper>
+        <Box className="w-full flex flex-col p-5">
           <span className='font-semibold mb-10'>Edit your address</span>
 
-          <select name="pets" id="pet-select" className={styles.inputBg}>
-            <option value="">--Please choose your country--</option>
+          <select 
+            name="pets" 
+            id="pet-select" 
+            required
+            className="h-12 border-1 border-light-gray p-2 placeholder:text-light-gray focus:outline-none" 
+            onChange={(e: any) => setAddress({...address, country: e.target.value})}>
+            <option value="">Choose your country</option>
             <option value="Afghanistan">Afghanistan</option>
             <option value="Åland Islands">Åland Islands</option>
             <option value="Albania">Albania</option>
@@ -271,43 +366,97 @@ function AddLocation() {
             <option value="Zimbabwe">Zimbabwe</option>
           </select>
 
-          <span className={styles.text}>{`Full name (First and Last name)`}</span>
-          <div className={styles.inputBg}>
-            <input type="text" className={styles.input} />
-          </div>
 
           <span className={styles.text}>{`Mobile Number`}</span>
-          <div className={styles.inputBg}>
-            <input type="number" className={styles.input} />
-          </div>
+            <TextField 
+              label="Mobile Number" 
+              variant="filled" 
+              fullWidth
+              size='small'
+              name='phone'
+              onChange={(e: any) => setAddress({...address, mobileNumber: e.target.value})}
+              required
+            />
 
           <span className={styles.text}>{`Pincode`}</span>
-          <div className={styles.inputBg}>
-            <input type="text" className={styles.input} />
-          </div>
+          <TextField 
+            label="Pincode" 
+            variant="filled" 
+            fullWidth
+            size='small'
+            name='pincode'
+            onChange={(e: any) => setAddress({...address, pincode: e.target.value})}
+            required
+          />
 
           <span className='text-2sm font-semibold mt-5'>{`Flat, House no., Building Company, Apartment`}</span>
-          <div className={styles.inputBg}>
-            <input type="text" className={styles.input} />
-          </div>
+          <TextField 
+            label="House no." 
+            variant="filled" 
+            fullWidth
+            size='small'
+            name='house no'
+            onChange={(e: any) => setAddress({...address, flatDetails: e.target.value})}
+            required
+          />
 
           <span className={styles.text}>{`Landmark`}</span>
-          <div className={styles.inputBg}>
-            <input type="text" className={styles.input} />
-          </div>
+          <TextField 
+            label="Landmark" 
+            variant="filled" 
+            fullWidth
+            size='small'
+            name='land mark'
+            onChange={(e: any) => setAddress({...address, landMark: e.target.value})}
+            required
+          />
 
           <span className={styles.text}>{`Town/City`}</span>
-          <div className={styles.inputBg}>
-            <input type="text" className={styles.input} />
-          </div>
+          <TextField 
+            label="Town/City" 
+            variant="filled" 
+            fullWidth
+            size='small'
+            name='town'
+            onChange={(e: any) => setAddress({...address, town: e.target.value})}
+            required
+          />
 
-          <div className={styles.bottomBox}>
-            <button className={styles.btn}>{`Deliver to this address`}</button>
-          </div>
+          <Box className={styles.bottomBox}>
+            {
+              myAddress.length > 0 ?
+              <Button 
+              variant='outlined' 
+              className={styles.btn} 
+              onClick={handleClickUpdate}>
+                {`Update Address`}
+            </Button> :
+            <Button 
+              variant='outlined' 
+              className={styles.btn} 
+              onClick={handleClick}>
+                {`Deliver to this address`}
+            </Button>
+            }
+          </Box>
 
-        </div>
-      </div>
-    </div>
+        </Box>
+        <Box>
+          <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            <Alert 
+              onClose={handleClose} 
+              variant="filled" 
+              // severity={alertData.length > 1 ? "warning" : "success"} 
+              severity={alertType}
+              sx={{ width: '100%' }}
+            >
+              {/* {alertData.length > 1 ? alertData : "Your Item added successfully to the cart"} */}
+              {alertData}
+            </Alert>
+          </Snackbar>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

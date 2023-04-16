@@ -38,6 +38,7 @@ export interface FarmDetailsInterface {
 
 export interface FarmCardInterface {
   name: string,
+  id: string,
   images: string,
   location: {
     address: string

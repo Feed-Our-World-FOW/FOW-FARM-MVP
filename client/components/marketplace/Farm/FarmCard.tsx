@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
 import { FarmCardInterface } from '../../../interface/AllFarmsInterface'
 import ImageCard from '../Img/ImageCard'
+import { Box, Paper } from '@mui/material'
 
 
 function FarmCard(props: FarmCardInterface) {
 
   const styles = {
-    wholeCard: `w-36 h-44 bg-white drop-shadow-1.5lg rounded-md`,
+    wholeCard: `w-36 h-44 bg-white rounded-md`,
     imgBox: `w-full h-24 rounded-xl`,
     infoBox: `flex flex-col p-2`,
     bigText: `text-sm indent-0 font-semibold`,
@@ -17,17 +18,17 @@ function FarmCard(props: FarmCardInterface) {
   }
 
   return (
-    <div className={styles.wholeCard}>
-      <div className={styles.imgBox}>
+    <Paper elevation={6} className={styles.wholeCard}>
+      <Box className={styles.imgBox}>
         <ImageCard 
           image={props.images}
           type='farms'
         />
-      </div>
-      <div className={styles.infoBox}>
+      </Box>
+      <Box className={styles.infoBox}>
         <span className={styles.bigText}>{props.name}</span>
-        <span className={styles.smallText}>{props.location?.address}</span>
-        <div className="flex w-full">
+        <span className={styles.smallText}>{props.location?.address.slice(0, 26)}...</span>
+        <Box className="flex w-full">
           <Stack spacing={1}>
             <Rating 
               name="read-only" 
@@ -55,9 +56,9 @@ function FarmCard(props: FarmCardInterface) {
               height={4}
             />
           }
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Paper>
   )
 }
 

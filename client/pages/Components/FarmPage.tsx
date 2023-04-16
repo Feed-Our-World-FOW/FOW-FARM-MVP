@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack'
 import CommentCard from '../../components/marketplace/comment/CommentCard'
 import Link from 'next/link'
 import { getSingleFarm } from '../../components/marketplace/API'
-import { AllFarmsInterface, FarmDetailsInterface, RouterQueryInterface } from '../../interface/AllFarmsInterface'
+import { AllFarmsInterface, RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
 import WriteCommentCard from '../../components/marketplace/comment/WriteCommentCard'
 import CommentIcon from '@mui/icons-material/Comment'
@@ -24,11 +24,15 @@ import 'animate.css'
 import { red } from '@mui/material/colors'
 import IconButton from '@mui/material/IconButton'
 import { fetchToken } from '../../components/marketplace/token'
+import Skeleton from '@mui/material/Skeleton';
+import { Alert, AlertColor, Box, Container, Paper, Snackbar } from '@mui/material'
+
+
 
 function FarmPage() {
   const router = useRouter()
   const id = router.query as RouterQueryInterface
-
+  let array = [1, 2]
   const [farmDetails, setFarmDetails] = useState<any>({
     _id: '',
     name: '',
@@ -61,15 +65,27 @@ function FarmPage() {
   })
 
   const [value, setValue] = useState<number>(0)
-  const [title, setTitle] = useState('')
-  const [review, setReview] = useState('')
-  const [Token, setToken] = useState('')
-  const [comment, setComment] = useState(false)
+  const [title, setTitle] = useState<string>('')
+  const [review, setReview] = useState<string>('')
+  const [Token, setToken] = useState<string>('')
+  const [comment, setComment] = useState<boolean>(false)
   const [cartItems, setCartItems] = useState([])
-  const [reloadComponent, setReloadComponent] = useState(false)
+  const [reloadComponent, setReloadComponent] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [alertData, setAlertData] = useState<string>('')
+  const [open, setOpen] = useState<boolean>(false)
+  const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
 
   const handleReload = () => {
     setReloadComponent(prevState => !prevState);
+  }
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   }
 
   const fetch = async () => {
@@ -80,11 +96,14 @@ function FarmPage() {
       const data = x.data.data.data
 
       const response = await getMyCart(token)
-      const cartData = response.data.data.data[0].items
-      setCartItems(cartData)
-      console.log("cartItems",cartItems)
+      if(response.data.data.data.length > 0) {
+        const cartData = response.data.data.data[0].items
+        setCartItems(cartData)
+      }
+      // console.log("cartData",response.data.data.data[0].items)
 
       setFarmDetails(data)
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -108,18 +127,10 @@ function FarmPage() {
       const response = await removeItemsFromCart(token, _id)
       fetch()
       handleReload()
-      Swal.fire({
-        icon: `success`,
-        html: `
-          <span>Your Item got deleted from cart</span>
-        `,
-        showClass: {
-          popup: 'animate__animated animate__bounceInLeft'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__bounceOutRight'
-        }
-      })
+      setOpen(true)
+      setalertType("success")
+      setAlertData("Your Item got deleted from cart")
+      
     } catch (error) {
       console.log(error)
     }
@@ -132,29 +143,19 @@ function FarmPage() {
       const response = await addItemToCart(token, _id)
       fetch()
       handleReload()
-      Swal.fire({
-        icon: 'success',
-        html: `<span>Your Item has been added to cart</span>`,
-        showConfirmButton: false,
-        timer: 2000
-      })
+      setOpen(true)
+      setalertType("success")
+      setAlertData("Your Item has been added to cart")
+
     } catch (error: any) {
       if(error.response.data.message == "You can only add items from a single farm") {
-        Swal.fire({
-          icon: 'warning',
-          html: `
-          <h1>Oops...</h1>
-          <span>${error.response.data.message}</span>`,
-  
-        })
+        setOpen(true)
+        setalertType("warning")
+        setAlertData("You can only add items from a single farm")
       }else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          html: `
-          <span>${error.response.data.message}</span>`,
-  
-        })
+        setOpen(true)
+        setalertType("error")
+        setAlertData(`${error.response.data.message}`)
       }
       console.log(error)
     }
@@ -169,23 +170,24 @@ function FarmPage() {
         rating: value,
         farm: farmDetails._id
       })
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Successfully submit your comment',
-        showConfirmButton: false,
-        timer: 1500
-      })
+      setOpen(true)
+      setalertType("success")
+      setAlertData("Successfully submit your comment")
+      handleReload()
+      fetch()
       setValue(0)
       setTitle('')
       setReview('')
-      window.location.reload()
+      // window.location.reload()
     } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: `${error.response.data.message}`,
-      })
+      setOpen(true)
+      setalertType("error")
+      setAlertData(`${error.response.data.message}`)
+      if(error.response.data.error.code === 11000) {
+        console.log(error.response.data.error.code)
+        setAlertData(`You can't comment twice`)
+      }
+      
       console.log(error)
     }
   }
@@ -215,58 +217,90 @@ function FarmPage() {
     lowerBtnSubBox: `w-full h-8 rounded-2xl flex justify-between items-center bg-light-gray overflow-x-auto scrollbar-hide`,
     btn: `h-full w-20 rounded-2xl p-2 capitalize text-2sm bg-transparent outline-none text-black focus:border-b-2`,
     commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
-    itemcard: `w-11/12 flex jusity-between items-center mb-5 rounded-md border-1 bg-white drop-shadow-lg`,
+    itemcard: `w-11/12 flex jusity-between items-center mb-5 rounded-md bg-white`,
     linkCard: `w-full text-black flex justify-center items-center p-3 no-underline`
   }
 
   return (
-    <div className="w-screen flex justify-center items-center">
+    <Box className="w-screen flex justify-center items-center">
 
-      <div className={styles.page}>
-        <div className={styles.navBox}>
+      <Box className={styles.page}>
+        <Box className={styles.navBox}>
           <Navbar load={reloadComponent} />
-        </div>
-        <div className={styles.bannerImg}>
-          <ImageCard 
-            image={farmDetails.imageCover}
-            type='farms'
-          />
-        </div>
-        <div className={styles.shopDescBox}>
-          <div className={styles.shopImg} onClick={() => fetch()}>
+        </Box>
+        <Box className={styles.bannerImg}>
+          {
+            loading ?
+            <Stack className='w-full flex'>
+              <Box className='w-full flex justify-between'>
+                <Skeleton 
+                  animation="wave" 
+                  variant="rectangular" 
+                  width="100%"
+                  height={174} 
+                  className='rounded-md w-full h-full'
+                />
+              </Box>
+            </Stack>
+            :
             <ImageCard 
-              image={farmDetails.images}
-              type={"farms"}
+              image={farmDetails.imageCover}
+              type='farms'
             />
-          </div>
-          <div className={styles.shopDesc}>
+          }
+          
+        </Box>
+        <Container className={styles.shopDescBox}>
+          <Box className={styles.shopImg}>
+            
+            {
+              loading ?
+              <Stack className='w-full flex'>
+                <Box className='w-full flex justify-between'>
+                  <Skeleton 
+                    animation="wave" 
+                    variant="rectangular" 
+                    width="100%"
+                    height={80} 
+                    className='rounded-md w-full'
+                  />
+                </Box>
+              </Stack>
+            :
+              <ImageCard 
+                image={farmDetails.images}
+                type={"farms"}
+              />
+            }
+          </Box>
+          <Box className={styles.shopDesc}>
             <p className={styles.bigText}>{farmDetails.name}</p>
             {/* <br /> */}
             <p className={styles.smallText}>{farmDetails?.location?.address}</p>
-          </div>
-        </div>
-        <div className={styles.statBox}>
-          <div className={styles.iconBox}>
-            <div className="flex">
+          </Box>
+        </Container>
+        <Box className={styles.statBox}>
+          <Box className={styles.iconBox}>
+            <Box className="flex">
               <StarIcon fontSize='small' />
               <span className={styles.smallBoldText}>({farmDetails.ratingsAverage})</span>
-            </div>
+            </Box>
             <span className="text-2sm font-bold mt-1">{farmDetails.ratingsQuantity} ratings</span>
-          </div>
-          <div className={styles.iconBox}>
-            <div className="flex">
+          </Box>
+          <Box className={styles.iconBox}>
+            <Box className="flex">
               <LocationOnIcon fontSize='small' />
-            </div>
+            </Box>
             <span className="text-2sm font-bold mt-1.5">Location</span>
-          </div>
-          <div className="">
-            <div className="flex">
+          </Box>
+          <Box className="">
+            <Box className="flex">
               <TimerIcon fontSize='small' />
               <span className={styles.smallBoldText}>02-03 hours</span>
-            </div>
+            </Box>
             <span className={styles.smallBoldText}>Delivery Time</span>
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* <div className={styles.btnBox}>
           <div className={styles.upperBtnSubBox}>
@@ -284,14 +318,40 @@ function FarmPage() {
           </div>
         </div> */}
 
-        <div className={styles.productsBox}>
+        <Box className={styles.productsBox}>
           {
+            loading ?
+            array.map(i => {
+              return (
+                <Stack className='w-11/12 flex p-2' key={i}>
+                  <Box className='w-full flex justify-between'>
+                    <Skeleton 
+                      animation="wave" 
+                      variant="rectangular" 
+                      width="30%"
+                      height={80} 
+                      className='rounded-md'
+                    />
+                    <Skeleton 
+                      animation="wave" 
+                      variant="rectangular" 
+                      width="65%" 
+                      height={80} 
+                      className='rounded-md'
+                    />
+                  </Box>
+                  <Skeleton animation="wave" />
+
+                </Stack>
+              )
+            })
+            :
             farmDetails.allProduct.map((product: any, index: any) => {
               const sendData = {
                 data: product._id
               }
               return (
-                <div className={styles.itemcard} key={product._id}>
+                <Paper elevation={4} className={styles.itemcard} key={product._id}>
                   <Link key={product._id} 
                     href={{
                       pathname: '/Components/ProductPage',
@@ -309,7 +369,6 @@ function FarmPage() {
                       ratingsQuantity={product.ratingsQuantity}
                       image={product.image && product.image[(product.image).length - 1]}
                     />
-                        {/* <div key={index+2} className="w-11/12 border-b-2 mb-3 ml-3"></div> */}
                   </Link>
                   {
                     itemExists(product.id) 
@@ -320,7 +379,10 @@ function FarmPage() {
                         sx={{ color: red[500] }}
                         className='mr-1'
                         onClick={() => handleDeleteFromCart(product._id)}
+                        // onClick={() => console.log(product._id)}
                       />
+                      
+
                     </IconButton>
                     : 
                     <IconButton color="primary" aria-label="add to shopping cart">
@@ -328,26 +390,37 @@ function FarmPage() {
                         color='primary' 
                         className='mr-1'
                         onClick={() => handleAddToCart(product._id)}
+                        // onClick={() => console.log(product._id)}
                       />
                     </IconButton>
                   }
-                  {/* <AddShoppingCartIcon 
-                    color='primary' 
-                    className='mr-1'
-                    onClick={() => itemExists(product._id)}
-                  /> */}
-                </div>
+                </Paper>
               )
             })
           }
 
-        </div>
+        </Box>
 
-        <div className='border-b-2 w-11/12 mb-3'></div>
+        <Box>
+          <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            <Alert 
+              onClose={handleClose} 
+              variant="filled" 
+              // severity={alertData.length > 1 ? "warning" : "success"} 
+              severity={alertType}
+              sx={{ width: '100%' }}
+            >
+              {/* {alertData.length > 1 ? alertData : "Your Item added successfully to the cart"} */}
+              {alertData}
+            </Alert>
+          </Snackbar>
+        </Box>
 
-        <div className="w-full flex flex-col p-5">
+        <Box className='border-b-2 w-11/12 mb-3'></Box>
+
+        <Box className="w-full flex flex-col p-5">
           <span className="font-bold text-2sm">{`Customer reviews`}</span>
-          <div className="flex">
+          <Box className="flex">
           <Stack spacing={1}>
             <Rating 
               name="read-only" 
@@ -356,16 +429,16 @@ function FarmPage() {
               />
           </Stack>
           <span className='text-2sm ml-3 font-semibold'>{farmDetails.ratingsAverage} out of 5</span>
-          </div>
+          </Box>
           <span className="text-sm font-semibold">{`${farmDetails.ratingsQuantity} total ratings`}</span>
-        </div>
+        </Box>
 
-        <div className="border-b-2 w-11/12 mt-3 mb-5"></div>
+        <Box className="border-b-2 w-11/12 mt-3 mb-5"></Box>
 
-        <div className={styles.commentBox}>
+        <Box className={styles.commentBox}>
           {
             comment ?
-            <div className={styles.commentBox}>
+            <Box className={styles.commentBox}>
               <WriteCommentCard
                 comment={comment}
                 setComment={setComment}
@@ -377,19 +450,19 @@ function FarmPage() {
                 setReview={setReview}
                 commentFunction={commentFunction}
               />
-            </div>
+            </Box>
             :
-            <div className="w-11/12 flex justify-end">
+            <Box className="w-11/12 flex justify-end">
               <span className='w-full font-semibold mr-auto ml-2 '>Add a Comment</span>
               <CommentIcon
                 color='primary'
                 onClick={() => setComment(true)}
               />
-            </div>
+            </Box>
           }
-        </div>
+        </Box>
 
-        <div className="w-full mb-5 p-3">
+        <Box className="w-full mb-5 p-3">
 
           {
             farmDetails.reviews.map((farm: any) => {
@@ -400,14 +473,14 @@ function FarmPage() {
                   title={farm.title}
                   rating={farm.rating}
                   review={farm.review}
-                  userName={farmDetails?.user?.name}
+                  userName={farm?.user?.name}
                 />
               )
             })
           }
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

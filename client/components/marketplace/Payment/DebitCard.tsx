@@ -1,6 +1,20 @@
 import React from 'react'
 
-function DebitCard() {
+function DebitCard(props: any) {
+
+  const handleContinue = () => {
+    try {
+      props.setConfirm({
+        address: true,
+        payment: true,
+        debitCard: true,
+        order: false,
+        value: 3
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const styles = {
     card: `w-screen flex flex-col justify-around items-center max-w-md`,
@@ -9,7 +23,8 @@ function DebitCard() {
     input: `w-full h-full rounded-xl p-2 focus:outline-none`,
     smallSubCard: `w-5/12 h-14 rounded-xl p-2 bg-white drop-shadow-1.5lg p-2 flex justify-start items-center mb-5`,
     inputBg: `w-full h-full focus:outline-none`,
-    bellowBox: `w-full flex flex-col justify-around items-center`
+    bellowBox: `w-full flex flex-col justify-around items-center`,
+    btn: `border-1 rounded-lg h-full w-10/12 p-1 bg-pearl`,
   }
 
   return (
@@ -61,7 +76,7 @@ function DebitCard() {
         </div>
 
         <div className="w-full h-10 mt-8 flex justify-center items-center">
-          <button className='border-1 rounded-lg h-full w-10/12 p-1 bg-pearl'>Continue</button>
+          <button className={styles.btn} onClick={handleContinue}>Continue</button>
         </div>
       </div>
     </div>

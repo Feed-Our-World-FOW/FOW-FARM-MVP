@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack'
 import ImageCard from '../Img/ImageCard'
 import PeopleIcon from '@mui/icons-material/People'
 import Link from 'next/link'
+import { Box } from '@mui/material'
 
 function ProductCard(props: any) {
 
@@ -18,14 +19,14 @@ function ProductCard(props: any) {
     productdesc: `flex flex-col justify-center items-start`
   }
   return (
-    <div className={styles.card}>
-      <div className={styles.imgBox}>
+    <Box className={styles.card}>
+      <Box className={styles.imgBox}>
         <ImageCard 
           image={props.image}
           type='products'
         />
-      </div>
-      <div className={styles.productdesc}>
+      </Box>
+      <Box className={styles.productdesc}>
         <span className='font-bold text-2sm'>{props.name}</span>
         <span className='font-bold text-sm'>{props.weight}</span>
         <span className='font-bold text-sm flex w-full'>
@@ -43,16 +44,16 @@ function ProductCard(props: any) {
             <PeopleIcon fontSize='small' />
           </div> */}
         </span>
-        <div className="flex justify-center items-center w-10">
+        <Box className="flex justify-center items-center w-10">
           <span className='text-2sm ml-3 mr-2'>({props.ratingsQuantity})</span>
           <PeopleIcon fontSize='small' />
-        </div>
+        </Box>
         <span className='font-bold text-sm'>${props.price}</span>
-      </div>
-      <div className="flex justify-center items-center">
+      </Box>
+      <Box className="flex justify-center items-center">
         {/* <AddShoppingCartIcon fontSize='small' /> */}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

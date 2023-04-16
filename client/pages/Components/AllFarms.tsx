@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { getAllFarms, filterAllFarms } from '../../components/marketplace/API'
 import Navbar from '../../components/marketplace/navBar/Navbar'
 import FarmCard from '../../components/marketplace/Farm/FarmCard'
@@ -8,11 +7,10 @@ import Link from 'next/link'
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 import { Carousel } from 'react-responsive-carousel'
 import TopFarms from '../../components/marketplace/Farm/TopFarms'
-import { AllFarmsInterface, FarmDetailsInterface, FarmCardInterface } from '../../interface/AllFarmsInterface'
+import { AllFarmsInterface } from '../../interface/AllFarmsInterface'
 import Skeleton from '@mui/material/Skeleton';
-import Box from '@mui/material/Box';
-import Typography, { TypographyProps } from '@mui/material/Typography'
 import Stack from '@mui/material/Stack'
+import { Box, Container, Paper } from '@mui/material'
 
 
 function AllFarms() {
@@ -61,7 +59,8 @@ function AllFarms() {
     navBox: `w-full px-4 z-50`,
 
     bannerBox: `w-full h-full border-1 w-11/12 h-44 rounded-xl drop-shadow-lg bg-white flex justify-center items-center`,
-    catagorieBox: `w-full h-20 drop-shadow-lg bg-white flex items-center`,
+    // catagorieBox: `w-full h-20 drop-shadow-lg bg-white flex items-center`,
+    catagorieBox: `w-full h-20 flex items-center`,
     top5: `rounded-xl bg-white ml-5 w-full h-70`,
     catagorieSubImg: `w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg`,
     allFarms: `w-full grid grid-cols-2 gap-y-3 gap-x-2 mobile:ml-2 mobileL:ml-4 z-0`,
@@ -72,13 +71,13 @@ function AllFarms() {
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.navBox}>
+    <Box className={styles.page}>
+      <Box className={styles.navBox}>
         <Navbar />
-      </div>
-      <div className={styles.scrollingBox}>
+      </Box>
+      <Box className={styles.scrollingBox}>
 
-        <div className={styles.bannerBox} onClick={fetchAllFarms}>
+        <Box className={styles.bannerBox} onClick={fetchAllFarms}>
           <Image
             alt=''
             width={100}
@@ -86,12 +85,12 @@ function AllFarms() {
             src={'/images/fow.png'}
             className='w-9/12 h-full'
           />
-        </div>
+        </Box>
 
         <span className='text-3sm font-bold w-11/12 mt-5 mb-3'>Catagories</span>
 
-        <div className={styles.catagorieBox}>
-          <div className={styles.catagorieSubImg}>
+        <Paper elevation={4} className={styles.catagorieBox}>
+          <Box className={styles.catagorieSubImg}>
             <Image
               alt=''
               width={50}
@@ -99,8 +98,8 @@ function AllFarms() {
               src={'/images/grocery.png'}
               onClick={fetchProduceFarm}
             />
-          </div>
-          <div className={styles.catagorieSubImg}>
+          </Box>
+          <Box className={styles.catagorieSubImg}>
             <Image
               alt=''
               width={100}
@@ -109,12 +108,12 @@ function AllFarms() {
               className='w-full h-full'
               onClick={fetchMeatFarm}
             />
-          </div>
-        </div>
+          </Box>
+        </Paper>
 
         <span className='text-3sm font-bold w-11/12 mt-5 mb-3'>Popular Store</span>
 
-        <div className="w-full mb-5 flex justify-center items-center">
+        <Box className="w-full mb-5 flex justify-center items-center">
 
           <Carousel
             autoPlay={true}
@@ -141,11 +140,11 @@ function AllFarms() {
             </div>
           </Carousel>
 
-        </div>
+        </Box>
 
 
-        <div className={styles.farmCardBox}>
-          <div className={styles.allFarms}>
+        <Box className={styles.farmCardBox}>
+          <Box className={styles.allFarms}>
             {
               loading ?
               array.map(i => {
@@ -176,6 +175,7 @@ function AllFarms() {
                   >
                     <FarmCard
                       key={farm._id}
+                      id={farm._id}
                       name={farm.name}
                       images={farm.images}
                       location={farm.location}
@@ -187,10 +187,10 @@ function AllFarms() {
                 )
               })
             }     
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

@@ -3,7 +3,21 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import Link from 'next/link'
 
 
-function ChoosePaymentOptionCard() {
+function ChoosePaymentOptionCard(props: any) {
+
+  const handleATM = async () => {
+    try {
+      props.setConfirm({
+        address: true,
+        payment: true,
+        debitCard: false,
+        order: false,
+        value: 2
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const styles = {
     card: `w-screen flex flex-col justify-around items-center max-w-md`,
@@ -21,7 +35,12 @@ function ChoosePaymentOptionCard() {
         </div>
         <div className={styles.subCards}>
           <RadioButtonCheckedIcon className='ml-5' />
-          <span className='font-semibold ml-5'>Pay with Debit/ATM Cards</span>
+          <span 
+            className='font-semibold ml-5'
+            onClick={handleATM}
+          >
+            Pay with Debit/ATM Cards
+          </span>
         </div>
         <div className={styles.subCards}>
           <RadioButtonCheckedIcon className='ml-5' />

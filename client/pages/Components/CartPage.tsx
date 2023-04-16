@@ -4,6 +4,8 @@ import CartProductCard from '../../components/marketplace/shoppingCart/CartProdu
 import Image from 'next/image'
 import { getMyCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
+import { Box } from '@mui/material'
+import Link from 'next/link'
 
 function CartPage() {
 
@@ -30,13 +32,11 @@ function CartPage() {
   }
 
 
-
-
   const fetch = async () => {
     try {
       const Token = fetchToken()
       const response = await getMyCart(Token)
-      console.log(response.data.data.data[0])
+      // console.log(response)
       setSubTotal(response.data.data.data[0].subTotal)
       setCartItems(response.data.data.data[0].items)
       if(response.data.data.data[0].items.length > 0) {
@@ -63,15 +63,15 @@ function CartPage() {
   }
 
   return (
-    <div className="w-screen flex justify-center items-center">
+    <Box className="w-screen flex justify-center items-center">
 
-      <div className={styles.page}>
-        <div className={styles.navBox}>
+      <Box className={styles.page}>
+        <Box className={styles.navBox}>
           <Navbar load={handleReload} />
-        </div>
+        </Box>
         {
           empty ?
-          <div className='mt-44 flex flex-col justify-center items-center'>
+          <Box className='mt-44 flex flex-col justify-center items-center'>
             <Image 
               alt="#"
               src={`/images/emptycart.png`}
@@ -82,47 +82,48 @@ function CartPage() {
             <span className='font-semibold text-lg'>Oops...</span>
             <span className='font-semibold text-lg'>Your FOW Cart is empty</span>
             <span className='font-semibold text-2sm'>Pick up where you left off</span>
-          </div>
+          </Box>
           :
           <>
-            <div className={styles.totalBox}>
+            <Box className={styles.totalBox}>
               <span className='mr-1 text-3sm'>Subtotal: </span> 
               <span className='font-bold'>$ {subTotal}</span>
-            </div>
-            <div className={styles.btnBox}>
-              <button 
+            </Box>
+            <Box className={styles.btnBox}>
+              <Link
+                href={'/Components/DeliverySteps'} 
                 className={styles.btn} 
                 onClick={fetch}
               >
                 {`Proceed to Buy ( ${totalItems()} items)`}
-              </button>
-            </div>
-            <div className={styles.cartProductBox}>
+              </Link>
+            </Box>
+            <Box className={styles.cartProductBox}>
               {
                 cartItems.map((item: any) => {
                   return (
-                    <div className="w-full h-full flex flex-col justify-center items-center" key={item._id}>
+                    <Box className="w-full h-full flex flex-col justify-center items-center" key={item._id}>
                       <CartProductCard 
                         key={item._id}
                         quantity={item.quantity}
                         id={item.product._id}
                         price={item.product.price}
                         name={item.product.name}
-                        summary={item.product.summery}
+                        summary={item.product.summary}
                         weight={item.product.weight}
                         image={item.product.image[0]}
                         loadFunc={handleReload}
                       />
-                      <div className="border-b-2 w-10/12 mt-10 mb-2 max-w-md"></div>
-                    </div>
+                      <Box className="border-b-2 w-10/12 mt-10 mb-2 max-w-md"></Box>
+                    </Box>
                   )
                 })
               }
-            </div>
+            </Box>
           </>
         }
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

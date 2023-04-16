@@ -12,7 +12,15 @@ import PlaceOrderCard from '../../components/marketplace/Farm/PlaceOrderCard'
 
 function DeliverySteps() {
 
-  const [num, setNum] = useState(4)
+  const [confirm, setConfirm] = useState({
+    address: false,
+    payment: false,
+    debitCard: false,
+    order: false,
+    value: 0
+  })
+  // const [num, setNum] = useState<number>(confirm.value)
+  // const [, setConfirmAddress] = useState<boolean>(false)
 
   const steps = [
     'Address',
@@ -28,19 +36,19 @@ function DeliverySteps() {
 
   }
   return (
-    <div className="w-screen flex justify-center items-center">
-      <div className={styles.page}>
-        <div className={styles.upperNav}>
-          <div className="">
+    <Box className="w-screen flex justify-center items-center">
+      <Box className={styles.page}>
+        <Box className={styles.upperNav}>
+          <Box className="">
             <ArrowBackIosIcon fontSize='small' />
             <span className='text-3sm font-semibold'>cancel</span>
-          </div>
+          </Box>
           <AccountCircleIcon fontSize='large' className='mt-1' />
-        </div>
+        </Box>
 
-        <div className={styles.lowerNav}>
+        <Box className={styles.lowerNav}>
           <Box sx={{ width: '100%', marginTop: '5px' }}>
-            <Stepper activeStep={num} alternativeLabel>
+            <Stepper activeStep={confirm.value} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
@@ -48,16 +56,30 @@ function DeliverySteps() {
               ))}
             </Stepper>
           </Box>
-        </div>
+        </Box>
 
-        <div className="w-full">
-          {/* <ConfirmAddressCard /> */}
-          {/* <ChoosePaymentOptionCard /> */}
-          {/* <DebitCard /> */}
-          <PlaceOrderCard />
-        </div>
-      </div>
-    </div>
+        <Box className="w-full">
+          {
+            !confirm.address && !confirm.payment && !confirm.debitCard && !confirm.order ?
+            <ConfirmAddressCard 
+            setConfirm={setConfirm}
+            />
+            : confirm.address && !confirm.payment && !confirm.debitCard && !confirm.order ?
+            <ChoosePaymentOptionCard 
+              setConfirm={setConfirm}
+            />
+            : confirm.address && confirm.payment && !confirm.debitCard && !confirm.order ?
+            <DebitCard 
+              setConfirm={setConfirm}
+            /> 
+            :
+            confirm.address && confirm.payment && confirm.debitCard && !confirm.order ?
+            <PlaceOrderCard /> :
+            <div className=""></div>
+          }
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

@@ -10,13 +10,17 @@ import PeopleIcon from '@mui/icons-material/People';
 import { getSingleProduct } from '../../components/marketplace/API'
 import { RouterQueryInterface, ItemInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
-import { getReviewOfAProduct, createReviewOfAProduct } from '../../components/marketplace/API'
+import { getReviewOfAProduct, createReviewOfAProduct, addItemToCart } from '../../components/marketplace/API'
 import Carousel from 'react-bootstrap/Carousel'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import WriteCommentCard from '../../components/marketplace/comment/WriteCommentCard'
 import CommentIcon from '@mui/icons-material/Comment';
 import Swal from 'sweetalert2'
 import { fetchToken } from '../../components/marketplace/token'
+import Skeleton from '@mui/material/Skeleton';
+import { Box } from '@mui/material'
+import Alert, { AlertColor } from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 
 
 function ProductPage() {
@@ -43,26 +47,46 @@ function ProductPage() {
   const [value, setValue] = useState<number>(0)
   const [title, setTitle] = useState('')
   const [review, setReview] = useState('')
+  const [alertData, setAlertData] = useState<string>('')
+  const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
 
   const [comment, setComment] = useState(false)
   const [index, setIndex] = useState(0)
-  
+  const [reloadComponent, setReloadComponent] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [open, setOpen] = useState(false)
 
 
+  const handleReload = () => {
+    setReloadComponent(prevState => !prevState);
+  }
 
-
-
-  const [itemId, setItemId] = useState([''])
-
-  const handleSetCartItems = async () => {
-    try {
-      setItemId((prev) => [...prev, productDetails._id])
-    } catch (error) {
-      console.log(error)
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
     }
+
+    setOpen(false);
   }
 
 
+
+
+
+  // const [itemId, setItemId] = useState([''])
+
+  const handleAddItemsToCart = async () => {
+    try {
+      const token = fetchToken()
+      const res = await addItemToCart(token, id.data)
+      handleReload()
+      setOpen(true)
+    } catch (error: any) {
+      console.log(error)
+      setOpen(true)
+      setAlertData(error.response.data.message)
+    }
+  }
 
   const handleSelect = (selectedIndex: any, e: any) => {
     setIndex(selectedIndex);
@@ -81,32 +105,32 @@ function ProductPage() {
 
       const y = await getReviewOfAProduct(data._id, token)
       const commentData = y.data.data.data
-      console.log(commentData)
+      // console.log(commentData)
+      setLoading(false)
       
     } catch (error) {
       console.log(error)
+      // setAllert("warning", )
     }
   }
 
   const commentFunction = async () => {
     try {
-      console.log(value, title, review)
+      // console.log(value, title, review)
       const response = await createReviewOfAProduct(productDetails._id, Token, {
         title: title,
         review: review,
         rating: value
       })
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Successfully submit your comment',
-        showConfirmButton: false,
-        timer: 1500
-      })
+      setOpen(true)
+      setalertType("success")
+      setAlertData("Successfully submit your comment")
+      fetch()
+      handleReload()
       setValue(0)
       setTitle('')
       setReview('')
-      window.location.reload()
+      // window.location.reload()
     } catch (error: any) {
       Swal.fire({
         icon: 'error',
@@ -130,45 +154,59 @@ function ProductPage() {
     commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
     btnBox: `w-full flex justify-center items-center`,
     btn: `border-1 bg-pearl drop-shadow-lg active:drop-shadow-0.5lg w-28 h-10 rounded-md ml-auto flex justify-center items-center mt-5`,
-    add_cart_btn: `w-7/12 h-8 rounded-md mb-3 bg-light-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg`,
-    buy_now_btn: `w-7/12 h-8 rounded-md mb-3 bg-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg`,
+    add_cart_btn: `w-8/12 h-8 rounded-md mb-3 bg-light-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg font-semibold`,
+    buy_now_btn: `w-8/12 h-8 rounded-md mb-3 bg-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg font-semibold`,
   }
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <Box className="w-full flex justify-center items-center">
 
-      <div className={styles.page}>
-        <div className={styles.navBox}>
+      <Box className={styles.page}>
+        <Box className={styles.navBox}>
           <Navbar
-            itemId={itemId}
+            // itemId={itemId}
+            load={handleReload}
           />
-        </div>
-        <div className={styles.imgBox}>
-          <Carousel activeIndex={index} onSelect={handleSelect} className='w-full h-full'>
-            {/* <Carousel.Item className='border-2 w-full h-56'> */}
-              {
-                productDetails.image.map((img, index) => {
-                  return (
-                    <Carousel.Item key={index} className='w-full h-full'>
-                      <ImageCard 
-                        key={img}
-                        image={img} 
-                        type="products"
-                      />
-                    </Carousel.Item>
-                  )
-                })
-              }
-          </Carousel>
+        </Box>
+        <Box className={styles.imgBox}>
+          {
+            loading ?
+            <Stack className='w-full h-full flex'>
+              <Box className='w-full h-full flex'>
+                <Skeleton 
+                  animation="wave" 
+                  variant="rectangular" 
+                  width="100%"
+                  height="100%" 
+                  className='rounded-md w-full h-full'
+                />
+              </Box>
+            </Stack>
+            :
+            <Carousel activeIndex={index} onSelect={handleSelect} className='w-full h-full'>
+                {
+                  productDetails.image.map((img, index) => {
+                    return (
+                      <Carousel.Item key={index} className='w-full h-full'>
+                        <ImageCard 
+                          key={img}
+                          image={img} 
+                          type="products"
+                        />
+                      </Carousel.Item>
+                    )
+                  })
+                }
+            </Carousel>
+          }
+        </Box>
 
-        </div>
+        <Box className="border-b-2 w-11/12 mt-5 mb-5"></Box>
 
-        <div className="border-b-2 w-11/12 mt-5 mb-5"></div>
-
-        <div className={styles.about}>
-          <div className="flex w-full justify-between items-center">
+        <Box className={styles.about}>
+          <Box className="flex w-full justify-between items-center">
             <span className='font-semibold text-lg'>${productDetails.price}</span>
-            <div className="flex justify-center items-center">
+            <Box className="flex justify-center items-center">
               <Stack spacing={1}>
                 <Rating 
                   name="read-only" 
@@ -182,25 +220,38 @@ function ProductPage() {
                 className='ml-2'
               />
               <span className='font-bold'>({productDetails.ratingsQuantity})</span>
-            </div>
-          </div>
-          
+            </Box>
+
+          </Box>
+
           <span className='text-3sm mb-5 font-semibold'>{productDetails.description}</span>
           <button 
             className={styles.add_cart_btn} 
-            onClick={handleSetCartItems}
+            onClick={handleAddItemsToCart}
           >Add To Cart</button>
-          {/* <Link href={'/Components/DeliverySteps'} className='w-7/12 rounded-2xl'> */}
+          <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            <Alert 
+              onClose={handleClose} 
+              variant="filled" 
+              // severity={alertData.length > 1 ? "warning" : "success"} 
+              severity={alertType}
+              sx={{ width: '100%' }}
+            >
+              {/* {alertData.length > 1 ? alertData : "Your Item added successfully to the cart"} */}
+              {alertData}
+            </Alert>
+          </Snackbar>
+          <Link href={'/Components/DeliverySteps'} className='w-full flex justify-center items-center'>
             <button className={styles.buy_now_btn}>Buy Now</button>
-          {/* </Link> */}
-        </div>
+          </Link>
+        </Box>
 
-        <div className="border-b-2 w-11/12 mt-3"></div>
+        <Box className="border-b-2 w-11/12 mt-3"></Box>
 
-        <div className={styles.commentBox}>
+        <Box className={styles.commentBox}>
           {
             comment ?
-            <div className={styles.commentBox}>
+            <Box className={styles.commentBox}>
               <WriteCommentCard
                 comment={comment}
                 setComment={setComment}
@@ -212,21 +263,21 @@ function ProductPage() {
                 setReview={setReview}
                 commentFunction={commentFunction}
               />
-            </div>
+            </Box>
             :
-            <div className="w-11/12 flex justify-end">
+            <Box className="w-11/12 flex justify-end">
               <span className='w-full font-semibold mr-auto ml-2 '>Add a Comment</span>
               <CommentIcon
                 color='primary'
                 onClick={() => setComment(true)}
               />
-            </div>
+            </Box>
           }
-        </div> 
-
-        <div className="w-full mb-5 p-3 mt-10">
+        </Box> 
+        <Box className="w-full mb-5 p-3 mt-10">
           {
             productDetails.productReviews.map((review: any) => {
+              // console.log(review)
               return (
                 <CommentCard
                   key={review.id}
@@ -240,9 +291,9 @@ function ProductPage() {
             })
           }
           
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

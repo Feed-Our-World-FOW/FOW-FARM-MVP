@@ -8,7 +8,8 @@ import Badge, { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import UserProfile from '../../../pages/Auth/UserProfile'
-import { getMyCart } from '../API'
+import { getMySelf, getMyCart } from '../API'
+import { fetchToken } from '../token'
 
 function Navbar(props: any) {
 
@@ -20,23 +21,28 @@ function Navbar(props: any) {
   const fetch = async () => {
     try {
       const tokenObj = localStorage.getItem('Token') || null
-      let Token
-      if(tokenObj) {
-        Token = JSON.parse(tokenObj).value
-      }
+
+      let Token = fetchToken()
+
+      // const res = await getMySelf(Token)
+      // console.log(res)
+
       setToken(Token)
       const response = await getMyCart(Token)
-      const cartData = response.data.data.data[0].items
+      if(response.data.data.data.length > 0) {
 
-      setCartItems(cartData)
+        const cartData = response.data.data.data[0].items
+  
+        setCartItems(cartData)
+        let total = 0
+  
+        cartData.forEach((i: any) => total += i.quantity)
+        setTotalAmount(total)
+  
+        console.log(cartData)
+        console.log(cartData.length)
+      }
 
-      let total = 0
-
-      cartData.forEach((i: any) => total += i.quantity)
-      setTotalAmount(total)
-
-      console.log(cartData)
-      console.log(cartData.length)
     } catch (error) {
       console.log(error)
     }
@@ -63,6 +69,7 @@ function Navbar(props: any) {
     input: `w-11/12 h-full flex justify-center items-center focus:outline-none placeholder:text-2sm p-2 rounded-md`,
     imgCover: `h-10 w-10 rounded-full`,
     lowerNav: `flex w-full h-11 justify-between items-center bg-light-pearl max-w-screen-sm `,
+    linkStyle: `flex flex-col justify-center items-center h-20 w-20 text-black no-underline`,
   }
   return (
     <div className="w-full justify-center items-center">
@@ -70,21 +77,21 @@ function Navbar(props: any) {
       <div className={styles.fullPage}>
         <div className={styles.upperNav}>
           <div className={styles.bar}>
-            <div className={styles.searchBar}>
+            <div className={styles.searchBar} onClick={fetch}>
               <SearchIcon fontSize='medium' />
               <input type="text" placeholder='Joe Doe Farm' className={styles.input} />
             </div>
 
             {
               token ?
-              <Link href={'/Auth/UserProfile'} className="flex flex-col justify-center items-center h-20 w-20">
+              <Link href={'/Auth/UserProfile'} className={styles.linkStyle}>
                 <div className={styles.imgCover}>
                   <AccountCircleIcon className='w-full h-full' color='primary' />
                 </div>
                 <span className='font-semi-bold text-2sm'>Profile</span>
               </Link>
               :
-              <Link href={'/Auth/LoginPage'} className="flex flex-col justify-center items-center h-20 w-20">
+              <Link href={'/Auth/LoginPage'} className={styles.linkStyle}>
                 <div className={styles.imgCover}>
                   <AccountCircleIcon className='w-full h-full' color='primary' />
                 </div>
