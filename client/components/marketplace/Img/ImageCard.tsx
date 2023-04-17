@@ -10,7 +10,7 @@ function ImageCard(props: ImageTypeInterface) {
   }
 
   return (
-    <div className='w-full h-full rounded-md'>
+    <div className='w-full h-full rounded-full'>
       <Image
         alt='#'
         crossOrigin="anonymous"
@@ -18,7 +18,7 @@ function ImageCard(props: ImageTypeInterface) {
         loader={myLoader}
         width={200}
         height={200}
-        className='w-full h-full rounded-md'
+        className='w-full h-full rounded-full'
       />
     </div>
   )

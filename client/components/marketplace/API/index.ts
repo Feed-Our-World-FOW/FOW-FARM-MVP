@@ -19,6 +19,7 @@ const ADDRESS_API = axios.create({ baseURL: ADDRESS_URL })
 
 
 export const getAllFarms = () => FARM_API.get('/')
+export const getAllProducts = (_token: string) => PRODUCT_API.get('/', { headers: { Authorization: `Bearer ${_token}`}})
 export const filterAllFarms = (item: string) => FARM_API.get(`/?${item}=true`)
 export const getSingleFarm = (_id: string) => FARM_API.get(`/${_id}`)
 

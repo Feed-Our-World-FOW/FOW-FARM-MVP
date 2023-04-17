@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import SearchIcon from '@mui/icons-material/Search'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Link from 'next/link'
 import Badge, { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
-import UserProfile from '../../../pages/Auth/UserProfile'
 import { getMySelf, getMyCart } from '../API'
 import { fetchToken } from '../token'
+import { Box } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+
 
 function Navbar(props: any) {
 
-  // const [signup, setSignup] = useState(true)
   const [token, setToken] = useState('')
   const [cartItems, setCartItems] = useState([])
   const [totalAmount, setTotalAmount] = useState(0)
@@ -23,10 +21,6 @@ function Navbar(props: any) {
       const tokenObj = localStorage.getItem('Token') || null
 
       let Token = fetchToken()
-
-      // const res = await getMySelf(Token)
-      // console.log(res)
-
       setToken(Token)
       const response = await getMyCart(Token)
       if(response.data.data.data.length > 0) {
@@ -52,7 +46,8 @@ function Navbar(props: any) {
     '& .MuiBadge-badge': {
       right: -3,
       top: 13,
-      border: `2px solid ${theme.palette.background.paper}`,
+      border: `2px solid red`,
+      backgroundColor: 'red',
       padding: '0 4px',
     },
   }))
@@ -62,62 +57,39 @@ function Navbar(props: any) {
   }, [props.load])
 
   const styles = {
-    fullPage: `w-screen h-36 flex flex-col justify-between items-center fixed top-0 left-0`,
-    upperNav: `flex w-full h-28 justify-around items-center bg-pearl max-w-screen-sm`,
-    bar: `flex justify-around items-center w-full h-3/6`,
+    fullPage: `w-screen flex flex-col justify-between items-center fixed top-0 left-0`,
+    upperNav: `flex w-full h-20 justify-around items-center bg-white max-w-screen-sm`,
+    bar: `flex justify-between items-center w-full h-3/6`,
     searchBar: `flex justify-around items-center w-7/12 h-4/6 bg-white rounded-md p-2`,
     input: `w-11/12 h-full flex justify-center items-center focus:outline-none placeholder:text-2sm p-2 rounded-md`,
     imgCover: `h-10 w-10 rounded-full`,
-    lowerNav: `flex w-full h-11 justify-between items-center bg-light-pearl max-w-screen-sm `,
     linkStyle: `flex flex-col justify-center items-center h-20 w-20 text-black no-underline`,
   }
   return (
-    <div className="w-full justify-center items-center">
+    <Box className="w-full justify-center items-center">
 
-      <div className={styles.fullPage}>
-        <div className={styles.upperNav}>
-          <div className={styles.bar}>
-            <div className={styles.searchBar} onClick={fetch}>
-              <SearchIcon fontSize='medium' />
-              <input type="text" placeholder='Joe Doe Farm' className={styles.input} />
-            </div>
-
-            {
-              token ?
-              <Link href={'/Auth/UserProfile'} className={styles.linkStyle}>
-                <div className={styles.imgCover}>
-                  <AccountCircleIcon className='w-full h-full' color='primary' />
-                </div>
-                <span className='font-semi-bold text-2sm'>Profile</span>
+      <Box className={styles.fullPage}>
+        <Box className={styles.upperNav}>
+      
+          <Box className={styles.bar}>
+            <Box className="ml-5">
+              <MenuIcon />
+            </Box>
+            <span className="text-3sm font-bold">Discover</span>
+            <Box className="mr-5">
+              {/* <ShoppingCartOutlinedIcon /> */}
+              <Link href={'/Components/CartPage'} className="mr-2">
+                <IconButton aria-label="cart">
+                  <StyledBadge badgeContent={totalAmount} sx={{color: 'white'}}>
+                    <ShoppingCartOutlinedIcon sx={{color: 'black'}} />
+                  </StyledBadge>
+                </IconButton>
               </Link>
-              :
-              <Link href={'/Auth/LoginPage'} className={styles.linkStyle}>
-                <div className={styles.imgCover}>
-                  <AccountCircleIcon className='w-full h-full' color='primary' />
-                </div>
-                <span className='font-semi-bold text-2sm'>Login</span>
-              </Link>
-            }
-
-
-          </div>
-        </div>
-        <div className={styles.lowerNav} onClick={() => console.log(cartItems)}>
-          <div className="">
-            <LocationOnIcon color='primary' className='' />
-            <span className='text-2sm ml-2'>KL Ranch, Park street, Townswap, USA</span>
-          </div>
-
-          <Link href={'/Components/CartPage'} className="mr-2">
-            <IconButton aria-label="cart">
-              <StyledBadge badgeContent={totalAmount} color="secondary">
-                <ShoppingCartIcon color='primary' />
-              </StyledBadge>
-            </IconButton>
-          </Link>
-        </div>
-      </div>
-    </div>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

@@ -21,6 +21,7 @@ import Skeleton from '@mui/material/Skeleton';
 import { Box } from '@mui/material'
 import Alert, { AlertColor } from '@mui/material/Alert'
 import Snackbar from '@mui/material/Snackbar'
+import BottomNav from '../../components/marketplace/navBar/BottomNav'
 
 
 function ProductPage() {
@@ -156,10 +157,11 @@ function ProductPage() {
     btn: `border-1 bg-pearl drop-shadow-lg active:drop-shadow-0.5lg w-28 h-10 rounded-md ml-auto flex justify-center items-center mt-5`,
     add_cart_btn: `w-8/12 h-8 rounded-md mb-3 bg-light-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg font-semibold`,
     buy_now_btn: `w-8/12 h-8 rounded-md mb-3 bg-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg font-semibold`,
+    bottomBox: `w-full flex justify-center items-center mt-10`
   }
 
   return (
-    <Box className="w-full flex justify-center items-center">
+    <Box className="w-full flex flex-col justify-between items-center">
 
       <Box className={styles.page}>
         <Box className={styles.navBox}>
@@ -292,6 +294,9 @@ function ProductPage() {
           }
           
         </Box>
+      </Box>
+      <Box className={styles.bottomBox}>
+        <BottomNav />
       </Box>
     </Box>
   )

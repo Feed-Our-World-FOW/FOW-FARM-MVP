@@ -26,6 +26,7 @@ import IconButton from '@mui/material/IconButton'
 import { fetchToken } from '../../components/marketplace/token'
 import Skeleton from '@mui/material/Skeleton';
 import { Alert, AlertColor, Box, Container, Paper, Snackbar } from '@mui/material'
+import BottomNav from '../../components/marketplace/navBar/BottomNav'
 
 
 
@@ -202,7 +203,7 @@ function FarmPage() {
   const styles = {
     page: `w-screen flex flex-col justify-around items-center max-w-md`,
     navBox: `w-full px-4 z-50`,
-    bannerImg: `w-full h-44 mt-36 bg-light-white max-w-md`,
+    bannerImg: `w-full h-44 mt-20 border-1 bg-light-white max-w-md`,
     shopDescBox: `w-full h-20 flex mt-2 pl-2`,
     shopImg: `w-20 h-20`,
     shopDesc: `ml-3 flex flex-col justify-center items-start`,
@@ -218,11 +219,12 @@ function FarmPage() {
     btn: `h-full w-20 rounded-2xl p-2 capitalize text-2sm bg-transparent outline-none text-black focus:border-b-2`,
     commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
     itemcard: `w-11/12 flex jusity-between items-center mb-5 rounded-md bg-white`,
-    linkCard: `w-full text-black flex justify-center items-center p-3 no-underline`
+    linkCard: `w-full text-black flex justify-center items-center p-3 no-underline`,
+    bottomBox: `w-full flex justify-center items-center mt-10`
   }
 
   return (
-    <Box className="w-screen flex justify-center items-center">
+    <Box className="w-screen flex flex-col justify-between items-center">
 
       <Box className={styles.page}>
         <Box className={styles.navBox}>
@@ -373,24 +375,26 @@ function FarmPage() {
                   {
                     itemExists(product.id) 
                     ? 
-                    <IconButton aria-label="delete">
+                    <IconButton 
+                      aria-label="delete" 
+                      onClick={() => handleDeleteFromCart(product._id)}
+                    >
                       <DeleteIcon 
                         // color='primary' 
                         sx={{ color: red[500] }}
                         className='mr-1'
-                        onClick={() => handleDeleteFromCart(product._id)}
-                        // onClick={() => console.log(product._id)}
                       />
-                      
 
                     </IconButton>
                     : 
-                    <IconButton color="primary" aria-label="add to shopping cart">
+                    <IconButton 
+                      color="primary" 
+                      aria-label="add to shopping cart" 
+                      onClick={() => handleAddToCart(product._id)}
+                    >
                       <AddShoppingCartIcon 
                         color='primary' 
                         className='mr-1'
-                        onClick={() => handleAddToCart(product._id)}
-                        // onClick={() => console.log(product._id)}
                       />
                     </IconButton>
                   }
@@ -479,6 +483,9 @@ function FarmPage() {
             })
           }
         </Box>
+      </Box>
+      <Box className={styles.bottomBox}>
+        <BottomNav />
       </Box>
     </Box>
   )
