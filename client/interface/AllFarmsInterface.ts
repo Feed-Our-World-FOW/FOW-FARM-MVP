@@ -53,7 +53,10 @@ export interface ItemInterface {
   amount: number,
   available: boolean,
   description: string,
-  farm: string,
+  farm: {
+    id: string,
+    name: string,
+  },
   image: [string],
   listedAt: string,
   name: string,

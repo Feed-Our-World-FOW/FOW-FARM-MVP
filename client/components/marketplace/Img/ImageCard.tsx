@@ -10,7 +10,7 @@ function ImageCard(props: ImageTypeInterface) {
   }
 
   return (
-    <div className='w-full h-full rounded-full'>
+    <div className='w-full h-full rounded-full border-1'>
       <Image
         alt='#'
         crossOrigin="anonymous"

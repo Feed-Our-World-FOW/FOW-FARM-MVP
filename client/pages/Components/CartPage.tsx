@@ -63,7 +63,7 @@ function CartPage() {
   }
 
   return (
-    <Box className="w-screen flex justify-center items-center">
+    <div className="w-screen flex justify-center items-center">
 
       <Box className={styles.page}>
         <Box className={styles.navBox}>
@@ -123,7 +123,7 @@ function CartPage() {
           </>
         }
       </Box>
-    </Box>
+    </div>
   )
 }
 

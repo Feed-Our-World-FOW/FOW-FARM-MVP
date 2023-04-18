@@ -8,6 +8,7 @@ import { fetchToken } from '../token'
 import { Box } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
 
 
 function Navbar(props: any) {
@@ -73,7 +74,15 @@ function Navbar(props: any) {
       
           <Box className={styles.bar}>
             <Box className="ml-5">
-              <MenuIcon />
+              {
+                props.arrow ?
+                <KeyboardBackspaceOutlinedIcon 
+                  fontSize='large' 
+                  onClick={() => history.back()}
+                />
+                :
+                <MenuIcon />
+              }
             </Box>
             <span className="text-3sm font-bold">Discover</span>
             <Box className="mr-5">

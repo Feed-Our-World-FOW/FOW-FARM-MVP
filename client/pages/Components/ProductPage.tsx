@@ -2,26 +2,20 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Navbar from '../../components/marketplace/navBar/Navbar'
-import Rating from '@mui/material/Rating'
-import Stack from '@mui/material/Stack'
-import CommentCard from '../../components/marketplace/comment/CommentCard'
-import Link from 'next/link'
-import PeopleIcon from '@mui/icons-material/People';
 import { getSingleProduct } from '../../components/marketplace/API'
 import { RouterQueryInterface, ItemInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
 import { getReviewOfAProduct, createReviewOfAProduct, addItemToCart } from '../../components/marketplace/API'
-import Carousel from 'react-bootstrap/Carousel'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import WriteCommentCard from '../../components/marketplace/comment/WriteCommentCard'
-import CommentIcon from '@mui/icons-material/Comment';
-import Swal from 'sweetalert2'
 import { fetchToken } from '../../components/marketplace/token'
-import Skeleton from '@mui/material/Skeleton';
 import { Box } from '@mui/material'
 import Alert, { AlertColor } from '@mui/material/Alert'
-import Snackbar from '@mui/material/Snackbar'
+import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
 import BottomNav from '../../components/marketplace/navBar/BottomNav'
+import Swal from 'sweetalert2'
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 
 function ProductPage() {
@@ -32,7 +26,10 @@ function ProductPage() {
     amount: 0,
     available: false,
     description: '',
-    farm: '',
+    farm: {
+      id: '',
+      name: ''
+    },
     image: [''],
     listedAt: '',
     name: '',
@@ -44,14 +41,13 @@ function ProductPage() {
     weight: ''
   })
   const [Token, setToken] = useState('')
-
+  const [arrow, setArrow] = useState<boolean>(true)
   const [value, setValue] = useState<number>(0)
   const [title, setTitle] = useState('')
   const [review, setReview] = useState('')
   const [alertData, setAlertData] = useState<string>('')
   const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
 
-  const [comment, setComment] = useState(false)
   const [index, setIndex] = useState(0)
   const [reloadComponent, setReloadComponent] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -106,7 +102,7 @@ function ProductPage() {
 
       const y = await getReviewOfAProduct(data._id, token)
       const commentData = y.data.data.data
-      // console.log(commentData)
+      // console.log(data)
       setLoading(false)
       
     } catch (error) {
@@ -152,153 +148,119 @@ function ProductPage() {
     navBox: `w-full px-4 z-50`,
     about: `w-10/12 flex flex-col items-center mb-5`,
     imgBox: `w-11/12 rounded-md h-72 mt-40 flex justify-center items-center `,
-    commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
-    btnBox: `w-full flex justify-center items-center`,
-    btn: `border-1 bg-pearl drop-shadow-lg active:drop-shadow-0.5lg w-28 h-10 rounded-md ml-auto flex justify-center items-center mt-5`,
-    add_cart_btn: `w-8/12 h-8 rounded-md mb-3 bg-light-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg font-semibold`,
-    buy_now_btn: `w-8/12 h-8 rounded-md mb-3 bg-pearl text-2sm p-1 drop-shadow-lg active:drop-shadow-0.5lg font-semibold`,
-    bottomBox: `w-full flex justify-center items-center mt-10`
+    bottomBox: `w-full flex justify-center items-center mt-10`,
+    prodTypeSmSubBox: `w-16 h-10 flex flex-col justify-between items-center`,
+    btn: `h-full w-20 rounded-3xl border-2 border-dark-gray text-dark-gray text-3sm font-bold focus:bg-dark-gray focus:text-white`,
+    smNavBox: `w-11/12 flex justify-between items-center h-8 mt-20`,
+    rightSmNavBox: `border-1 border-light-gray rounded-3xl w-9/12 h-full flex justify-between items-center`,
+    roundedSmImgBox: `h-7 w-7 border-1 rounded-full ml-1`,
+    rightSmNav: `h-full w-8/12 rounded-3xl flex justify-start items-center`,
+    smRatingBox: `h-full w-3/12 rounded-3xl flex justify-around items-center`,
+    bigImgBox: `border-1 border-light-gray w-11/12 h-80 mt-6 rounded-3xl flex flex-col justify-between items-center`,
+    bigBtnBox: `border-1 border-light-gray w-11/12 rounded-3xl h-40 mt-5 mb-10 flex flex-col justify-around items-center`,
+    cartBtn: `w-11/12 h-9 rounded-3xl mb-10 mt-5 flex justify-center items-between bg-green`,
+    amount: `w-4/12 text-3sm font-semibold text-white flex justify-start items-center`,
+    txt: `text-3sm font-semibold w-7/12 flex justify-start items-center`,
   }
 
   return (
-    <Box className="w-full flex flex-col justify-between items-center">
+    <div className="w-full flex flex-col justify-between items-center">
 
       <Box className={styles.page}>
         <Box className={styles.navBox}>
           <Navbar
-            // itemId={itemId}
+            arrow={arrow}
             load={handleReload}
           />
         </Box>
-        <Box className={styles.imgBox}>
-          {
-            loading ?
-            <Stack className='w-full h-full flex'>
-              <Box className='w-full h-full flex'>
-                <Skeleton 
-                  animation="wave" 
-                  variant="rectangular" 
-                  width="100%"
-                  height="100%" 
-                  className='rounded-md w-full h-full'
+
+        <Box className={styles.smNavBox}>
+          <span className='text-2sm font-semibold'>Produced by</span>
+          <Box className={styles.rightSmNavBox}>
+            <Box className={styles.rightSmNav}>
+              <Box className={styles.roundedSmImgBox}>
+                <ImageCard 
+                  image={productDetails.image[0]} 
+                  type="products"
                 />
               </Box>
-            </Stack>
-            :
-            <Carousel activeIndex={index} onSelect={handleSelect} className='w-full h-full'>
-                {
-                  productDetails.image.map((img, index) => {
-                    return (
-                      <Carousel.Item key={index} className='w-full h-full'>
-                        <ImageCard 
-                          key={img}
-                          image={img} 
-                          type="products"
-                        />
-                      </Carousel.Item>
-                    )
-                  })
-                }
-            </Carousel>
-          }
-        </Box>
-
-        <Box className="border-b-2 w-11/12 mt-5 mb-5"></Box>
-
-        <Box className={styles.about}>
-          <Box className="flex w-full justify-between items-center">
-            <span className='font-semibold text-lg'>${productDetails.price}</span>
-            <Box className="flex justify-center items-center">
-              <Stack spacing={1}>
-                <Rating 
-                  name="read-only" 
-                  value={productDetails.ratingsAverage}
-                  size='small' 
-                />
-              </Stack>
-              <PeopleIcon 
-                fontSize='small'
-                color='primary'
-                className='ml-2'
-              />
-              <span className='font-bold'>({productDetails.ratingsQuantity})</span>
+              <span className='text-sm font-semibold ml-1'>{productDetails.farm?.name}</span>
             </Box>
 
+            <Box className={styles.smRatingBox}>
+              <span className='text-2sm font-semibold'>{productDetails.ratingsAverage}</span>
+              <StarOutlineOutlinedIcon fontSize='small' />
+            </Box>
           </Box>
-
-          <span className='text-3sm mb-5 font-semibold'>{productDetails.description}</span>
-          <button 
-            className={styles.add_cart_btn} 
-            onClick={handleAddItemsToCart}
-          >Add To Cart</button>
-          <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-            <Alert 
-              onClose={handleClose} 
-              variant="filled" 
-              // severity={alertData.length > 1 ? "warning" : "success"} 
-              severity={alertType}
-              sx={{ width: '100%' }}
-            >
-              {/* {alertData.length > 1 ? alertData : "Your Item added successfully to the cart"} */}
-              {alertData}
-            </Alert>
-          </Snackbar>
-          <Link href={'/Components/DeliverySteps'} className='w-full flex justify-center items-center'>
-            <button className={styles.buy_now_btn}>Buy Now</button>
-          </Link>
         </Box>
 
-        <Box className="border-b-2 w-11/12 mt-3"></Box>
-
-        <Box className={styles.commentBox}>
-          {
-            comment ?
-            <Box className={styles.commentBox}>
-              <WriteCommentCard
-                comment={comment}
-                setComment={setComment}
-                value={value}
-                setValue={setValue}
-                title={title}
-                setTitle={setTitle}
-                review={review}
-                setReview={setReview}
-                commentFunction={commentFunction}
+        <Box className={styles.bigImgBox}>
+          <Box className="h-8 w-11/12 flex justify-center items-center">
+            <span className='text-2sm font-bold'>{productDetails.name}</span>
+          </Box>
+          <Box className="h-52 w-11/12 flex justify-center items-center">
+            <Box className="border-1 w-52 h-52 rounded-full">
+              <ImageCard 
+                image={productDetails.image[0]} 
+                type="products"
               />
             </Box>
-            :
-            <Box className="w-11/12 flex justify-end">
-              <span className='w-full font-semibold mr-auto ml-2 '>Add a Comment</span>
-              <CommentIcon
-                color='primary'
-                onClick={() => setComment(true)}
-              />
+          </Box>
+          <Box className="h-10 w-11/12 flex justify-around items-center mb-3">
+            <Box className={styles.prodTypeSmSubBox}>
+              <img src="/images/leaf.png" alt="" />
+              <span className='text-sm font-semibold'>Organic</span>
             </Box>
-          }
-        </Box> 
-        <Box className="w-full mb-5 p-3 mt-10">
-          {
-            productDetails.productReviews.map((review: any) => {
-              // console.log(review)
-              return (
-                <CommentCard
-                  key={review.id}
-                  userName={review?.user?.name}
-                  rating={review.rating}
-                  review={review.review}
-                  title={review.title}
-                  createdAt={review.createdAt}
-                />
-              )
-            })
-          }
-          
+            <Box className={styles.prodTypeSmSubBox}>
+              <AccessTimeOutlinedIcon fontSize='small' />
+              <span className='text-sm font-semibold'>50 days UL</span>
+            </Box>
+            <Box className={styles.prodTypeSmSubBox}>
+              <LocationOnOutlinedIcon fontSize='medium' />
+              <span className='text-sm font-semibold'>100 km</span>
+            </Box>
+          </Box>
         </Box>
+
+        <Box className={styles.bigBtnBox}>
+          <Box className='w-full flex justify-center items-center'>
+            <span className='font-semibold text-2sm'>Choose amount and unit</span>
+          </Box>
+          <Box className="w-11/12 h-10 flex justify-center items-center">
+            <Box className="mr-2">
+              <RemoveOutlinedIcon />
+            </Box>
+            <Box className='border-1 rounded-3xl w-20 h-8 border-light-gray flex justify-center items-center'>
+              <span className='text-semibold text-3sm'>10</span>
+            </Box>
+            <Box className="ml-2">
+              <AddOutlinedIcon />
+            </Box>
+          </Box>
+          <Box className="w-11/12 h-8 flex justify-around items-center">
+            <button className={styles.btn}>
+              lb
+            </button>
+            <button className={styles.btn}>
+              kg
+            </button>
+            <button className={styles.btn}>
+              gm
+            </button>
+          </Box>
+        </Box>
+
+        <Box className={styles.cartBtn}>
+          <span className={styles.amount}>$ 127.5</span>
+          <span className={styles.txt}>Add to cart</span>
+        </Box>
+
+        
       </Box>
       <Box className={styles.bottomBox}>
         <BottomNav />
       </Box>
-    </Box>
+    </div>
   )
 }
 

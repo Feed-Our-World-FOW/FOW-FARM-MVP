@@ -85,7 +85,7 @@ function UserProfile() {
   }
 
   return (
-    <Box className='w-screen flex justify-center items-center'>
+    <div className='w-screen flex justify-center items-center'>
       <Container className={styles.page} maxWidth="sm">
         <Paper className={styles.navBox} elevation={2}>
           <Box className="" >
@@ -149,7 +149,7 @@ function UserProfile() {
           </TextField>
         </Box>
       </Container>
-    </Box>
+    </div>
   )
 }
 

@@ -103,7 +103,7 @@ function AddLocation() {
     bottomBox: `w-full h-8 mt-12 mb-10 flex justify-center items-center`
   }
   return (
-    <Box className="w-screen flex justify-center items-center">
+    <div className="w-screen flex justify-center items-center">
 
       <Box className={styles.page}>
         <Paper elevation={2} className={styles.nav} onClick={() => history.back()}>
@@ -456,7 +456,7 @@ function AddLocation() {
           </Snackbar>
         </Box>
       </Box>
-    </Box>
+    </div>
   )
 }
 

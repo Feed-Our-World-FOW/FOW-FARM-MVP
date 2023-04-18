@@ -1,11 +1,11 @@
 import { Box } from '@mui/material'
 import React from 'react'
 
-function FilterNav(props: any) {
+function ProductFilterNav(props: any) {
 
   const handleFarm = () => {
     try {
-      props.setShowFarm(true)
+      // props.setShowFarm(true)
     } catch (error) {
       console.log(error)
     }
@@ -13,7 +13,7 @@ function FilterNav(props: any) {
 
   const handleProduct = () => {
     try {
-      props.setShowFarm(false)
+      // props.setShowFarm(false)
     } catch (error) {
       console.log(error)
     }
@@ -25,10 +25,10 @@ function FilterNav(props: any) {
   }
   return (
     <Box className={styles.lowerNav}>
-      <button className={styles.btn} autoFocus={true} onClick={handleFarm}>Farms</button>
-      <button className={styles.btn} onClick={handleProduct}>Product</button>
+      <button className={styles.btn} autoFocus={true} onClick={handleFarm}>Stock</button>
+      <button className={styles.btn} onClick={handleProduct}>On demand</button>
     </Box>
   )
 }
 
-export default FilterNav
+export default ProductFilterNav

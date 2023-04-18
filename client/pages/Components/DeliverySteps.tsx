@@ -36,7 +36,7 @@ function DeliverySteps() {
 
   }
   return (
-    <Box className="w-screen flex justify-center items-center">
+    <div className="w-screen flex justify-center items-center">
       <Box className={styles.page}>
         <Box className={styles.upperNav}>
           <Box className="">
@@ -79,7 +79,7 @@ function DeliverySteps() {
           }
         </Box>
       </Box>
-    </Box>
+    </div>
   )
 }
 
