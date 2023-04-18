@@ -65,6 +65,7 @@ function Navbar(props: any) {
     input: `w-11/12 h-full flex justify-center items-center focus:outline-none placeholder:text-2sm p-2 rounded-md`,
     imgCover: `h-10 w-10 rounded-full`,
     linkStyle: `flex flex-col justify-center items-center h-20 w-20 text-black no-underline`,
+    headTxt: `text-3sm font-bold`,
   }
   return (
     <Box className="w-full justify-center items-center">
@@ -84,7 +85,17 @@ function Navbar(props: any) {
                 <MenuIcon />
               }
             </Box>
-            <span className="text-3sm font-bold">Discover</span>
+          
+            {
+              props.farm ? 
+              <span className={styles.headTxt}>Farm</span> : 
+              props.product ?
+              <span className={styles.headTxt}>Product</span> : 
+              props.order ?
+              <span className={styles.headTxt}>Order</span> : 
+              <span className={styles.headTxt}>Discover</span>
+            }
+            
             <Box className="mr-5">
               {/* <ShoppingCartOutlinedIcon /> */}
               <Link href={'/Components/CartPage'} className="mr-2">

@@ -23,7 +23,7 @@ function AllFarms() {
 
   const [allFarms, setAllFarms] = useState([{}])
   const [allProducts, setAllProducts] = useState([{}])
-  const [arrow, setArrow] = useState<boolean>(false)
+  // const [arrow, setArrow] = useState<boolean>(false)
   const [loading, setLoading] = useState(true)
   const [showFarm, setShowFarm] = useState(true)
   let array = [1, 2, 3, 4, 5]
@@ -91,7 +91,10 @@ function AllFarms() {
   return (
     <div className={styles.page}>
       <Box className={styles.navBox}>
-        <Navbar arrow={arrow} setShowFarm={setShowFarm} />
+        <Navbar 
+          arrow={false} 
+          setShowFarm={setShowFarm} 
+        />
       </Box>
       <Box className={styles.navBox2}>
         <FilterNav setShowFarm={setShowFarm} />

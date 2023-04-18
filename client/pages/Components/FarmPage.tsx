@@ -27,7 +27,6 @@ function FarmPage() {
   const id = router.query as RouterQueryInterface
   let array = [1, 2]
   const [farmDetails, setFarmDetails] = useState<any>({})
-  const [arrow, setArrow] = useState<boolean>(true)
   const [Token, setToken] = useState<string>('')
   const [cartItems, setCartItems] = useState([])
   const [reloadComponent, setReloadComponent] = useState<boolean>(false)
@@ -92,7 +91,11 @@ function FarmPage() {
     <div className="w-screen flex flex-col justify-between items-center">
       <Box className={styles.page}>
         <Box className={styles.navBox}>
-          <Navbar arrow={arrow} load={reloadComponent} />
+          <Navbar 
+            arrow={true} 
+            farm={true}
+            load={reloadComponent} 
+          />
         </Box>
 
         <Box className="w-11/12 h-60 mt-28 border-1 border-light-gray max-w-md rounded-3xl flex flex-col justify-around items-center">

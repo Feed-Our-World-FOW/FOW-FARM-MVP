@@ -41,7 +41,6 @@ function ProductPage() {
     weight: ''
   })
   const [Token, setToken] = useState('')
-  const [arrow, setArrow] = useState<boolean>(true)
   const [value, setValue] = useState<number>(0)
   const [title, setTitle] = useState('')
   const [review, setReview] = useState('')
@@ -67,10 +66,6 @@ function ProductPage() {
   }
 
 
-
-
-
-  // const [itemId, setItemId] = useState([''])
 
   const handleAddItemsToCart = async () => {
     try {
@@ -169,7 +164,8 @@ function ProductPage() {
       <Box className={styles.page}>
         <Box className={styles.navBox}>
           <Navbar
-            arrow={arrow}
+            arrow={true}
+            product={true}
             load={handleReload}
           />
         </Box>
