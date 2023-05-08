@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Badge, { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
-import { getMySelf, getMyCart } from '../API'
+import { getMyCart } from '../API'
 import { fetchToken } from '../token'
 import { Box } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,7 +14,6 @@ import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspace
 function Navbar(props: any) {
 
   const [token, setToken] = useState('')
-  const [cartItems, setCartItems] = useState([])
   const [totalAmount, setTotalAmount] = useState(0)
 
   const fetch = async () => {
@@ -26,16 +25,9 @@ function Navbar(props: any) {
       const response = await getMyCart(Token)
       if(response.data.data.data.length > 0) {
 
-        const cartData = response.data.data.data[0].items
-  
-        setCartItems(cartData)
-        let total = 0
-  
-        cartData.forEach((i: any) => total += i.quantity)
-        setTotalAmount(total)
-  
-        console.log(cartData)
-        console.log(cartData.length)
+        const cartData = response.data.data.data[0]
+
+        setTotalAmount(cartData.items.length)
       }
 
     } catch (error) {
@@ -93,11 +85,12 @@ function Navbar(props: any) {
               <span className={styles.headTxt}>Product</span> : 
               props.order ?
               <span className={styles.headTxt}>Order</span> : 
+              props.rating ?
+              <span className={styles.headTxt}>Rating</span> : 
               <span className={styles.headTxt}>Discover</span>
             }
             
-            <Box className="mr-5">
-              {/* <ShoppingCartOutlinedIcon /> */}
+            <Box className="mr-3">
               <Link href={'/Components/CartPage'} className="mr-2">
                 <IconButton aria-label="cart">
                   <StyledBadge badgeContent={totalAmount} sx={{color: 'white'}}>

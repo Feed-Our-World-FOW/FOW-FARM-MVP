@@ -1,10 +1,36 @@
+import React, { useEffect, useState } from 'react'
 import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
-import React, { useState } from 'react'
 import FarmCardComponent from './FarmCardComponent'
+import { fetchToken } from '../token'
+import { Alert, Snackbar } from '@mui/material'
 
 function AllFarmsCard(props: any) {
-  
+  const [open, setOpen] = useState(false)
+  const [tokenExists, setTokenExists] = useState(false)
+
+  const fetch = async () => {
+    try {
+      const token = fetchToken()
+      if(token) {
+        setTokenExists(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   const styles = {
     page: `w-screen flex flex-col justify-around items-center max-w-md`,
@@ -25,6 +51,11 @@ function AllFarmsCard(props: any) {
     <Box className="w-full p-0">
       <Box className={styles.farmCardBox}>
           <Box className={styles.allFarms}>
+            <Snackbar open={open} autoHideDuration={4000} className='w-full fixed mb-10'>
+              <Alert variant="filled" onClose={handleClose} severity={"warning"} className='w-11/12'>
+                {`Please login to get access`}
+              </Alert>
+            </Snackbar>
             {
               props.loading ?
               props.array.map((i: any) => {
@@ -60,26 +91,49 @@ function AllFarmsCard(props: any) {
                   data: farm._id
                 }
                 return (
-                  <Link
-                    href={{
-                      pathname: '/Components/FarmPage',
-                      query: sendData
-                    }}
-                    className='text-black no-underline w-11/12 cursor-pointer'
-                    key={farm._id}
-                  >
-                    <FarmCardComponent
-                      key={farm._id}
-                      id={farm._id}
-                      name={farm.name}
-                      images={farm.images}
-                      location={farm.location}
-                      meat={farm.meat}
-                      produce={farm.produce}
-                      ratingsAverage={farm.ratingsAverage}
-                      loading={props.loading}
-                    />
-                  </Link>
+                  <Box className="w-11/12" key={farm._id}>
+                    {
+                      tokenExists ?
+                      <Link
+                        href={{
+                          pathname: '/Components/FarmPage',
+                          query: sendData
+                        }}
+                        className='text-black no-underline w-full cursor-pointer'
+                        key={farm._id}
+                      >
+                        <FarmCardComponent
+                          key={farm._id}
+                          id={farm._id}
+                          name={farm.user.name}
+                          images={farm.images}
+                          location={farm.location}
+                          meat={farm.meat}
+                          produce={farm.produce}
+                          ratingsAverage={farm.ratingsAverage}
+                          loading={props.loading}
+                        />
+                      </Link> :
+                      <Box
+                        className='text-black no-underline w-full cursor-pointer'
+                        key={farm._id}
+                        onClick={() => setOpen(true)}
+                      >
+                        <FarmCardComponent
+                          key={farm._id}
+                          id={farm._id}
+                          name={farm.user.name}
+                          images={farm.images}
+                          location={farm.location}
+                          meat={farm.meat}
+                          produce={farm.produce}
+                          ratingsAverage={farm.ratingsAverage}
+                          loading={props.loading}
+                        />
+                      </Box>
+                    }
+          
+                  </Box>
                 )
               })
             }    

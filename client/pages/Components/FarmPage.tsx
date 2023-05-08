@@ -3,12 +3,11 @@ import { useRouter } from 'next/router'
 import Navbar from '../../components/marketplace/navBar/Navbar'
 import Stack from '@mui/material/Stack'
 import Link from 'next/link'
-import { getSingleFarm } from '../../components/marketplace/API'
+import { getSingleBusiness } from '../../components/marketplace/API'
 import { AllFarmsInterface, RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
 import { createReviewOfAFarm } from '../../components/marketplace/API'
 import { getMyCart } from '../../components/marketplace/API'
-import { removeItemsFromCart, addItemToCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
 import Skeleton from '@mui/material/Skeleton';
 import { Alert, AlertColor, Box, Container, Paper, Snackbar, styled } from '@mui/material'
@@ -27,6 +26,7 @@ function FarmPage() {
   const id = router.query as RouterQueryInterface
   let array = [1, 2]
   const [farmDetails, setFarmDetails] = useState<any>({})
+  const [showStockProduct, setShowStockProduct] = useState<boolean>(false)
   const [Token, setToken] = useState<string>('')
   const [cartItems, setCartItems] = useState([])
   const [reloadComponent, setReloadComponent] = useState<boolean>(false)
@@ -49,8 +49,9 @@ function FarmPage() {
   const fetch = async () => {
     try {
       const token = fetchToken()
+      console.log(id.data)
       setToken(token)
-      const x: AllFarmsInterface = await getSingleFarm(id.data)
+      const x: AllFarmsInterface = await getSingleBusiness(id.data, token)
       const data = x.data.data.data
 
       const response = await getMyCart(token)
@@ -58,7 +59,9 @@ function FarmPage() {
         const cartData = response.data.data.data[0].items
         setCartItems(cartData)
       }
-      console.log("Data",data)
+      
+      // console.log("Data",data)
+      setShowStockProduct(true)
 
       setFarmDetails(data)
       setLoading(false)
@@ -76,20 +79,24 @@ function FarmPage() {
 
 
   const styles = {
-    page: `w-screen flex flex-col justify-around items-center max-w-md`,
+    page: `w-screen flex flex-col justify-between items-center`,
+    container: `w-screen flex flex-col justify-around items-center max-w-md`,
     navBox: `w-full px-4 z-50`,
-    
+    top_container: `w-11/12 h-60 mt-28 border-1 border-light-gray max-w-md rounded-3xl flex flex-col justify-around items-center`,
     productsBox: `w-full mt-10 mb-10 flex flex-col justify-center items-center`,
-
-    
+    top_sub_container: `w-10/12 h-48 flex flex-col justify-around items-center`,
+    top_sub_box: `border-b-1 border-light-gray w-11/12 h-10 flex justify-between items-center`,
     commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
     bottomBox: `w-full flex justify-center items-center mt-10`,
-    statBox: `w-10 h-10 flex flex-col justify-between items-center`
+    statBox: `w-10 h-10 flex flex-col justify-between items-center`,
+    farm_name_txt: `text-2sm font-bold w-full flex justify-center items-center`,
+    img_box: `w-20 h-20 rounded-full bg-white mb-10 absolute border-1`,
+    low_container: `w-full h-16 flex justify-around items-center`,
   }
 
   return (
-    <div className="w-screen flex flex-col justify-between items-center">
-      <Box className={styles.page}>
+    <Box className={styles.page}>
+      <Box className={styles.container}>
         <Box className={styles.navBox}>
           <Navbar 
             arrow={true} 
@@ -98,30 +105,29 @@ function FarmPage() {
           />
         </Box>
 
-        <Box className="w-11/12 h-60 mt-28 border-1 border-light-gray max-w-md rounded-3xl flex flex-col justify-around items-center">
-          <Box className="w-10/12 h-48 flex flex-col justify-around items-center">
-            <Box className="border-b-1 border-light-gray w-11/12 h-10 flex justify-between items-center">
+        <Box className={styles.top_container}>
+          <Box className={styles.top_sub_container}>
+            <Box className={styles.top_sub_box}>
               <FavoriteBorderOutlinedIcon />
-              {/* <FavoriteIcon sx={{color: '#ff3d47'}} /> */}
               <MonetizationOnOutlinedIcon />
-
             </Box>
-            <Box className="w-20 h-20 rounded-full bg-white mb-10 absolute">
+            <Box className={styles.img_box}>
               <ImageCard 
                 image={farmDetails.images}
-                type={"farms"}
               />
             </Box>
-            <span className='text-2sm font-bold w-full flex justify-center items-center'>{farmDetails.name}</span>
+            <span className={styles.farm_name_txt}>{farmDetails.name}</span>
           </Box>
-          <Box className="w-full h-16 flex justify-around items-center">
+          <Box className={styles.low_container}>
             <Box className={styles.statBox}>
-              <StarOutlineIcon />
+              <Link href={'/Components/comment/CommentPage'}>
+                <StarOutlineIcon />
+              </Link>
               <span className='text-sm font-semibold'>{farmDetails.ratingsAverage}</span>
             </Box>
             <Box className={styles.statBox}>
               <LocalShippingOutlinedIcon />
-              <span className='text-sm font-semibold'>10 BD</span>
+              <span className='text-sm font-semibold'>{farmDetails.shippingTime}</span>
             </Box>
             <Box className={styles.statBox}>
               <LocationOnOutlinedIcon />
@@ -131,7 +137,9 @@ function FarmPage() {
         </Box>
 
         <Box className="w-full mt-2">
-          <ProductFilterNav />
+          <ProductFilterNav 
+            setShowStockProduct={setShowStockProduct}
+          />
         </Box>
 
         <Box className="w-10/12 mt-3 justify-start items-center">
@@ -169,9 +177,12 @@ function FarmPage() {
               )
             })
             :
-            farmDetails.allProduct.map((product: any, index: any) => {
+            showStockProduct ?
+
+            farmDetails.stockProducts.map((product: any, index: any) => {
               const sendData = {
-                data: product._id
+                data: product._id,
+                type: "stock"
               }
               return (
                 <Box className="w-11/12" key={product._id}>
@@ -184,12 +195,40 @@ function FarmPage() {
                     
                     <ProductCardComponent
                       key={product._id} 
+                      type={"stock"}
                       name={product.name}
-                      weight={product.weight}
+                      stock={product.stock}
+                      unit={product.unit}
                       price={product.price}
-                      ratingsAverage={product.ratingsAverage}
-                      ratingsQuantity={product.ratingsQuantity}
-                      images={product.image && product.image[(product.image).length - 1]}
+                      images={product.image}
+                    />
+                  </Link>
+                </Box>
+              )
+            }) :
+
+            farmDetails.ondemandProducts.map((product: any, index: any) => {
+              const sendData = {
+                data: product._id,
+                type: "ondemand"
+              }
+              return (
+                <Box className="w-11/12" key={product._id}>
+                  <Link key={product._id} 
+                    href={{
+                      pathname: '/Components/ProductPage',
+                      query: sendData
+                    }} 
+                  >
+                    
+                    <ProductCardComponent
+                      key={product._id} 
+                      type={"ondemand"}
+                      name={product.name}
+                      unit={product.unit}
+                      capacity={product.capacity}
+                      price={product.price}
+                      images={product.image}
                     />
                   </Link>
                 </Box>
@@ -202,7 +241,7 @@ function FarmPage() {
       <Box className={styles.bottomBox}>
         <BottomNav />
       </Box>
-    </div>
+    </Box>
   )
 }
 

@@ -2,7 +2,6 @@ import React from 'react'
 import ImageCard from '../Img/ImageCard'
 import { Box, Paper } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 
 function ProductCardComponent(props: any) {
 
@@ -17,23 +16,21 @@ function ProductCardComponent(props: any) {
   return (
     <Paper elevation={0} className={styles.wholeCard}>
       <Box className="h-full w-3/12 flex justify-center items-center">
-        <Box className="w-14 h-14 rounded-full border-1">
+        <Box className="w-14 h-14 rounded-full">
           <ImageCard 
             image={props.images}
-            type='products'
+            // type='products'
           />
         </Box>
       </Box>
 
       <Box className="w-8/12 h-20 flex justify-between items-center">
         <Box className="w-10/12 h-full flex flex-col justify-around items-start">
-          <span className='text-2sm font-semibold'>{props.name}</span>
-          <Box>
-            <span className='text-2sm font-semibold'>{props.ratingsAverage}</span>
-            <StarBorderOutlinedIcon fontSize='small' className="ml-2" />
-          </Box>
-          {/* <span className='text-sm font-bold'>{props.location?.address.slice(0, 20)}...</span> */}
-          <span className='text-sm font-bold'>$ {props.price} / {props.weight}</span>
+          <span className='text-2.5sm font-semibold'>{props.name}</span>
+          <span className='text-2.5sm font-semibold'>
+            {props.stock || props.capacity} {props.unit} {props.capacity && `/month`}
+          </span>
+          <span className='text-2sm font-bold'>$ {props.price} / {props.unit}</span>
         </Box>
         <Box className="w-2/12 h-full flex justify-center items-center">
           <ArrowForwardIosIcon />

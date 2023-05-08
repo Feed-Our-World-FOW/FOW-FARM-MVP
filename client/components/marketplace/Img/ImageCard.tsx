@@ -6,19 +6,20 @@ import { ImageTypeInterface } from '../../../interface/AllFarmsInterface'
 function ImageCard(props: ImageTypeInterface) {
 
   const myLoader = () => {
-    return `http://localhost:5000/public/img/${props.type}/${props.image}`
+    // return `http://localhost:5000/public/img/${props.type}/${props.image}`
+    return `${props.image}`
   }
 
   return (
-    <div className='w-full h-full rounded-full border-1'>
+    <div className='w-full h-full'>
       <Image
         alt='#'
         crossOrigin="anonymous"
-        src={`http://localhost:5000/public/img/${props.type}/${props.image}`}
+        src={`${props.image}`}
         loader={myLoader}
         width={200}
         height={200}
-        className='w-full h-full rounded-full'
+        className='w-full h-full'
       />
     </div>
   )

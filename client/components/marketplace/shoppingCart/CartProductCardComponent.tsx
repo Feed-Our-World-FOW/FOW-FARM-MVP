@@ -1,24 +1,42 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import ImageCard from '../Img/ImageCard'
+import { removeItemFromCart } from '../API'
+import { fetchToken } from '../token'
+import 'animate.css'
 
 function CartProductCardComponent(props: any) {
+  const [click, setClick] = useState(false)
+
+  const handleRemove = async () => {
+    try {
+      const token = fetchToken()
+      const res = await removeItemFromCart(token, props.id)
+      props.loadFunc()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const styles = {
+    container: `w-11/12 border-1 border-light-gray rounded-2xl h-12 flex justify-around items-center`,
+    animate_container: `w-11/12 border-1 border-light-gray rounded-2xl h-12 flex justify-around items-center animate__animated animate__lightSpeedOutLeft`
+  }
   return (
-    <div className='w-11/12 border-1 border-light-gray rounded-3xl h-12 flex justify-around items-center'>
+    <Box className={!click ? styles.container : styles.animate_container} onClick={() => setClick(true)}>
       <Box className='w-10 h-10 rounded-full'>
         <ImageCard 
           image={props.image}
-          type='products'
         />
       </Box>
       <span className='text-sm'>{props.name}</span>
-      <span className='text-sm'>{props.weight}</span>
-      <span className='text-sm font-semibold'>$ {props.price}</span>
-      <Box className='w-10 h-10 flex justify-center items-center'>
-        <DeleteOutlinedIcon fontSize='medium' />
+      <span className='text-sm'>{props.quantity} {props.unit}</span>
+      <span className='text-sm font-semibold'>$ {Number(props.orderTotal).toFixed(3)}</span>
+      <Box className='w-10 h-10 flex justify-center items-center' onClick={handleRemove}>
+        <DeleteOutlinedIcon fontSize='medium' className='' />
       </Box>
-    </div>
+    </Box>
   )
 }
 

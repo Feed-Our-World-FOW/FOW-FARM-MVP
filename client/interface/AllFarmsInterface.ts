@@ -74,6 +74,7 @@ export interface RouterQueryInterface {
 }
 
 export interface SignupFormInterface {
+  role: string,
   name: string,
   email: string,
   password: string,
@@ -101,7 +102,7 @@ export interface CommentInterface {
 
 export interface ImageTypeInterface {
   image: string,
-  type: "farms" | "users" | "products"
+  // type: "farms" | "users" | "ondemandProduct" | "stockProducts"
 }
 
 export interface WriteCommentInterface {

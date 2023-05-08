@@ -1,12 +1,36 @@
 import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
-import React, { useState } from 'react'
-import ProductCard from './ProductCard'
+import React, { useState, useEffect } from 'react'
 import ProductCardComponent from './ProductCardComponent'
-// import productCardComponent from './productCardComponent'
+import { Alert, Snackbar } from '@mui/material'
+import { fetchToken } from '../token'
 
 function AllProducts(props: any) {
-  
+  const [open, setOpen] = useState(false)
+  const [tokenExists, setTokenExists] = useState(false)
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const fetch = async () => {
+    try {
+      const token = fetchToken()
+      if(token) {
+        setTokenExists(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   const styles = {
     page: `w-screen flex flex-col justify-around items-center max-w-md`,
@@ -27,6 +51,11 @@ function AllProducts(props: any) {
     <Box className="w-full p-0">
       <Box className={styles.productCardBox}>
           <Box className={styles.allproducts}>
+            <Snackbar open={open} autoHideDuration={4000} className='w-full fixed mb-10'>
+              <Alert variant="filled" onClose={handleClose} severity={"warning"} className='w-11/12'>
+                {`Please login to get access`}
+              </Alert>
+            </Snackbar>
             {
               props.loading ?
               props.array.map((i: any) => {
@@ -57,34 +86,122 @@ function AllProducts(props: any) {
                 )
               })
               :
-              props.allProducts.map((product: any) => {
-                const sendData = {
-                  data: product._id
+              <Box className="w-11/12">
+                {
+                  tokenExists ?
+                  <Box className="w-full">
+                    <Box className="w-full">
+                      {
+                        props.allStockProducts.map((product: any) => {
+                          const sendData1 = {
+                            data: product._id,
+                            type: "stock"
+                          }
+                          return (
+                            <Link
+                              href={{
+                                pathname: '/Components/ProductPage',
+                                query: sendData1
+                              }}
+                              className='text-black no-underline w-full cursor-pointer'
+                              key={product._id}
+                            >
+                              <ProductCardComponent
+                                key={product._id} 
+                                type={"stock"}
+                                name={product.name}
+                                stock={product.stock}
+                                unit={product.unit}
+                                price={product.price}
+                                images={product.image}
+                              />
+                            </Link> 
+                          )
+                        })
+                      }
+                    </Box>
+                    <Box className="w-full">
+                      {
+                        props.allOndemandProducts.map((product: any) => {
+                          const sendData1 = {
+                            data: product._id,
+                            type: "ondemand"
+                          }
+                          return (
+                            <Link
+                              href={{
+                                pathname: '/Components/ProductPage',
+                                query: sendData1
+                              }}
+                              className='text-black no-underline w-full cursor-pointer'
+                              key={product._id}
+                            >
+                              <ProductCardComponent
+                                key={product._id} 
+                                type={"ondemand"}
+                                name={product.name}
+                                capacity={product.capacity}
+                                unit={product.unit}
+                                price={product.price}
+                                images={product.image}
+                              />
+                            </Link> 
+                          )
+                        })
+                      }
+                    </Box>
+                  </Box> :
+
+                  <Box className="w-full">
+                  <Box className="w-full">
+                    {
+                      props.allStockProducts.map((product: any) => {
+                        return (
+                          <Box
+                            className='text-black no-underline w-full cursor-pointer'
+                            key={product._id}
+                            onClick={() => setOpen(true)}
+                          >
+                            <ProductCardComponent
+                              key={product._id} 
+                              type={"stock"}
+                              name={product.name}
+                              stock={product.stock}
+                              unit={product.unit}
+                              price={product.price}
+                              images={product.image && product.image[(product.image).length - 1]}
+                            />
+                          </Box> 
+                        )
+                      })
+                    }
+                  </Box>
+                  <Box className="w-full">
+                    {
+                      props.allOndemandProducts.map((product: any) => {
+                        return (
+                          <Box
+                            className='text-black no-underline w-full cursor-pointer'
+                            key={product._id}
+                            onClick={() => setOpen(true)}
+                          >
+                            <ProductCardComponent
+                              key={product._id} 
+                              type={"ondemand"}
+                              name={product.name}
+                              capacity={product.capacity}
+                              unit={product.unit}
+                              price={product.price}
+                              images={product.image && product.image[(product.image).length - 1]}
+                            />
+                          </Box> 
+                        )
+                      })
+                    }
+                  </Box>
+                  </Box>
                 }
-                return (
-                  <Link
-                    href={{
-                      pathname: '/Components/ProductPage',
-                      query: sendData
-                    }}
-                    className='text-black no-underline w-11/12 cursor-pointer'
-                    key={product._id}
-                  >
-                  
-                    <ProductCardComponent
-                      key={product._id}
-                      id={product._id}
-                      name={product.name}
-                      images={product.image}
-                      location={product.location}
-                      price={product.price}
-                      weight={product.weight}
-                      ratingsAverage={product.ratingsAverage}
-                      loading={props.loading}
-                    />
-                  </Link>
-                )
-              })
+              </Box>
             }    
           </Box>
         </Box>

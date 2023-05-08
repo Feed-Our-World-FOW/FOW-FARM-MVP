@@ -3,17 +3,19 @@ import React from 'react'
 
 function ProductFilterNav(props: any) {
 
-  const handleFarm = () => {
+  const handleStock = () => {
     try {
       // props.setShowFarm(true)
+      props.setShowStockProduct(true)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const handleProduct = () => {
+  const handleOndemand = () => {
     try {
       // props.setShowFarm(false)
+      props.setShowStockProduct(false)
     } catch (error) {
       console.log(error)
     }
@@ -25,8 +27,8 @@ function ProductFilterNav(props: any) {
   }
   return (
     <Box className={styles.lowerNav}>
-      <button className={styles.btn} autoFocus={true} onClick={handleFarm}>Stock</button>
-      <button className={styles.btn} onClick={handleProduct}>On demand</button>
+      <button className={styles.btn} autoFocus={true} onClick={handleStock}>Stock</button>
+      <button className={styles.btn} onClick={handleOndemand}>On demand</button>
     </Box>
   )
 }

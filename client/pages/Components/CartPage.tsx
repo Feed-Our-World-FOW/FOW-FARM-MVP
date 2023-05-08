@@ -14,22 +14,10 @@ function CartPage() {
   const [cartItems, setCartItems] = useState([])
   const [subTotal, setSubTotal] = useState(0)
   const [reloadComponent, setReloadComponent] = useState(false)
+  const [totalItems, setTotalItems] = useState(0)
 
   const handleReload = () => {
     setReloadComponent(prevState => !prevState);
-  }
-
-  const totalItems = (): number => {
-    try {
-      let total = 0
-      cartItems.map((item: any) => {
-        total += item.quantity
-      })
-      return total
-    } catch (error) {
-      console.log(error)
-      return 0
-    }
   }
 
 
@@ -39,7 +27,10 @@ function CartPage() {
       const response = await getMyCart(Token)
       // console.log(response)
       setSubTotal(response.data.data.data[0].subTotal)
+      setTotalItems(response.data.data.data[0].items.length)
+
       setCartItems(response.data.data.data[0].items)
+
       if(response.data.data.data[0].items.length > 0) {
         setEmpty(false)
       }else {
@@ -66,7 +57,7 @@ function CartPage() {
   }
 
   return (
-    <div className="w-screen min-h-screen flex flex-col justify-between items-center">
+    <Box className="w-screen min-h-screen flex flex-col justify-between items-center">
 
       <Box className={styles.page}>
         <Box className={styles.navBox}>
@@ -92,23 +83,10 @@ function CartPage() {
           </Box>
           :
           <>
-            {/* <Box className={styles.totalBox}>
-              <span className='mr-1 text-3sm'>Subtotal: </span> 
-              <span className='font-bold'>$ {subTotal}</span>
-            </Box> */}
-            {/* <Box className={styles.btnBox}>
-              <Link
-                href={'/Components/DeliverySteps'} 
-                className={styles.btn} 
-                onClick={fetch}
-              >
-                {`Proceed to Buy ( ${totalItems()} items)`}
-              </Link>
-            </Box> */}
             <Box className="w-full flex justify-center items-center mt-24">
-              <span className='text-2sm font-semibold mr-1'>{totalItems()}</span> 
+              <span className='text-2sm font-semibold mr-1'>{totalItems}</span> 
               {
-                totalItems() > 1 ? 
+                totalItems > 1 ? 
                 <span className='text-2sm font-semibold'>Products</span> : 
                 <span className='text-2sm font-semibold'>Product</span>
               }
@@ -117,36 +95,35 @@ function CartPage() {
               {
                 cartItems.map((item: any) => {
                   return (
-                    <Box className="w-full h-full flex flex-col justify-center items-center mt-10" key={item._id}>
+                    <Box className="w-full h-full flex flex-col justify-center items-center mt-5" key={item._id}>
                       <CartProductCardComponent
                         key={item._id}
-                        quantity={item.quantity}
-                        id={item.product._id}
-                        price={item.product.price}
-                        name={item.product.name}
-                        summary={item.product.summary}
-                        weight={item.product.weight}
-                        image={item.product.image[0]}
+                        id={item?.ondemandProduct?.id || item?.stockProduct?.id}
+                        price={item?.ondemandProduct?.price || item?.stockProduct?.price}
+                        orderTotal={item?.orderTotal}
+                        name={item?.ondemandProduct?.name || item?.stockProduct?.name}
+                        unit={item.orderUnit}
+                        quantity={item.orderQuantity}
+                        image={item?.ondemandProduct?.image || item?.stockProduct?.image}
                         loadFunc={handleReload}
                       />
-                      {/* <Box className="border-b-2 w-10/12 mt-10 mb-2 max-w-md"></Box> */}
                     </Box>
                   )
                 })
               }
             <Box className='w-7/12 h-10 mt-10 flex justify-end items-center'>
               <span className='text-2sm font-bold mr-5'>Total</span>
-              <span className='text-2sm font-bold ml-5'>$172.45</span>
+              <span className='text-2sm font-bold ml-5' onClick={() => fetch()}>$ {Number(subTotal).toFixed(3)}</span>
             </Box>
             </Box>
           </>
         }
       </Box>
       <Box className={styles.bottomBox}>
-        <button className={styles.btn}>Add Produce</button>
+        <button className={styles.btn}>Add Product</button>
         <button className={styles.btn}>Checkout</button>
       </Box>
-    </div>
+    </Box>
   )
 }
 

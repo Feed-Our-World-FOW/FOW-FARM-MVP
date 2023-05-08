@@ -1,68 +1,113 @@
 import React, { useState, useEffect } from 'react'
 import Paper from '@mui/material/Paper'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { styled } from '@mui/material/styles';
-import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import { Box, Container, IconButton } from '@mui/material';
+import { Alert, AlertColor, Box, Container, IconButton, Snackbar } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
-import Button from '@mui/material/Button'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Link from 'next/link'
-import Typography from '@mui/material/Typography';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ConfirmAddressCard from '../../components/marketplace/Farm/ConfirmAddressCard';
-import { getMySelf, getMyAddress } from '../../components/marketplace/API';
+import { updateMe, getMyConsumerProfile } from '../../components/marketplace/API';
 import { fetchToken } from '../../components/marketplace/token';
+import BottomNav from '../../components/marketplace/navBar/BottomNav';
+import MenuIcon from '@mui/icons-material/Menu';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import TextField from '@mui/material/TextField';
+import ClearIcon from '@mui/icons-material/Clear';
+import Link from 'next/link';
+
+interface User {
+  name: string;
+  email: string;
+  photo?: File | null;
+}
 
 function UserProfile() {
-
-  const [profile, setProfile] = useState({
-    email: '',
-    myAddress: [],
-    myFarm: [],
-    name: ''
+  const [userEdit, setUserEdit] = useState(false)
+  const [locationEdit, setLocationEdit] = useState(false)
+  const [myProfile, setMyProfile] = useState<any>({})
+  const [img, setImg] = useState(false)
+  const [userDetails, setUserDetails] = useState<User>({
+    name: "",
+    email: "",
+    photo: null
   })
+  const [alertTxt, setAlertTxt] = useState('')
+  const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [open, setOpen] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState("")
 
-  const currencies = [
-    {
-      value: 'USD',
-      label: '$',
-    },
-    {
-      value: 'EUR',
-      label: '€',
-    },
-    {
-      value: 'BTC',
-      label: '฿',
-    },
-    {
-      value: 'JPY',
-      label: '¥',
-    },
-  ]
+  
 
   const fetch = async () => {
     try {
       const token = fetchToken()
-      // console.log(token)
+      const myProfile = await getMyConsumerProfile(token)
 
-      const me = await getMySelf(token)
-      const address = await getMyAddress(token)
-      const data = me.data.data.data
-      setProfile({
-        email: data.email,
-        myAddress: data.myAddress,
-        myFarm: data.myFarm,
-        name: data.name
+      const data = myProfile.data.data.data[0]
+      setMyProfile(data)
+      setUserDetails({
+        name: data.user.name,
+        email: data.user.email,
+        photo: data.user.photo
       })
-      console.log(address.data.data.data)
+      
+      console.log(data)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  }
+
+  const handleImgChange = (e: any) => {
+    try {
+      setImg(true)
+      const selectedFile = e.target.files?.[0]
+
+      if(selectedFile) {
+        setUserDetails({...userDetails, photo: selectedFile})
+        const reader: any = new FileReader()
+        reader.readAsDataURL(selectedFile)
+        reader.onloadend = () => {
+          setPreviewUrl(reader.result)
+        }
+      }
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleUpdate = async () => {
+    try {
+      setUserEdit(false)
+      const token = fetchToken()
+      const formdata = new FormData()
+      if(userDetails.photo) {
+        formdata.append('photo', userDetails.photo)
+      }
+      formdata.append('name', userDetails.name)
+      formdata.append('email', userDetails.email)
+
+      updateMe(token, formdata)
+
+      setOpen(true)
+      setAlertStatus("success")
+      setAlertTxt('Successfully updated your profile!!!')
+      
+      window.location.reload()
+    } catch (error: any) {
+      console.log(error)
+      setOpen(true)
+      setAlertStatus("error")
+      setAlertTxt(`${error.response.data.message}`)
+      window.location.reload()
     }
   }
 
@@ -72,84 +117,153 @@ function UserProfile() {
 
 
   const styles = {
-    page: `flex flex-col justify-between items-center`,
-    navBox: `w-screen h-20 flex justify-between items-center bg-pearl`,
-    profileText: `font-semibold text-3sm ml-auto mr-auto`,
-    avaterBox: `mt-10 mb-5 w-11/12 flex justify-between items-center`,
-    bigTxt: `w-full font-bold text-lg ml-6`,
-    smallTxt: `text-sm ml-6`,
-    mediumBoldTxt: `text-3sm font-bold mr-auto ml-auto`,
-    walletBox: `w-10/12 h-10 mt-8 flex justify-around items-center`,
-    btn: `border-2 bg-pearl capitalize text-black focus:bg-light-pearl drop-shadow-lg focus:drop-shadow-0.5lg`,
-    currencyBox: `w-10/12 mt-10 mb-20 h-20 flex justify-center items-center`,
+    page: `flex flex-col justify-between items-center mb-10`,
+    navBox: `w-screen h-20 flex justify-between items-center bg-white`,
+    profileText: `font-bold text-3sm ml-auto mr-auto`,
+    bottomBox: `w-full flex justify-center items-center mt-10`
   }
 
   return (
-    <div className='w-screen flex justify-center items-center'>
+    <Box className='w-screen flex flex-col justify-center items-center'>
       <Container className={styles.page} maxWidth="sm">
-        <Paper className={styles.navBox} elevation={2}>
-          <Box className="" >
-            <ArrowBackIosIcon 
-              fontSize='small' 
-              className="ml-3"
-              onClick={() => history.back()}
-            />
+
+        <Paper className={styles.navBox} elevation={0}>
+          <Box className="ml-3" >
+            <MenuIcon />
           </Box>
-          <span className={styles.profileText}>My Profile</span>
+          <span className={styles.profileText}>Profile</span>
         </Paper>
 
-        <Box className={styles.avaterBox}>
-          <Box className="flex">
-            <Avatar alt="Ankush Banik" src="/static/images/avatar/1.jpg" sx={{ width: 56, height: 56 }} />
-            <IconButton color="primary" aria-label="upload picture" component="label" className='absolute mt-6 ml-7'>
-              <input hidden accept="image/*" type="file" />
-              <PhotoCamera />
-            </IconButton>
+        <Box className="border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center">
+          <Box className="w-3/12 h-full flex justify-center items-center">
+            <Avatar alt={myProfile?.user?.name} src={img ? previewUrl : myProfile?.user?.photo} sx={{ width: 56, height: 56 }} />
+            {
+              userEdit ?
+              <IconButton color="primary" aria-label="upload picture" component="label" className='absolute mt-9 ml-12'>
+                <input 
+                  hidden accept="image/*" 
+                  type="file" 
+                  onChange={handleImgChange}
+                />
+                <PhotoCamera />
+              </IconButton> :
+              <Box></Box>
+            }
           </Box>
-            <Box className="flex flex-col w-full" onClick={() => fetch()}>
-              <span className={styles.bigTxt}>{profile.name}</span>
-              <span className={styles.smallTxt}>{profile.email}</span>
+
+          <Box className="w-8/12 h-full flex flex-col justify-center items-center">
+            {
+              !userEdit ?
+              <span className='text-sm text-light-gray mb-auto mt-3'>Account type: Consumer</span>:
+              <span></span>
+            }
+            <Box className="w-full flex flex-col justify-center items-center">
+              {
+                userEdit ?
+                <Box className="w-full flex justify-end items-end mt-1 mr-1" onClick={() => setUserEdit(false)}>
+                  <ClearIcon fontSize='small' />
+                </Box> :
+                <Box></Box>
+              }
+              {
+                userEdit ?
+                <TextField 
+                  id="standard-basic" 
+                  label={myProfile?.user?.name} 
+                  variant="standard" 
+                  onChange={(e: any) => setUserDetails({...userDetails, name: e.target.value})} 
+                /> :
+                <span className='text-sm font-bold'>{myProfile?.user?.name}</span>
+              }
+              {
+                userEdit ?
+                <TextField 
+                  id="standard-basic" 
+                  label={myProfile?.user?.email} 
+                  variant="standard" 
+                  onChange={(e: any) => setUserDetails({...userDetails, email: e.target.value})} 
+                /> :
+                <span className='text-sm font-semibold overflow-hidden'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
+              }
             </Box>
+            <Box className="w-full flex justify-end">
+              {
+                userEdit ?
+                <AddCircleOutlineOutlinedIcon fontSize='small' onClick={handleUpdate} className='mt-3' /> :
+                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setUserEdit(true)} />
+              }
+            </Box>
+          </Box>
         </Box>
-        <Box className="w-full h-10 flex justify-center items-center mt-10">
-          <Button 
-            variant="outlined"
-            className={styles.btn}
-          >Connect Wallet</Button>
-        </Box>
-        <Box className={styles.walletBox}>
-          <AccountBalanceWalletIcon />
-          <span className={styles.mediumBoldTxt}>0x930......3D1f2s49</span>
-        </Box>
-        <Box className='w-screen max-w-sm mt-5 mb-10'>
+
+
+        <Box className='border-1 border-light-gray w-full h-52 rounded-2xl mt-5 flex flex-col justify-center items-center'>
+
           {
-            profile.myAddress.length > 0 ?
-            <ConfirmAddressCard /> :
-            <Box className="w-full flex justify-center items-center">
-              <Link href={'/Auth/AddLocation'}> 
-                <Button variant='outlined' className={styles.btn}>Add Address</Button>
+            locationEdit ?
+            <Box className="w-full h-full flex flex-col justify-center items-center">
+              <Box className="w-full flex justify-end items-start mb-auto mt-2 mr-4">
+                <ClearIcon fontSize='small' onClick={() => setLocationEdit(false)} />
+              </Box>
+              <span></span>
+              <Link href={'/location/ShowMap'} className='w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10'>
+                <span className='text-3sm text-white font-semibold'>Add location</span>
               </Link>
+            </Box> 
+            :
+            <Box className="w-full h-full flex flex-col justify-center items-center">
+              <Box></Box>
+              <span className='text-2sm font-semibold mr-auto ml-7'>My Address</span>
+              <Box className="w-full h-44 flex justify-end items-end">
+                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setLocationEdit(true)} />
+              </Box>
             </Box>
           }
         </Box>
-        <Box className={styles.currencyBox}>
-          <TextField
-            id="filled-select-currency"
-            select
-            label="Select"
-            defaultValue="USD"
-            helperText="Please select your currency"
-            className='bg-white drop-shadow-lg p-3 rounded-md'
-          >
-            {currencies.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+
+
+        <Box className='border-1 border-light-gray w-full h-48 rounded-2xl mt-5 flex flex-col justify-around items-center'>
+          
+          <Box className="w-10/12 rounded-2xl h-12 flex justify-around items-center">
+            <span className='text-sm font-semibold mr-auto'>Record</span>
+          </Box>
+          <Box className="border-1 border-light-gray w-10/12 rounded-2xl h-12 flex justify-around items-center">
+            <span className='text-sm'>My Orders</span>
+            <span className='text-sm'>{myProfile.orders}</span>
+            <Box className="ml-7">
+              <ArrowForwardIosIcon fontSize='small' />
+            </Box>
+          </Box>
+          <Box className="border-1 border-light-gray w-10/12 rounded-2xl h-12 flex justify-around items-center">
+            <span className='text-sm'>My favourite</span>
+            <span className='text-sm'>{myProfile.favourite}</span>
+            <Box className="ml-7">
+              <ArrowForwardIosIcon fontSize='small' />
+            </Box>
+          </Box>
+          
         </Box>
+
+        <button className="w-full h-9 rounded-3xl bg-green flex justify-center items-center mt-5">
+          <span className='text-3sm font-bold text-white'>Connect Wallet</span>
+        </button>
+
+        <Snackbar open={open} autoHideDuration={4500} className='w-full'>
+          <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
+            {alertTxt}
+          </Alert>
+        </Snackbar>
+
+        
+
+
+
+        
       </Container>
-    </div>
+      <Box className={styles.bottomBox}>
+        <BottomNav />
+      </Box>
+    </Box>
   )
 }
 

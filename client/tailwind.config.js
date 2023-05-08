@@ -9,17 +9,26 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slow': 'translate(+25%, +25%) scale(1)',
+      }
+    },
     screens: {
       'mobile': '343px',
       'mobileL': '372px'
+    },
+    fontFamily: {
+      'inter': 'Inter var'
     },
     fontSize: {
       'xs': '8px',
       'sm': '10px',
       '2sm': '12px',
+      '2.5sm': '13.5px',
       '3sm': '15px',
-      'lg': '25px'
+      'lg': '25px',
+      'xl': '35px'
     },
     dropShadow: {
       'md': '3px 3px 0px rgba(0, 0, 0, 0.5)',
