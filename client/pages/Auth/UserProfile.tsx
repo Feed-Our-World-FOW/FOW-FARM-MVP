@@ -13,6 +13,8 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import TextField from '@mui/material/TextField';
 import ClearIcon from '@mui/icons-material/Clear';
 import Link from 'next/link';
+import LocationCard from '../../components/marketplace/location/LocationCard';
+import 'animate.css'
 
 interface User {
   name: string;
@@ -34,7 +36,6 @@ function UserProfile() {
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
   const [open, setOpen] = useState(false)
   const [previewUrl, setPreviewUrl] = useState("")
-
   
 
   const fetch = async () => {
@@ -136,7 +137,12 @@ function UserProfile() {
 
         <Box className="border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center">
           <Box className="w-3/12 h-full flex justify-center items-center">
-            <Avatar alt={myProfile?.user?.name} src={img ? previewUrl : myProfile?.user?.photo} sx={{ width: 56, height: 56 }} />
+            <Avatar 
+              alt={myProfile?.user?.name} 
+              src={img ? previewUrl : myProfile?.user?.photo} 
+              sx={{ width: 56, height: 56 }} 
+              className='animate__animated animate__rubberBand'
+            />
             {
               userEdit ?
               <IconButton color="primary" aria-label="upload picture" component="label" className='absolute mt-9 ml-12'>
@@ -203,7 +209,7 @@ function UserProfile() {
             locationEdit ?
             <Box className="w-full h-full flex flex-col justify-center items-center">
               <Box className="w-full flex justify-end items-start mb-auto mt-2 mr-4">
-                <ClearIcon fontSize='small' onClick={() => setLocationEdit(false)} />
+                <ClearIcon fontSize='small' onClick={() => {setLocationEdit(false); window.location.reload()}} />
               </Box>
               <span></span>
               <Link href={'/location/ShowMap'} className='w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10'>
@@ -211,6 +217,16 @@ function UserProfile() {
               </Link>
             </Box> 
             :
+            myProfile?.location?.coordinates?.length === 2 ?
+            <Box className="w-full h-full flex flex-col rounded-2xl">
+              <LocationCard 
+                lat={myProfile?.location?.coordinates[1]}
+                lng={myProfile?.location?.coordinates[0]}
+              />
+              <Box className="flex justify-end items-end absolute" sx={{marginLeft: '255px'}}>
+                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setLocationEdit(true)} />
+              </Box>
+            </Box> :
             <Box className="w-full h-full flex flex-col justify-center items-center">
               <Box></Box>
               <span className='text-2sm font-semibold mr-auto ml-7'>My Address</span>

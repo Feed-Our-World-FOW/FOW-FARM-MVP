@@ -1,9 +1,13 @@
-import React from 'react'
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
-import Link from 'next/link'
+import React, { useState } from 'react'
+import { Box } from '@mui/material'
+import DebitCard from './DebitCard'
+import CryptoCard from './CryptoCard'
 
 
 function ChoosePaymentOptionCard(props: any) {
+  const [upi, setUpi] = useState(false)
+  const [debit, setDebit] = useState(false)
+  const [crypto, setCrypto] = useState(true)
 
   const handleATM = async () => {
     try {
@@ -19,39 +23,55 @@ function ChoosePaymentOptionCard(props: any) {
     }
   }
 
+  const handleSetPayment = (type: string) => {
+    if(type === "upi") {
+      setUpi(true)
+      setDebit(false)
+      setCrypto(false)
+      console.log("upi")
+    }
+    else if(type === "debit") {
+      setUpi(false)
+      setDebit(true)
+      setCrypto(false)
+      console.log("debit")
+    }
+    else if(type === "crypto") {
+      setUpi(false)
+      setDebit(false)
+      setCrypto(true)
+      console.log("crypto")
+    }
+  }
+
   const styles = {
     card: `w-screen flex flex-col justify-around items-center max-w-md`,
-    bigTxt: `font-bold text-lg mr-auto ml-6 mt-10`,
-    subCards: `w-10/12 h-16 rounded-xl p-2 bg-white drop-shadow-1.5lg p-2 flex justify-start items-center mb-5 active:drop-shadow-md`,
+    btn: `border-1 rounded-3xl w-32 h-8 text-2sm font-bold mb-3 focus:bg-dark-gray focus:text-white disabled:text-light-gray`
 
   }
   return (
-    <div className={styles.card}>
-       <span className={styles.bigTxt}>Select a payment method</span>
-      <div className="w-full mt-10 flex flex-col justify-center items-center">
-        <div className={styles.subCards}>
-          <RadioButtonCheckedIcon className='ml-5' />
-          <span className='font-semibold ml-5'>UPI/Netbanking</span>
-        </div>
-        <div className={styles.subCards}>
-          <RadioButtonCheckedIcon className='ml-5' />
-          <span 
-            className='font-semibold ml-5'
-            onClick={handleATM}
-          >
-            Pay with Debit/ATM Cards
-          </span>
-        </div>
-        <div className={styles.subCards}>
-          <RadioButtonCheckedIcon className='ml-5' />
-          <span className='font-semibold ml-5'>Cash On Delivery/Pay On Delivery</span>
-        </div>
-        <div className={styles.subCards}>
-          <RadioButtonCheckedIcon className='ml-5' />
-          <span className='font-semibold ml-5'>Pay with crypto(CUSD)</span>
-        </div>
-      </div>
-    </div>
+    <Box className={styles.card}>
+      <Box className="w-full flex justify-center items-center">
+        <span className="text-2sm font-normal">Payment</span>
+      </Box>
+      <Box className="w-full flex flex-col justify-between items-center mt-2">
+        <button className={styles.btn} onClick={() => handleSetPayment("upi")} disabled>{`UPI / Netbanking`}</button>
+        <button className={styles.btn} onClick={() => handleSetPayment("debit")}>{`Debit / ATM card`}</button>
+        <button className={styles.btn} onClick={() => handleSetPayment("crypto")} autoFocus>{`Crypto(CUSD)`}</button>
+      </Box>
+
+      <Box className="w-11/12 mt-5">
+        {
+          crypto ?
+          <CryptoCard 
+            setConfirm={props.setConfirm}
+          /> :
+          <DebitCard 
+            setConfirm={props.setConfirm}
+          />
+        }
+      </Box>
+    </Box>
   )
 }
 

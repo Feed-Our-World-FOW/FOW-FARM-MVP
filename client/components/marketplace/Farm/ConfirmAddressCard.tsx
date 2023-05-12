@@ -1,54 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import Link from 'next/link'
 import { Box, Container } from '@mui/material';
-import { getMyAddress } from '../API';
+import { getMyConsumerProfile } from '../API';
 import { fetchToken } from '../token';
+import LocationCard from '../location/LocationCard';
 
 function ConfirmAddressCard(props: any) {
-
-  const [data, setdata] = useState({
-    name: '',
-    country: '',
-    flatDetails: '',
-    landmark: '',
-    mobileNo: 0,
-    pinCode: 0,
-    city: ''
+  const [location, setLocation] = useState({
+    lat: 0,
+    lng: 0
   })
+  const [data, setData] = useState<any>({})
 
   const fetch = async () => {
     try {
       const token = fetchToken()
-      const res = await getMyAddress(token)
-      const resData = res.data.data.data[0]
-      setdata({
-        name: resData.user.name,
-        country: resData.country,
-        flatDetails: resData.flatDetails,
-        landmark: resData.landMark,
-        mobileNo: resData.mobileNumber,
-        pinCode: resData.pincode,
-        city: resData.town
+      const res = await getMyConsumerProfile(token)
+      const data = res.data.data.data[0]
+      console.log(data)
+      setLocation({
+        lat: data.location.coordinates[1],
+        lng: data.location.coordinates[0]
       })
-      console.log(res.data.data.data[0])
+      setData(data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const handleDeliver = () => {
-    try {
-      props.setConfirm({
-        address: true,
-        payment: false,
-        debitCard: false,
-        order: false,
-        value: 1
-      })
-    } catch (error) {
-      console.log(error)
-    }
+  const handleContinue = () => {
+    props.setConfirm({
+      address: true,
+      payment: false,
+      debitCard: false,
+      order: false,
+      value: 1
+    })
   }
 
   useEffect(() => {
@@ -58,33 +45,33 @@ function ConfirmAddressCard(props: any) {
   const styles = {
     card: `w-screen flex flex-col justify-around items-center max-w-sm`,
     bigTxt: `font-bold text-lg mr-auto ml-6 mb-5 mt-5`,
-    aboutCard: `w-10/12 rounded-xl bg-white drop-shadow-1.5lg p-2 flex flex-col justify-center items-start`,
+    aboutCard: `w-11/12 h-60 rounded-xl bg-white drop-shadow-1.5lg p-2 flex flex-col justify-center items-start`,
     smallTxt: `font-semibold text-2sm`,
     upbtn: `text-2sm w-10/12 border-2 rounded-lg bg-pearl h-8 mt-5 ml-auto mr-auto p-1`,
-    lowbtn: `text-2sm w-10/12 border-2 rounded-lg bg-white h-8 mt-5 mb-5 ml-auto mr-auto p-1 flex justify-center items-center`
+    lowbtn: `text-2sm w-10/12 border-2 rounded-lg bg-white h-8 mt-5 mb-5 ml-auto mr-auto p-1 flex justify-center items-center`,
+    btn1: `w-32 border-1 rounded-2xl h-8 text-2sm font-semibold`,
+    btn2: `w-32 bg-green border-1 border-green rounded-2xl h-8 text-2sm font-semibold`,
   }
 
   return (
     <Box className={styles.card}>
-      <span className={styles.bigTxt}>Delivery Address</span>
+      <span className={styles.bigTxt}>Address</span>
       <Container className={styles.aboutCard}>
-        <Box className="flex w-full justify-around items-center">
-          <RadioButtonCheckedIcon fontSize='small' />
-          <Box className="flex flex-col mt-5 ml-5">
-
-            <span className='font-bold text-2sm'>RECENTLY USED</span>
-            <span className='font-bold text-sm'>{data.name}</span>
-            <span className={styles.smallTxt}>{data.flatDetails}</span>
-            <span className={styles.smallTxt}>{data.city}, {data.pinCode}</span>
-            <span className={styles.smallTxt}>{data.country}</span>
-            <span className={styles.smallTxt}>Phone number: {data.mobileNo}</span>
-          </Box>
-        </Box>
-        <button className={styles.upbtn} onClick={handleDeliver}>{`Deliver to this address`}</button>
-        {/* <Link href={'/Auth/AddLocation'}> */}
-          <Link href={'/Auth/AddLocation'} className={styles.lowbtn}>{`Edit Address`}</Link>
-        {/* </Link> */}
+        <LocationCard 
+          lat={location.lat}
+          lng={location.lng}
+        />
       </Container>
+      <Box className="mt-5 w-11/12 leading-tight">
+        <span className='text-2sm font-bold mr-3'>Description:</span>
+        <span className='text-sm font-semibold'>{data?.location?.description}</span>
+      </Box>
+      <Box className="w-11/12 flex justify-around items-center mt-20 mb-3">
+        <button className={styles.btn1}>
+          <Link href={"/location/ShowMap"}>Update Address</Link>
+        </button>
+        <button className={styles.btn2} onClick={handleContinue}>Continue</button>
+      </Box>
     </Box>
   )
 }

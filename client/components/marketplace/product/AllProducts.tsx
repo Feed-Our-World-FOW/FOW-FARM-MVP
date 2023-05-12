@@ -169,7 +169,7 @@ function AllProducts(props: any) {
                               stock={product.stock}
                               unit={product.unit}
                               price={product.price}
-                              images={product.image && product.image[(product.image).length - 1]}
+                              images={product.image}
                             />
                           </Box> 
                         )
@@ -192,7 +192,7 @@ function AllProducts(props: any) {
                               capacity={product.capacity}
                               unit={product.unit}
                               price={product.price}
-                              images={product.image && product.image[(product.image).length - 1]}
+                              images={product.image}
                             />
                           </Box> 
                         )

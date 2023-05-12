@@ -129,3 +129,14 @@ export const getMyCart = (_token: string) => CART_API.get(`/myCart`, { headers: 
 export const removeItemFromCart = (_token: string, _itemId: string) => CART_API.delete(`/${_itemId}/remove`, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const getMyConsumerProfile = (_token: string) => CONSUMER_API.get(`/myProfile`, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const updateMyConsumerProfileLocation = (
+  _token: string, 
+  _details: {
+    location: {
+      type: string,
+      coordinates: Array<number>,
+      description: string
+    }
+  }
+) => CONSUMER_API.patch(`/myProfile`, _details, { headers: { Authorization: `Bearer ${_token}`}})

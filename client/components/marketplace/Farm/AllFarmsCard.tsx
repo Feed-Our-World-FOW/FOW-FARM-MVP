@@ -106,7 +106,7 @@ function AllFarmsCard(props: any) {
                           key={farm._id}
                           id={farm._id}
                           name={farm.user.name}
-                          images={farm.images}
+                          images={farm.user.photo}
                           location={farm.location}
                           meat={farm.meat}
                           produce={farm.produce}
@@ -123,7 +123,7 @@ function AllFarmsCard(props: any) {
                           key={farm._id}
                           id={farm._id}
                           name={farm.user.name}
-                          images={farm.images}
+                          images={farm.user.photo}
                           location={farm.location}
                           meat={farm.meat}
                           produce={farm.produce}

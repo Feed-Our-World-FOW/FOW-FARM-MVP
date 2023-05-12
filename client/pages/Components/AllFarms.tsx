@@ -49,8 +49,9 @@ function AllFarms() {
       setAllStockProducts(stockProductData)
       setAllOndemandProducts(ondemandData)
       setLoading(false)
-      console.log(stockProductData.concat(ondemandData))
-      
+      // console.log(stockProductData.concat(ondemandData))
+
+      console.log(data)
     } catch (error) {
       console.log(error)
     }

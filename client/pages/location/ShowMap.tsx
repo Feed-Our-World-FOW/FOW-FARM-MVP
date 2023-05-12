@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import { Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, LoadScript, useJsApiLoader } from '@react-google-maps/api';
+import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 import {MarkerF} from '@react-google-maps/api'
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import TextField from '@mui/material/TextField';
+import { updateMyConsumerProfileLocation } from '../../components/marketplace/API';
+import { fetchToken } from '../../components/marketplace/token';
 
 
 function ShowMap() {
@@ -13,18 +16,14 @@ function ShowMap() {
   };
   const [currentPosition, setCurrentPosition] = useState(center);
   const [open, setOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-
+  const [description, setDescription] = useState("")
+  const [alertTxt, setAlertTxt] = useState('')
+  const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [openAlert, setOpenAlert] = useState(false)
+  
   const containerStyle = {
     width: '100%',
-    height: '90%'
+    height: '75%'
   };
 
   const onMarkerDragEnd = (event: any) => {
@@ -54,14 +53,42 @@ function ShowMap() {
     }
   }
 
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  }
+
+
   const handleAddMyLocation = async () => {
     try {
-      console.log(currentPosition)
+      const token = fetchToken()
+      const update = await updateMyConsumerProfileLocation(token, {
+        location: {
+          type: 'Point',
+          coordinates: [currentPosition.lng, currentPosition.lat],
+          description: description,
+        }
+      })
+      setOpenAlert(true)
+      setAlertStatus('success')
+      setAlertTxt('location updated')
+      setDescription("")
     } catch (error) {
       console.log(error)
+      setOpenAlert(true)
+      setAlertStatus('error')
+      setAlertTxt('Something goes wrong')
     }
   }
 
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: `${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`,
+    libraries: ['geometry', 'drawing'],
+  });
 
   const styles = {
     page: `w-screen flex flex-col justify-center items-center`,
@@ -80,27 +107,46 @@ function ShowMap() {
           <CircularProgress color="inherit" />
         </Backdrop>
 
-        <LoadScript
+        {/* <LoadScript
           googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`}
-        >
-          <GoogleMap
+        > */}
+          {isLoaded && <GoogleMap
             mapContainerStyle={containerStyle}
             center={currentPosition}
             zoom={10}
+            options={{
+              zoomControl: false,
+            }}
           >
             <MarkerF
               position={currentPosition}
               draggable={true}
               onDragEnd={onMarkerDragEnd}
             />
-          </GoogleMap>
-        </LoadScript>
+          </GoogleMap>}
+        {/* </LoadScript> */}
 
+        <Box className="w-full flex justify-center items-center mt-5">
+          <TextField 
+            id="outlined-basic" 
+            label="Additional description" 
+            variant="outlined" 
+            className='w-11/12' 
+            value={description}
+            onChange={(e: any) => setDescription(e.target.value)}
+          />
+        </Box>
         <Box className={styles.btn_box}>
           <button className={styles.btn} onClick={handleFindMyLocation}>Find my location</button>
           <button className={styles.btn} onClick={handleAddMyLocation}>Add my location</button>
         </Box>
       </Box>
+
+      <Snackbar open={openAlert} autoHideDuration={4500} className='w-full'>
+        <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
+          {alertTxt}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }

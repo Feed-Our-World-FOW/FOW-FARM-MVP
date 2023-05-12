@@ -90,7 +90,7 @@ function FarmPage() {
     bottomBox: `w-full flex justify-center items-center mt-10`,
     statBox: `w-10 h-10 flex flex-col justify-between items-center`,
     farm_name_txt: `text-2sm font-bold w-full flex justify-center items-center`,
-    img_box: `w-20 h-20 rounded-full bg-white mb-10 absolute border-1`,
+    img_box: `w-20 h-20 rounded-full bg-white mb-10 absolute`,
     low_container: `w-full h-16 flex justify-around items-center`,
   }
 
@@ -113,7 +113,8 @@ function FarmPage() {
             </Box>
             <Box className={styles.img_box}>
               <ImageCard 
-                image={farmDetails.images}
+                image={farmDetails?.user?.photo}
+                rounded={true}
               />
             </Box>
             <span className={styles.farm_name_txt}>{farmDetails.name}</span>

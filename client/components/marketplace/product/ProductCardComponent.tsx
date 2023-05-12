@@ -16,7 +16,7 @@ function ProductCardComponent(props: any) {
   return (
     <Paper elevation={0} className={styles.wholeCard}>
       <Box className="h-full w-3/12 flex justify-center items-center">
-        <Box className="w-14 h-14 rounded-full">
+        <Box className="w-14 h-14 rounded-full" onClick={() => console.log(props)}>
           <ImageCard 
             image={props.images}
             // type='products'

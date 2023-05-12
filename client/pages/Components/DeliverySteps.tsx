@@ -9,6 +9,12 @@ import ConfirmAddressCard from '../../components/marketplace/Farm/ConfirmAddress
 import ChoosePaymentOptionCard from '../../components/marketplace/Payment/ChoosePaymentOptionCard'
 import DebitCard from '../../components/marketplace/Payment/DebitCard'
 import PlaceOrderCard from '../../components/marketplace/Farm/PlaceOrderCard'
+import Navbar from '../../components/marketplace/navBar/Navbar'
+import WhereToVoteOutlinedIcon from '@mui/icons-material/WhereToVoteOutlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import DeliveryOption from '../../components/marketplace/delivery/DeliveryOption'
 
 function DeliverySteps() {
 
@@ -30,24 +36,25 @@ function DeliverySteps() {
   ];
 
   const styles = {
-    page: `w-screen max-w-md`,
-    upperNav: `w-full h-24 p-4 bg-pearl flex justify-between items-center`,
-    lowerNav: `w-full h-16 bg-white drop-shadow-lg`,
-
+    page: `w-screen flex flex-col justify-center items-center max-w-md`,
+    lowerNav: `w-full h-16 bg-white mt-20 mb-3 flex justify-center items-center`,
+    navBox: `w-full px-4 z-50`,
+    border: `w-10 border-1 border-dashed border-light-gray`,
+    bg: `rounded-full w-8 h-8 flex justify-center items-center`,
+    activeBg: `rounded-full bg-green w-8 h-8 flex justify-center items-center`,
   }
   return (
-    <div className="w-screen flex justify-center items-center">
+    <div className="w-screen flex flex-col justify-center items-center">
       <Box className={styles.page}>
-        <Box className={styles.upperNav}>
-          <Box className="">
-            <ArrowBackIosIcon fontSize='small' />
-            <span className='text-3sm font-semibold'>cancel</span>
-          </Box>
-          <AccountCircleIcon fontSize='large' className='mt-1' />
+        <Box className={styles.navBox}>
+          <Navbar 
+            // load={handleReload} 
+            order={true}
+            arrow={true}
+          />
         </Box>
 
-        <Box className={styles.lowerNav}>
-          <Box sx={{ width: '100%', marginTop: '5px' }}>
+          {/* <Box sx={{ width: '100%', marginTop: '5px' }}>
             <Stepper activeStep={confirm.value} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>
@@ -55,6 +62,24 @@ function DeliverySteps() {
                 </Step>
               ))}
             </Stepper>
+          </Box> */}
+
+
+        <Box className={styles.lowerNav}>
+          <Box className={styles.activeBg}>
+            <WhereToVoteOutlinedIcon fontSize='small' />
+          </Box>
+          <Box className={styles.border}></Box>
+          <Box className={confirm.value > 0 ? styles.activeBg : styles.bg}>
+            <LocalShippingOutlinedIcon fontSize='small' />
+          </Box>
+          <Box className={styles.border}></Box>
+          <Box className={confirm.value > 1 ? styles.activeBg : styles.bg}>
+            <MonetizationOnOutlinedIcon fontSize='small' />
+          </Box>
+          <Box className={styles.border}></Box>
+          <Box className={confirm.value > 2 ? styles.activeBg : styles.bg}>
+            <DescriptionOutlinedIcon fontSize='small' />
           </Box>
         </Box>
 
@@ -62,14 +87,17 @@ function DeliverySteps() {
           {
             !confirm.address && !confirm.payment && !confirm.debitCard && !confirm.order ?
             <ConfirmAddressCard 
-            setConfirm={setConfirm}
+              setConfirm={setConfirm}
             />
             : confirm.address && !confirm.payment && !confirm.debitCard && !confirm.order ?
-            <ChoosePaymentOptionCard 
+            <DeliveryOption 
               setConfirm={setConfirm}
             />
             : confirm.address && confirm.payment && !confirm.debitCard && !confirm.order ?
-            <DebitCard 
+            // <DebitCard 
+            //   setConfirm={setConfirm}
+            // /> 
+            <ChoosePaymentOptionCard 
               setConfirm={setConfirm}
             /> 
             :

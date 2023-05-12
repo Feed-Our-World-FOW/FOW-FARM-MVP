@@ -100,10 +100,10 @@ export interface CommentInterface {
 }
 
 
-export interface ImageTypeInterface {
-  image: string,
-  // type: "farms" | "users" | "ondemandProduct" | "stockProducts"
-}
+// export interface ImageTypeInterface {
+//   image: string,
+//   // type: "farms" | "users" | "ondemandProduct" | "stockProducts"
+// }
 
 export interface WriteCommentInterface {
   comment: boolean,

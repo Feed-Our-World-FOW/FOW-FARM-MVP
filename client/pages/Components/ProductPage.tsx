@@ -5,7 +5,7 @@ import Navbar from '../../components/marketplace/navBar/Navbar'
 import { getSingleStockProduct, getSingleOndemandProduct } from '../../components/marketplace/API'
 import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
-import { addItemToCart } from '../../components/marketplace/API'
+// import { addItemToCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
 import { Box } from '@mui/material'
 import Alert, { AlertColor } from '@mui/material/Alert'
@@ -51,18 +51,18 @@ function ProductPage() {
 
 
 
-  const handleAddItemsToCart = async () => {
-    try {
-      const token = fetchToken()
-      const res = await addItemToCart(token, id.data)
-      handleReload()
-      setOpen(true)
-    } catch (error: any) {
-      console.log(error)
-      setOpen(true)
-      setAlertData(error.response.data.message)
-    }
-  }
+  // const handleAddItemsToCart = async () => {
+  //   try {
+  //     const token = fetchToken()
+  //     const res = await addItemToCart(token, id.data)
+  //     handleReload()
+  //     setOpen(true)
+  //   } catch (error: any) {
+  //     console.log(error)
+  //     setOpen(true)
+  //     setAlertData(error.response.data.message)
+  //   }
+  // }
 
   const handleSelect = (selectedIndex: any, e: any) => {
     setIndex(selectedIndex);
@@ -125,7 +125,7 @@ function ProductPage() {
     smNavBox: `w-11/12 flex justify-between items-center h-8 mt-20`,
     blur_smNavBox: `w-11/12 flex justify-between items-center h-8 mt-20 blur-sm`,
     rightSmNavBox: `border-1 border-light-gray rounded-3xl w-9/12 h-full flex justify-between items-center`,
-    roundedSmImgBox: `h-7 w-7 rounded-full ml-1`,
+    roundedSmImgBox: `h-7 w-7 rounded-full ml-2 flex`,
     rightSmNav: `h-full w-8/12 rounded-3xl flex justify-start items-center`,
     smRatingBox: `h-full w-3/12 rounded-3xl flex justify-around items-center`,
     bigImgBox: `border-1 border-light-gray w-11/12 h-80 mt-6 rounded-3xl flex flex-col justify-between items-center`,
@@ -144,17 +144,18 @@ function ProductPage() {
           />
         </Box>
 
-        <Box className={!open ? styles.smNavBox : styles.blur_smNavBox} onClick={() => console.log(orderDetails)}>
+        <Box className={!open ? styles.smNavBox : styles.blur_smNavBox}>
           <span className='text-2sm font-semibold'>Produced by</span>
           <Box className={styles.rightSmNavBox}>
             <Box className={styles.rightSmNav}>
               <Box className={styles.roundedSmImgBox}>
                 <ImageCard 
-                  image={productDetails.image} 
+                  image={productDetails?.businessProfile?.user?.photo}
+                  rounded={true} 
                   // type="ondemandProduct"
                 />
               </Box>
-              <span className='text-sm font-semibold ml-1'>{productDetails.farm?.name}</span>
+              <span className='text-sm font-semibold ml-2'>{productDetails?.businessProfile?.user?.name}</span>
             </Box>
 
             <Box className={styles.smRatingBox}>

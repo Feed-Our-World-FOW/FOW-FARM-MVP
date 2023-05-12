@@ -1,15 +1,9 @@
-//SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
 
 contract FOW_transaction {
-  address public owner;
-
-  constructor(){
-    owner = msg.sender;
-  }
-
-  function send() payable public{
-    require(msg.value > 0, "You can't send 0 eth");
-    payable(owner).transfer(msg.value);
-  }
+    function send(address _addr, uint256 _value) payable public {
+        require(msg.value >= _value, "Insufficient funds");
+        payable(address(_addr)).transfer(msg.value);
+    } 
 }

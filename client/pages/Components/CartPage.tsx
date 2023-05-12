@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/marketplace/navBar/Navbar'
-import CartProductCard from '../../components/marketplace/shoppingCart/CartProductCard'
 import Image from 'next/image'
 import { getMyCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
@@ -11,6 +10,7 @@ import CartProductCardComponent from '../../components/marketplace/shoppingCart/
 function CartPage() {
 
   const [empty, setEmpty] = useState(true)
+  const [sendData, setSendData] = useState({})
   const [cartItems, setCartItems] = useState([])
   const [subTotal, setSubTotal] = useState(0)
   const [reloadComponent, setReloadComponent] = useState(false)
@@ -25,13 +25,24 @@ function CartPage() {
     try {
       const Token = fetchToken()
       const response = await getMyCart(Token)
+      const data = response.data.data.data[0]
       // console.log(response)
-      setSubTotal(response.data.data.data[0].subTotal)
-      setTotalItems(response.data.data.data[0].items.length)
+      setSubTotal(data.subTotal)
+      setTotalItems(data.items.length)
 
-      setCartItems(response.data.data.data[0].items)
+      setCartItems(data.items)
+      console.log(data.items)
 
-      if(response.data.data.data[0].items.length > 0) {
+      if(data.items[0].ondemandProduct) {
+        
+        setSendData({ondemand: data.items[0].ondemandProduct.id})
+        
+      } else if(data.items[0].stockProduct) {
+        setSendData({stock: data.items[0].stockProduct.id})
+        
+      }
+
+      if(data.items.length > 0) {
         setEmpty(false)
       }else {
         setEmpty(true)
@@ -43,6 +54,7 @@ function CartPage() {
 
   useEffect(() => {
     fetch()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadComponent])
 
   const styles = {
@@ -50,10 +62,10 @@ function CartPage() {
     navBox: `w-full px-4 z-50`,
     totalBox: `mt-36 flex pt-5 pb-5 pl-3 w-11/12`,
     btnBox: `w-full flex justify-center items-center mt-20`,
-    // btn: `w-10/12 rounded-md p-1 bg-pearl font-semibold`,
     cartProductBox: `flex flex-col justify-center items-center w-screen max-w-md mb-10`,
     bottomBox: `w-11/12 max-w-md flex justify-around items-center h-16`,
-    btn: `w-5/12 h-8 rounded-3xl border-2 border-green text-black text-3sm font-bold focus:bg-green focus:text-white`
+    btn: `w-5/12 h-8 rounded-3xl border-1 border-black text-black text-2sm font-semibold`,
+    btn2: `w-5/12 h-8 rounded-3xl text-2sm font-semibold bg-green text-black`
   }
 
   return (
@@ -120,8 +132,15 @@ function CartPage() {
         }
       </Box>
       <Box className={styles.bottomBox}>
-        <button className={styles.btn}>Add Product</button>
-        <button className={styles.btn}>Checkout</button>
+        <button className={styles.btn}>
+          <Link href={'/'}>Add Product</Link>
+        </button>
+        <button className={styles.btn2}>
+          <Link href={{
+            pathname: '/Components/DeliverySteps',
+            query: sendData
+          }}>Checkout</Link>
+        </button>
       </Box>
     </Box>
   )

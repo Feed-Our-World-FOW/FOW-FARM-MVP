@@ -21,10 +21,11 @@ function FarmCardComponent(props: any) {
   return (
     <Paper elevation={0} className={styles.wholeCard}>
       <Box className="h-full w-3/12 flex justify-center items-center">
-        <Box className="w-14 h-14 rounded-full border-1">
+        <Box className="w-14 h-14 rounded-full">
           <ImageCard 
             image={props.images}
-            type='farms'
+            rounded={true}
+            // type='farms'
           />
         </Box>
       </Box>
