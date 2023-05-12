@@ -96,7 +96,7 @@ function AllFarmsCard(props: any) {
                       tokenExists ?
                       <Link
                         href={{
-                          pathname: '/Components/FarmPage',
+                          pathname: '/consumer/FarmPage',
                           query: sendData
                         }}
                         className='text-black no-underline w-full cursor-pointer'

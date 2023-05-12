@@ -212,7 +212,7 @@ function UserProfile() {
                 <ClearIcon fontSize='small' onClick={() => {setLocationEdit(false); window.location.reload()}} />
               </Box>
               <span></span>
-              <Link href={'/location/ShowMap'} className='w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10'>
+              <Link href={'/consumer/location/ShowMap'} className='w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10'>
                 <span className='text-3sm text-white font-semibold'>Add location</span>
               </Link>
             </Box> 

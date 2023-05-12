@@ -137,7 +137,7 @@ function CartPage() {
         </button>
         <button className={styles.btn2}>
           <Link href={{
-            pathname: '/Components/DeliverySteps',
+            pathname: '/consumer/DeliverySteps',
             query: sendData
           }}>Checkout</Link>
         </button>

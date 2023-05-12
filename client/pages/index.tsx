@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import AllFarms from './Components/AllFarms'
+import AllFarms from './consumer/AllFarms'
 
 const Home: NextPage = () => {
   return (

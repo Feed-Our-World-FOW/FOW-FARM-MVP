@@ -68,7 +68,7 @@ function ConfirmAddressCard(props: any) {
       </Box>
       <Box className="w-11/12 flex justify-around items-center mt-20 mb-3">
         <button className={styles.btn1}>
-          <Link href={"/location/ShowMap"}>Update Address</Link>
+          <Link href={"/consumer/location/ShowMap"}>Update Address</Link>
         </button>
         <button className={styles.btn2} onClick={handleContinue}>Continue</button>
       </Box>

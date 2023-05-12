@@ -5,8 +5,8 @@ import {MarkerF} from '@react-google-maps/api'
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
-import { updateMyConsumerProfileLocation } from '../../components/marketplace/API';
-import { fetchToken } from '../../components/marketplace/token';
+import { updateMyConsumerProfileLocation } from '../../../components/marketplace/API';
+import { fetchToken } from '../../../components/marketplace/token';
 
 
 function ShowMap() {

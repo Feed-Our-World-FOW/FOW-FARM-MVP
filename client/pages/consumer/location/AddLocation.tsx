@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { Alert, AlertColor, Box, Button, Paper, Snackbar } from '@mui/material'
 import TextField from '@mui/material/TextField';
-import { getMyAddress, setMyAddress, updateMyAddress } from '../../components/marketplace/API';
-import { fetchToken } from '../../components/marketplace/token';
+import { getMyAddress, setMyAddress, updateMyAddress } from '../../../components/marketplace/API';
+import { fetchToken } from '../../../components/marketplace/token';
 
 function AddLocation() {
 

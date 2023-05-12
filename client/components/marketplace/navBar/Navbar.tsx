@@ -91,7 +91,7 @@ function Navbar(props: any) {
             }
             
             <Box className="mr-3">
-              <Link href={'/Components/CartPage'} className="mr-2">
+              <Link href={'/consumer/CartPage'} className="mr-2">
                 <IconButton aria-label="cart">
                   <StyledBadge badgeContent={totalAmount} sx={{color: 'white'}}>
                     <ShoppingCartOutlinedIcon sx={{color: 'black'}} />

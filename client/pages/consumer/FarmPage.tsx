@@ -121,7 +121,7 @@ function FarmPage() {
           </Box>
           <Box className={styles.low_container}>
             <Box className={styles.statBox}>
-              <Link href={'/Components/comment/CommentPage'}>
+              <Link href={'/consumer/comment/CommentPage'}>
                 <StarOutlineIcon />
               </Link>
               <span className='text-sm font-semibold'>{farmDetails.ratingsAverage}</span>
@@ -189,7 +189,7 @@ function FarmPage() {
                 <Box className="w-11/12" key={product._id}>
                   <Link key={product._id} 
                     href={{
-                      pathname: '/Components/ProductPage',
+                      pathname: '/consumer/ProductPage',
                       query: sendData
                     }} 
                   >
@@ -217,7 +217,7 @@ function FarmPage() {
                 <Box className="w-11/12" key={product._id}>
                   <Link key={product._id} 
                     href={{
-                      pathname: '/Components/ProductPage',
+                      pathname: '/consumer/ProductPage',
                       query: sendData
                     }} 
                   >

@@ -100,7 +100,7 @@ function AllProducts(props: any) {
                           return (
                             <Link
                               href={{
-                                pathname: '/Components/ProductPage',
+                                pathname: '/consumer/ProductPage',
                                 query: sendData1
                               }}
                               className='text-black no-underline w-full cursor-pointer'
@@ -130,7 +130,7 @@ function AllProducts(props: any) {
                           return (
                             <Link
                               href={{
-                                pathname: '/Components/ProductPage',
+                                pathname: '/consumer/ProductPage',
                                 query: sendData1
                               }}
                               className='text-black no-underline w-full cursor-pointer'
