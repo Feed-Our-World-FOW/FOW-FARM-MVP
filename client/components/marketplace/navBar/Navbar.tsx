@@ -81,6 +81,18 @@ function Navbar(props: any) {
             {
               props.farm ? 
               <span className={styles.headTxt}>Farm</span> : 
+              props.produce ?
+              <Box className="w-full flex justify-center items-center mr-8">
+                <span className={styles.headTxt}>Produce</span> 
+              </Box> :
+              props.addProductInStock ?
+              <Box className="w-full flex justify-center items-center mr-8">
+                <span className={styles.headTxt}>Add Product in stock</span> 
+              </Box> :
+              props.addProductOndemand ?
+              <Box className="w-full flex justify-center items-center mr-8">
+                <span className={styles.headTxt}>Add Product On demand</span> 
+              </Box> :
               props.product ?
               <span className={styles.headTxt}>Product</span> : 
               props.order ?
@@ -89,16 +101,18 @@ function Navbar(props: any) {
               <span className={styles.headTxt}>Rating</span> : 
               <span className={styles.headTxt}>Discover</span>
             }
-            
-            <Box className="mr-3">
-              <Link href={'/consumer/CartPage'} className="mr-2">
-                <IconButton aria-label="cart">
-                  <StyledBadge badgeContent={totalAmount} sx={{color: 'white'}}>
-                    <ShoppingCartOutlinedIcon sx={{color: 'black'}} />
-                  </StyledBadge>
-                </IconButton>
-              </Link>
-            </Box>
+            {
+              !props.noCart &&
+              <Box className="mr-3">
+                <Link href={'/consumer/CartPage'} className="mr-2">
+                  <IconButton aria-label="cart">
+                    <StyledBadge badgeContent={totalAmount} sx={{color: 'white'}}>
+                      <ShoppingCartOutlinedIcon sx={{color: 'black'}} />
+                    </StyledBadge>
+                  </IconButton>
+                </Link>
+              </Box>
+            }
           </Box>
         </Box>
       </Box>

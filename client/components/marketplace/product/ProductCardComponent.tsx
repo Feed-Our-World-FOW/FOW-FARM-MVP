@@ -2,6 +2,7 @@ import React from 'react'
 import ImageCard from '../Img/ImageCard'
 import { Box, Paper } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 
 function ProductCardComponent(props: any) {
 
@@ -16,7 +17,7 @@ function ProductCardComponent(props: any) {
   return (
     <Paper elevation={0} className={styles.wholeCard}>
       <Box className="h-full w-3/12 flex justify-center items-center">
-        <Box className="w-14 h-14 rounded-full" onClick={() => console.log(props)}>
+        <Box className="w-14 h-14 rounded-full">
           <ImageCard 
             image={props.images}
             // type='products'
@@ -32,9 +33,15 @@ function ProductCardComponent(props: any) {
           </span>
           <span className='text-2sm font-bold'>$ {props.price} / {props.unit}</span>
         </Box>
-        <Box className="w-2/12 h-full flex justify-center items-center">
-          <ArrowForwardIosIcon />
-        </Box>
+        {
+          props.producer ?
+          <Box className="w-2/12 h-full flex justify-center items-center">
+            <ModeEditOutlinedIcon />
+          </Box>:
+          <Box className="w-2/12 h-full flex justify-center items-center">
+            <ArrowForwardIosIcon />
+          </Box>
+        }
       </Box>
       
     </Paper>

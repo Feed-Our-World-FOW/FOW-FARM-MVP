@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import Link from 'next/link';
 import { fetchToken } from '../token';
 
-function BottomNav() {
+function BottomNav(props: any) {
   const [loggedIn, setLoggedIn] = useState(false)
   const [url, setUrl] = useState('')
 
@@ -39,14 +40,27 @@ function BottomNav() {
     <Box className="w-full fixed bottom-0 max-w-md flex justify-around items-center min-h-20 bg-light-white">
       <Link href={'/'} className={url === '/' ? styles.Urlbox : styles.box}>
         <Box  className={styles.focus}>
-          <ShoppingBagOutlinedIcon fontSize='medium' />
+          {
+            !props.produce ?
+            <ShoppingBagOutlinedIcon fontSize='medium' /> :
+            <LocalOfferOutlinedIcon fontSize='medium' />
+          }
         </Box>
         <span className={styles.txt}>Consume</span>
       </Link>
 
       <button  className={styles.box}>
         {
-          loggedIn ?
+          loggedIn && props.produce ?
+
+          <Link href={'/Auth/ProducerProfile'} className={url === '/Auth/ProducerProfile' ? styles.Urlbox : styles.focus2}>
+            <Box className='w-full h-full rounded-3xl flex flex-col justify-center items-center'>
+              <PermIdentityIcon fontSize='medium' />
+              <span className={styles.txt}>Profile</span>
+            </Box>
+          </Link> :
+
+          loggedIn && !props.produce ?
 
           <Link href={'/Auth/UserProfile'} className={url === '/Auth/UserProfile' ? styles.Urlbox : styles.focus2}>
             <Box className='w-full h-full rounded-3xl flex flex-col justify-center items-center'>

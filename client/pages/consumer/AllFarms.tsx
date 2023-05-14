@@ -17,7 +17,6 @@ import AllFarmsCard from '../../components/marketplace/Farm/AllFarmsCard'
 import FilterNav from '../../components/marketplace/navBar/FilterNav'
 import SearchBar from '../../components/marketplace/navBar/SearchBar'
 import AllProducts from '../../components/marketplace/product/AllProducts'
-import { fetchToken } from '../../components/marketplace/token'
 
 function AllFarms() {
 
@@ -25,9 +24,6 @@ function AllFarms() {
   const [allStockProducts, setAllStockProducts] = useState([{}])
   const [allOndemandProducts, setAllOndemandProducts] = useState([{}])
 
-  const [allProduct, setAllProduct] = useState([{}])
-
-  // const [arrow, setArrow] = useState<boolean>(false)
   const [loading, setLoading] = useState(true)
   const [showFarm, setShowFarm] = useState(true)
   let array = [1, 2, 3, 4, 5]
@@ -41,17 +37,11 @@ function AllFarms() {
       const data = x.data.data.data
       const stockProductData = res.data.data.data
       const ondemandData = res2.data.data.data
-
-      // setAllProduct(stockProductData)
-      // setAllProduct(stockProductData.concat(ondemandData))
-      
       setAllFarms(data)
       setAllStockProducts(stockProductData)
       setAllOndemandProducts(ondemandData)
       setLoading(false)
-      // console.log(stockProductData.concat(ondemandData))
-
-      console.log(data)
+      // console.log(data)
     } catch (error) {
       console.log(error)
     }
@@ -66,15 +56,7 @@ function AllFarms() {
     navBox: `w-full px-4 z-50`,
     navBox2: `w-full z-50 top-0 mt-20 bg-white fixed`,
     navBox3: `w-full z-50 top-0 bg-white fixed`,
-    bannerBox: `w-full h-full border-1 w-11/12 h-44 rounded-xl drop-shadow-lg bg-white flex justify-center items-center`,
-    catagorieBox: `w-full h-20 flex items-center`,
-    top5: `rounded-xl bg-white ml-5 w-full h-70`,
-    catagorieSubImg: `w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg`,
-    filterBox: `border-2 w-full h-20 mb-2 flex justify-start items-center`,
     scrollingBox: `w-full flex flex-col justify-around items-center max-w-md relative z-0 mt-44`,
-    allFarms: `w-full flex flex-col justify-center items-center`,
-    farmCardBox: `w-full flex justify-center items-center relative z-0 mt-5 mb-10`,
-    filter: `w-20 h-20 rounded-full border-2`
   }
 
   return (
@@ -101,10 +83,6 @@ function AllFarms() {
           array={array}
         /> :
         <AllProducts 
-          // allProducts={allStockProducts}
-          // setAllProducts={setAllStockProducts}
-          // allProducts={allProduct}
-          // setAllProducts={setAllProduct}
           allStockProducts={allStockProducts}
           setAllStockProducts={setAllStockProducts}
           allOndemandProducts={allOndemandProducts}

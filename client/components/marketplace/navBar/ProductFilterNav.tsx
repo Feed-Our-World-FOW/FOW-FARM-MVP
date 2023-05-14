@@ -1,12 +1,23 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function ProductFilterNav(props: any) {
+  const [focusStock, setFocusStock] = useState(false)
+  const [focusOndemand, setFocusOndemand] = useState(false)
 
   const handleStock = () => {
     try {
-      // props.setShowFarm(true)
       props.setShowStockProduct(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleStockProduce = () => {
+    try {
+      props.setStockProduct(true)
+      setFocusStock(true)
+      setFocusOndemand(false)
     } catch (error) {
       console.log(error)
     }
@@ -14,21 +25,47 @@ function ProductFilterNav(props: any) {
 
   const handleOndemand = () => {
     try {
-      // props.setShowFarm(false)
       props.setShowStockProduct(false)
     } catch (error) {
       console.log(error)
     }
   }
 
+  const handleOndemandProduce = () => {
+    try {
+      props.setStockProduct(false)
+      setFocusStock(false)
+      setFocusOndemand(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    setFocusStock(true)
+  }, [])
+
   const styles = {
     lowerNav: `flex w-full h-11 justify-around items-center bg-white max-w-screen-sm p-2`,
-    btn: `w-5/12 h-8 rounded-3xl border-2 border-dark-gray text-dark-gray text-3sm font-bold focus:bg-dark-gray focus:text-white`
+    // btn: `w-5/12 h-8 rounded-3xl border-2 border-dark-gray text-dark-gray text-2sm font-semibold focus:bg-dark-gray focus:text-white`
+    btn: `w-5/12 h-8 rounded-3xl border-2 border-dark-gray text-dark-gray text-2sm font-semibold`,
+    focusBtn: `w-5/12 h-8 rounded-3xl border-2 border-dark-gray text-2sm font-semibold bg-dark-gray text-white`
   }
   return (
     <Box className={styles.lowerNav}>
-      <button className={styles.btn} autoFocus={true} onClick={handleStock}>Stock</button>
-      <button className={styles.btn} onClick={handleOndemand}>On demand</button>
+      <button 
+        className={focusStock ? styles.focusBtn : styles.btn} 
+        autoFocus={true} 
+        onClick={props.produce ? handleStockProduce : handleStock}
+      >
+        Stock
+      </button>
+      <button 
+        className={focusOndemand ? styles.focusBtn : styles.btn} 
+        onClick={props.produce ? handleOndemandProduce : handleOndemand}
+      >
+        On demand
+      </button>
     </Box>
   )
 }
