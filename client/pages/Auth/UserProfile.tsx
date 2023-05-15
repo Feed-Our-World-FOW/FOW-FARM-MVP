@@ -96,7 +96,7 @@ function UserProfile() {
       formdata.append('name', userDetails.name)
       formdata.append('email', userDetails.email)
 
-      updateMe(token, formdata)
+      await updateMe(token, formdata)
 
       setOpen(true)
       setAlertStatus("success")
@@ -181,7 +181,7 @@ function UserProfile() {
                 /> :
                 <span className='text-sm font-bold'>{myProfile?.user?.name}</span>
               }
-              {
+              {/*
                 userEdit ?
                 <TextField 
                   id="standard-basic" 
@@ -189,6 +189,15 @@ function UserProfile() {
                   variant="standard" 
                   onChange={(e: any) => setUserDetails({...userDetails, email: e.target.value})} 
                 /> :
+                <span className='text-sm font-semibold overflow-hidden'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
+            */}
+
+              {
+                userEdit ?
+                <Box className="w-full">
+                  <span className='text-2sm font-semibold'>Email:</span>
+                  <span className='text-2sm font-semibold overflow-hidden ml-2'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
+                </Box> :
                 <span className='text-sm font-semibold overflow-hidden'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
               }
             </Box>
@@ -209,7 +218,7 @@ function UserProfile() {
             locationEdit ?
             <Box className="w-full h-full flex flex-col justify-center items-center">
               <Box className="w-full flex justify-end items-start mb-auto mt-2 mr-4">
-                <ClearIcon fontSize='small' onClick={() => {setLocationEdit(false); window.location.reload()}} />
+                <ClearIcon fontSize='small' onClick={() => {setLocationEdit(false)}} />
               </Box>
               <span></span>
               <Link href={'/consumer/location/ShowMap'} className='w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10'>

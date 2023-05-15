@@ -1,14 +1,19 @@
-import { Avatar, Box, Container, IconButton, Paper, TextField } from '@mui/material'
+import { Alert, AlertColor, Avatar, Box, Container, IconButton, Link, Paper, Snackbar, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import { fetchToken } from '../../components/marketplace/token';
-import { getMyBusinessProfile } from '../../components/marketplace/API';
+import { getMyBusinessProfile, updateMe, updateMyWalletAddress} from '../../components/marketplace/API';
 import { PhotoCamera } from '@mui/icons-material';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import BottomNav from '../../components/marketplace/navBar/BottomNav';
 import LocationCard from '../../components/marketplace/location/LocationCard';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import DetailsComponent from '../../components/business/profile/DetailsComponent';
+import { ethers } from 'ethers';
 
 
 interface User {
@@ -19,7 +24,7 @@ interface User {
 
 function ProducerProfile() {
   const [userEdit, setUserEdit] = useState(false)
-  const [detailsEdit, setDetailsEdit] = useState(false)
+  const [locationEdit, setLocationEdit] = useState(false)
   const [img, setImg] = useState(false)
   const [userDetails, setUserDetails] = useState<User>({
     name: "",
@@ -28,8 +33,12 @@ function ProducerProfile() {
   })
   const [previewUrl, setPreviewUrl] = useState("")
   const [myProfile, setMyProfile] = useState<any>({})
-  
-
+  const [alertTxt, setAlertTxt] = useState('')
+  const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [open, setOpen] = useState(false)
+  const [walletEdit, setWalletEdit] = useState(false)
+  const [walletAddress, setWalletAddress] = useState('0x00000000000000000000000000000000000000000')
+  const [connect, setConnect] = useState(false)
 
 
   const fetch = async () => {
@@ -43,11 +52,25 @@ function ProducerProfile() {
         email: data.user.email,
         photo: data.user.photo
       })
+      if(typeof window !== 'undefined') {
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const signer = provider.getSigner()
+        const address = await signer?.getAddress()
+        setWalletAddress(address)
+      }
 
       console.log(data)
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   }
 
   const handleImgChange = (e: any) => {
@@ -70,11 +93,65 @@ function ProducerProfile() {
     }
   }
 
-  const handleUpdate = async () => {
+  const handleConnect = async () => {
     try {
-      console.log("Update profile")
+      if(typeof window !== 'undefined') {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' })
+        // Alfajores -> 0xaef3
+        // CELO (Mainnet) -> 0xa4ec
+        // if(chainId != '0xaef3') {
+        //   await window.ethereum.request({
+        //     method: 'wallet_switchEthereumChain',
+        //     params: [{ chainId: '0xaef3' }]
+        //   })
+        // }
+        await window.ethereum.request({ method: 'eth_requestAccounts' })
+        setConnect(true)
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const signer = provider.getSigner()
+        const address = await signer?.getAddress()
+        setWalletAddress(address)
+        // setWalletAddress()
+      }
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleUpdateWalletAddress = async () => {
+    try {
+      const token = fetchToken()
+      const res = await updateMyWalletAddress(token, {walletAddress})
+      setWalletEdit(false)
+      fetch()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleUpdate = async () => {
+    try {
+      setUserEdit(true)
+      const token = fetchToken()
+      const formData = new FormData()
+      if(userDetails.photo) {
+        formData.append('photo', userDetails.photo)
+      }
+      formData.append('name', userDetails.name)
+      formData.append('email', userDetails.email)
+      const res = await updateMe(token, formData)
+
+      setOpen(true)
+      setAlertStatus("success")
+      setAlertTxt('Successfully updated your profile!!!')
+      
+      window.location.reload()
+    } catch (error: any) {
+      console.log(error)
+      setOpen(true)
+      setAlertStatus("error")
+      setAlertTxt(`${error.response.data.message}`)
+      window.location.reload()
     }
   }
 
@@ -90,8 +167,10 @@ function ProducerProfile() {
     profileContainer: `border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center`,
     infoContainer: `border-1 border-light-gray w-full rounded-2xl flex justify-around items-center mt-5 flex flex-col justify-around items-center`,
     mapContainer: `border-1 border-light-gray w-full h-52 rounded-2xl flex justify-center items-center mt-5`,
+    recordContainer: `border-1 border-light-gray w-full h-48 rounded-2xl flex flex-col justify-center items-center mt-5`,
     infoBox: `border-1 border-light-gray h-14 rounded-2xl w-11/12 flex justify-center items-center mt-2 mb-2`,
-    subInfoBox: `w-11/12 flex justify-between items-center`
+    subInfoBox: `w-11/12 flex justify-between items-center`,
+    walletBtn: `border-1 w-full rounded-2xl border-light-gray mt-5 flex flex-col justify-around items-center`,
   }
 
   return (
@@ -152,12 +231,10 @@ function ProducerProfile() {
               }
               {
                 userEdit ?
-                <TextField 
-                  id="standard-basic" 
-                  label={myProfile?.user?.email} 
-                  variant="standard" 
-                  onChange={(e: any) => setUserDetails({...userDetails, email: e.target.value})} 
-                /> :
+                <Box className="w-full">
+                  <span className='text-2sm font-semibold'>Email:</span>
+                  <span className='text-2sm font-semibold overflow-hidden ml-2'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
+                </Box> :
                 <span className='text-sm font-semibold overflow-hidden'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
               }
             </Box>
@@ -172,89 +249,124 @@ function ProducerProfile() {
         </Box>
 
         <Box className={styles.mapContainer}>
-          <LocationCard 
-            lat={myProfile?.location?.coordinates[1]}
-            lng={myProfile?.location?.coordinates[0]}
-          />
+
+          {
+            locationEdit ?
+            <Box className="w-full h-full flex flex-col justify-center items-center">
+              <Box className="w-full flex justify-end items-start mb-auto mt-2 mr-4">
+                <ClearIcon fontSize='small' onClick={() => {setLocationEdit(false);}} />
+              </Box>
+              <span></span>
+              <Link
+                href={'/producer/location/ShowMap'}
+                className='w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10'
+              >
+                <span className='text-3sm text-white font-semibold'>Add location</span>
+              </Link>
+            </Box> 
+            :
+            myProfile?.location?.coordinates?.length === 2 ?
+            <Box className="w-full h-full flex flex-col rounded-2xl">
+              <LocationCard 
+                lat={myProfile?.location?.coordinates[1]}
+                lng={myProfile?.location?.coordinates[0]}
+              />
+              <Box className="flex justify-end items-end absolute" sx={{marginLeft: '260px', marginTop: '5px'}}>
+                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setLocationEdit(true)} />
+              </Box>
+            </Box> :
+            <Box className="w-full h-full flex flex-col justify-center items-center">
+              <Box></Box>
+              <span className='text-2sm font-semibold mr-auto ml-7'>My Address</span>
+              <Box className="w-full h-44 flex justify-end items-end">
+                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setLocationEdit(true)} />
+              </Box>
+            </Box>
+          }
         </Box>
 
         <Box className={styles.infoContainer}>
+          <DetailsComponent 
+            shippingRadius={myProfile.shippingRadius as number}
+            shippingCostStandard={myProfile.shippingCostStandard as number}
+            shippingTimeStandard={myProfile.shippingTimeStandard as string} 
+            shippingCostExpress={myProfile.shippingCostExpress as number}
+            shippingTimeExpress={myProfile.shippingTimeExpress as string}
+            shippingOndemandCost={myProfile.shippingOndemandCost as number}
+            shippingOndemandTime={myProfile.shippingOndemandTime as string}
+          />
+        </Box>
+
+        <Box className={styles.recordContainer}>
+          <Box className="w-10/12 flex justify-start items-center">
+            <span className='text-2sm font-bold'>Record</span>
+          </Box>
           <Box className={styles.infoBox}>
             <Box className={styles.subInfoBox}>
-              <span className='text-2sm'>Shipping redius</span>
-              <span className='text-2sm'>{myProfile.shippingRadius} km</span>
+              <span className='text-2sm'>Orders received</span>
+              <span className='text-2sm'>90</span>
+              <ArrowForwardIosIcon />
             </Box>
           </Box>
-          <Box className="w-10/12 flex justify-start mt-1 mb-1">
-            <span className='text-2sm font-semibold'>Stock Product</span>
-          </Box>
           <Box className={styles.infoBox}>
             <Box className={styles.subInfoBox}>
-              <Box className="flex flex-col justify-center items-center">
-                <span className='text-2sm'>Shipping cost / km</span>
-                <span className='text-2sm'>{`(Standard Delivery)`}</span>
+              <span className='text-2sm'>Rating</span>
+              <Box className="flex justify-center items-center">
+                <span className='text-2sm'>4.8</span>
+                <StarBorderIcon fontSize='small' className='ml-2' />
               </Box>
-              <span className='text-2sm'>$ {myProfile.shippingCostStandard}</span>
-            </Box>
-          </Box>
-          <Box className={styles.infoBox}>
-            <Box className={styles.subInfoBox}>
-              <Box className="flex flex-col justify-center items-center">
-                <span className='text-2sm'>Shipping time / km</span>
-                <span className='text-2sm'>{`(Standard Delivery)`}</span>
-              </Box>
-              <span className='text-2sm'>{myProfile.shippingTimeStandard}</span>
-            </Box>
-          </Box>
-          <Box className={styles.infoBox}>
-            <Box className={styles.subInfoBox}>
-              <Box className="flex flex-col justify-center items-center">
-                <span className='text-2sm'>Shipping cost / km</span>
-                <span className='text-2sm'>{`(Express Delivery)`}</span>
-              </Box>
-              <span className='text-2sm'>$ {myProfile.shippingCostExpress}</span>
-            </Box>
-          </Box>
-          <Box className={styles.infoBox}>
-            <Box className={styles.subInfoBox}>
-              <Box className="flex flex-col justify-center items-center">
-                <span className='text-2sm'>Shipping time / km</span>
-                <span className='text-2sm'>{`(Express Delivery)`}</span>
-              </Box>
-              <span className='text-2sm'>{myProfile.shippingTimeExpress}</span>
-            </Box>
-          </Box>
-
-
-
-          <Box className="w-10/12 flex justify-start mt-1 mb-1">
-            <span className='text-2sm font-semibold'>Ondemand Product</span>
-          </Box>
-          <Box className={styles.infoBox}>
-            <Box className={styles.subInfoBox}>
-              <span className='text-2sm'>Shipping cost / km</span>
-              <span className='text-2sm'>$ {myProfile.shippingOndemandCost}</span>
-            </Box>
-          </Box>
-          <Box className={styles.infoBox}>
-            <Box className={styles.subInfoBox}>
-              <span className='text-2sm'>Shipping time / km</span>
-              <span className='text-2sm'>{myProfile.shippingOndemandTime}</span>
-            </Box>
-          </Box>
-
-
-          <Box className="w-full h-full flex flex-col justify-center items-center">
-            <Box></Box>
-            <Box className="w-full flex justify-end items-end">
-              {/* <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setLocationEdit(true)} /> */}
-              <ModeEditOutlineOutlinedIcon fontSize='small' />
+              <ArrowForwardIosIcon />
             </Box>
           </Box>
         </Box>
 
+        <Box className={styles.walletBtn}>
+            {
+              walletEdit ?
+              <Box className="w-full flex flex-col justify-center items-center">
+                <Box className="w-full flex justify-end items-end mt-1">
+                  <ClearIcon fontSize='small' onClick={() => setWalletEdit(false)} />
+                </Box>
+                <Box className="w-11/12 flex justify-between items-center">
+                  <AccountBalanceWalletOutlinedIcon />
+                  <span className='text-2sm font-semibold'>
+                    {(walletAddress)?.slice(0, 7)}.......{(walletAddress)?.slice(35, 42)}
+                  </span>
+                </Box>
+                <button 
+                  className='w-11/12 bg-green rounded-2xl h-8 text-2sm font-semibold mt-3'
+                  onClick={handleConnect}
+                >
+                  {
+                    connect ?
+                    `Connected` :
+                    `Connect wallet`
+                  }
+                </button>
+              </Box> :
+              <Box className="w-11/12 flex justify-between items-center mt-2">
+                <AccountBalanceWalletOutlinedIcon />
+                <span className='text-2sm font-semibold'>
+                  {(myProfile?.walletAddress)?.slice(0, 7)}.......{(myProfile?.walletAddress)?.slice(35, 42)}
+                </span>
+              </Box>
+            }
+          <Box className="w-full flex flex-col justify-center items-center mt-5">
+            <Box className="w-full flex justify-end items-end">
+              {
+                !walletEdit ?
+                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setWalletEdit(true)} /> :
+                <AddCircleOutlineOutlinedIcon fontSize='small' onClick={handleUpdateWalletAddress} /> 
+              }
+            </Box>
+          </Box>
+        </Box>
 
-        <Box className=""></Box>
+        <Snackbar open={open} autoHideDuration={4500} className='w-full'>
+          <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
+            {alertTxt}
+          </Alert>
+        </Snackbar>
 
       </Container>
 

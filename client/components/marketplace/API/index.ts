@@ -25,15 +25,50 @@ export const loginMethod = (loginDetails: LoginFormInterface) => USER_API.post('
 export const updateMe = (
   _token: string,
   formData: FormData
-) => {
-  USER_API.patch(`/updateMe`, formData, { headers: { Authorization: `Bearer ${_token}`}})
-}
+) => USER_API.patch(`/updateMe`, formData, { headers: { Authorization: `Bearer ${_token}`}})
+
 
 export const getMe = (_token: string) => USER_API.get(`/me`, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const getAllBusiness = () => BUSINESS_API.get('/')
 export const getSingleBusiness = (_id: string, _token: string) => BUSINESS_API.get(`/${_id}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getMyBusinessProfile = (_token: string) => BUSINESS_API.get(`/myProfile`, { headers: { Authorization: `Bearer ${_token}`}})
+export const updateMyBusinessProfileDetails = (
+  _token: string,
+  _details: {
+    // walletAddress: string,
+    // location: {
+    //   type: string,
+    //   coordinates: Array<number>,
+    //   description: string
+    // },
+    shippingCostStandard: number,
+    shippingTimeStandard: string,
+    shippingCostExpress: number,
+    shippingTimeExpress: string,
+    shippingRadius: number,
+    shippingOndemandTime: string,
+    shippingOndemandCost: number
+  }
+) => BUSINESS_API.patch(`/myProfile`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const updateMyBusinessProfileLocation = (
+  _token: string, 
+  _details: {
+    location: {
+      type: string,
+      coordinates: Array<number>,
+      description: string
+    }
+  }
+) => BUSINESS_API.patch(`/myProfile`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const updateMyWalletAddress = (
+  _token: string,
+  _details: {
+    walletAddress: string
+  }
+) => BUSINESS_API.patch(`/myProfile`, _details, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const getAllStockProduct = () => STOCK_API.get('/')
 export const getSingleStockProduct = (_id: string, _token: string, _unit: string) => STOCK_API.get(`/${_id}?unit=${_unit}`, { headers: { Authorization: `Bearer ${_token}`}})

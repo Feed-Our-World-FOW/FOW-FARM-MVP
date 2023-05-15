@@ -127,3 +127,13 @@ export interface CartItemsInterface {
   id: string,
   loadFunc: Function
 }
+
+export interface BusinessProfileDetailsUpdateInterface {
+  shippingCostStandard: number,
+  shippingTimeStandard: string,
+  shippingCostExpress: number,
+  shippingTimeExpress: string,
+  shippingRadius: number,
+  shippingOndemandTime: string,
+  shippingOndemandCost: number
+}
