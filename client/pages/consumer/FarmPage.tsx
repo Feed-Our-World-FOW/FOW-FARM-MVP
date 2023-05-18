@@ -4,7 +4,7 @@ import Navbar from '../../components/marketplace/navBar/Navbar'
 import Stack from '@mui/material/Stack'
 import Link from 'next/link'
 import { getSingleBusiness } from '../../components/marketplace/API'
-import { AllFarmsInterface, RouterQueryInterface } from '../../interface/AllFarmsInterface'
+import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
 import { getMyCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
@@ -50,7 +50,7 @@ function FarmPage() {
       const token = fetchToken()
       console.log(id.data)
       setToken(token)
-      const x: AllFarmsInterface = await getSingleBusiness(id.data, token)
+      const x = await getSingleBusiness(id.data, token)
       const data = x.data.data.data
 
       const response = await getMyCart(token)
@@ -87,7 +87,7 @@ function FarmPage() {
     top_sub_box: `border-b-1 border-light-gray w-11/12 h-10 flex justify-between items-center`,
     commentBox: `w-full flex flex-col justify-centar items-center mt-3`,
     bottomBox: `w-full flex justify-center items-center mt-10`,
-    statBox: `w-10 h-10 flex flex-col justify-between items-center`,
+    statBox: `h-10 flex flex-col justify-between items-center`,
     farm_name_txt: `text-2sm font-bold w-full flex justify-center items-center`,
     img_box: `w-20 h-20 rounded-full bg-white mb-10 absolute`,
     low_container: `w-full h-16 flex justify-around items-center`,
@@ -116,7 +116,7 @@ function FarmPage() {
                 rounded={true}
               />
             </Box>
-            <span className={styles.farm_name_txt}>{farmDetails.name}</span>
+            <span className={styles.farm_name_txt}>{farmDetails?.user?.name}</span>
           </Box>
           <Box className={styles.low_container}>
             <Box className={styles.statBox}>
@@ -127,7 +127,7 @@ function FarmPage() {
             </Box>
             <Box className={styles.statBox}>
               <LocalShippingOutlinedIcon />
-              <span className='text-sm font-semibold'>{farmDetails.shippingTime}</span>
+              <span className='text-sm font-semibold'>{farmDetails.shippingTimeStandard}</span>
             </Box>
             <Box className={styles.statBox}>
               <LocationOnOutlinedIcon />

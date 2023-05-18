@@ -15,6 +15,7 @@ function AllFarmsCard(props: any) {
       if(token) {
         setTokenExists(true)
       }
+      // console.log("props.allFarms: ", props.allFarms)
     } catch (error) {
       console.log(error)
     }

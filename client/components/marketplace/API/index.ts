@@ -36,12 +36,6 @@ export const getMyBusinessProfile = (_token: string) => BUSINESS_API.get(`/myPro
 export const updateMyBusinessProfileDetails = (
   _token: string,
   _details: {
-    // walletAddress: string,
-    // location: {
-    //   type: string,
-    //   coordinates: Array<number>,
-    //   description: string
-    // },
     shippingCostStandard: number,
     shippingTimeStandard: string,
     shippingCostExpress: number,
@@ -73,10 +67,14 @@ export const updateMyWalletAddress = (
 export const getAllStockProduct = () => STOCK_API.get('/')
 export const getSingleStockProduct = (_id: string, _token: string, _unit: string) => STOCK_API.get(`/${_id}?unit=${_unit}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getMyStockProducts = (_token: string) => STOCK_API.get(`/myStockProduct`, { headers: { Authorization: `Bearer ${_token}`}})
+export const updateMyStockProduct = (_token: string, _id: string, _formData: FormData) => STOCK_API.patch(`/${_id}`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
+export const createMyStockProduct = (_token: string, _formData: FormData) => STOCK_API.post(`/`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const getAllOndemandProduct = () => ONDEMAND_API.get('/')
 export const getSingleOndemandProduct = (_id: string, _token: string, _unit: string) => ONDEMAND_API.get(`/${_id}?unit=${_unit}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getMyOndemandProduct = (_token: string) => ONDEMAND_API.get(`/myOndemandProduct`, { headers: { Authorization: `Bearer ${_token}`}})
+export const updateMyOndemandProduct = (_token: string, _id: string, _formData: FormData) => ONDEMAND_API.patch(`/${_id}`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
+export const createMyOndemandProduct = (_token: string, _formData: FormData) => ONDEMAND_API.post(`/`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const addProductToCart = (
   _itemId: string, 

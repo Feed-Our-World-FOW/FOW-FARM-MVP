@@ -3,6 +3,7 @@ import ImageCard from '../Img/ImageCard'
 import { Box, Paper } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import Link from 'next/link';
 
 function ProductCardComponent(props: any) {
 
@@ -36,7 +37,23 @@ function ProductCardComponent(props: any) {
         {
           props.producer ?
           <Box className="w-2/12 h-full flex justify-center items-center">
-            <ModeEditOutlinedIcon />
+            {
+              props.stockProduct ?
+
+              <Link href={{
+                pathname: `/producer/AddStockProduct`,
+                query: { data: "patch", id: props.id, unit: props.unit }
+              }}>
+                <ModeEditOutlinedIcon />
+              </Link> :
+
+              <Link href={{
+                pathname: `/producer/AddOndemandProduct`,
+                query: { data: "patch", id: props.id, unit: props.unit }
+              }}>
+                <ModeEditOutlinedIcon />
+              </Link>
+            }
           </Box>:
           <Box className="w-2/12 h-full flex justify-center items-center">
             <ArrowForwardIosIcon />

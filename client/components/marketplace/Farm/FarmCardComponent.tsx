@@ -1,8 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
-import Rating from '@mui/material/Rating'
-import Stack from '@mui/material/Stack'
-import { FarmCardInterface } from '../../../interface/AllFarmsInterface'
 import ImageCard from '../Img/ImageCard'
 import { Box, Paper } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -37,7 +33,9 @@ function FarmCardComponent(props: any) {
             <span className='text-2sm font-semibold'>{props.ratingsAverage}</span>
             <StarBorderOutlinedIcon fontSize='small' className="ml-2" />
           </Box>
-          <span className='text-sm font-bold'>{props.location?.address.slice(0, 20)}...</span>
+          <span className='text-sm font-bold'>
+            {props.location?.description?.slice(0, 20)}{props.location?.description.length > 20 ? "..." : ""}
+          </span>
         </Box>
         <Box className="w-2/12 h-full flex justify-center items-center">
           <ArrowForwardIosIcon />

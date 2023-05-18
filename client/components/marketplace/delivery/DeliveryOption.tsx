@@ -47,32 +47,34 @@ function DeliveryOption(props: any) {
     btn: `mr-auto w-36 border-1 border-light-gray h-8 rounded-3xl text-2sm font-semibold focus:bg-dark-gray focus:text-white`,
     bigBtn: `w-11/12 bg-green rounded-3xl text-2sm font-semibold h-8 mb-5`,
     container: `w-11/12 h-52 border-1 border-light-gray rounded-3xl flex flex-col justify-around items-center mb-5`,
+    txtSemibold: `text-2sm font-semibold`,
+    txtNormal: `text-2sm font-normal`
   }
 
   return (
     <Box className={styles.page}>
       <Box className="w-full flex justify-center items-center mb-5">
-        <span className='text-2sm font-semibold'>Shipping</span>
+        <span className={styles.txtSemibold}>Shipping</span>
       </Box>
 
       <Box className={styles.container}>
         <Box className="w-full flex justify-center items-center">
-          <span className='text-2sm font-semibold'>Stock</span>
+          <span className={styles.txtSemibold}>Stock</span>
         </Box>
 
         <Box className="w-10/12 flex flex-col justify-between items-center">
           <button className={styles.btn}>Standard</button>
           <Box className="w-full flex justify-between items-center mt-2 ml-2">
-            <span className='text-2sm font-normal'>{businessProfile.shippingTimeStandard}</span>
-            <span className='text-2sm font-normal'>$ {businessProfile.shippingCostStandard}</span>
+            <span className={styles.txtNormal}>{businessProfile.shippingTimeStandard}</span>
+            <span className={styles.txtNormal}>$ {businessProfile.shippingCostStandard}</span>
           </Box>
         </Box>
 
         <Box className="w-10/12 flex flex-col justify-between items-center mb-3">
           <button className={styles.btn}>Express</button>
           <Box className="w-full flex justify-between items-center mt-2 ml-2">
-            <span className='text-2sm font-normal'>{businessProfile.shippingTimeExpress}</span>
-            <span className='text-2sm font-normal'>$ {businessProfile.shippingCostExpress}</span>
+            <span className={styles.txtNormal}>{businessProfile.shippingTimeExpress}</span>
+            <span className={styles.txtNormal}>$ {businessProfile.shippingCostExpress}</span>
           </Box>
         </Box>
       </Box>
@@ -80,13 +82,13 @@ function DeliveryOption(props: any) {
 
       <Box className={styles.container}>
         <Box className="w-full flex justify-center items-center">
-          <span className='text-2sm font-semibold'>On demand</span>
+          <span className={styles.txtSemibold}>On demand</span>
         </Box>
 
         <Box className="w-10/12 flex flex-col justify-between items-center">
           <Box className="w-full flex justify-between items-center mt-2 ml-2">
-            <span className='text-2sm font-normal'>30 - 40 business days</span>
-            <span className='text-2sm font-normal'>$ 0.00</span>
+            <span className={styles.txtNormal}>30 - 40 business days</span>
+            <span className={styles.txtNormal}>$ 0.00</span>
           </Box>
         </Box>
 

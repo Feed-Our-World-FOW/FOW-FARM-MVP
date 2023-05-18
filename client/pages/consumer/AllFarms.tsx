@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { getAllBusiness, getAllStockProduct, getAllOndemandProduct } from '../../components/marketplace/API'
 import Navbar from '../../components/marketplace/navBar/Navbar'
-import FarmCard from '../../components/marketplace/Farm/FarmCard'
-import Image from 'next/image'
-import Link from 'next/link'
-import "react-responsive-carousel/lib/styles/carousel.min.css"
-import { Carousel } from 'react-responsive-carousel'
-import TopFarms from '../../components/marketplace/Farm/TopFarms'
-import { AllFarmsInterface } from '../../interface/AllFarmsInterface'
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack'
-import { Box, Container, Paper } from '@mui/material'
+import { Box } from '@mui/material'
 import BottomNav from '../../components/marketplace/navBar/BottomNav'
-import FarmCardComponent from '../../components/marketplace/Farm/FarmCardComponent'
 import AllFarmsCard from '../../components/marketplace/Farm/AllFarmsCard'
 import FilterNav from '../../components/marketplace/navBar/FilterNav'
 import SearchBar from '../../components/marketplace/navBar/SearchBar'
@@ -30,7 +20,7 @@ function AllFarms() {
 
   const fetchAllFarms = async () => {
     try {
-      const x: AllFarmsInterface = await getAllBusiness()
+      const x = await getAllBusiness()
       const res: any = await getAllStockProduct()
       const res2: any = await getAllOndemandProduct()
 

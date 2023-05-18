@@ -1,4 +1,5 @@
-import { Box, Link } from '@mui/material'
+import { Box } from '@mui/material'
+import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/marketplace/navBar/Navbar'
 import SearchBar from '../../components/marketplace/navBar/SearchBar'
@@ -71,10 +72,20 @@ function AllProductPage() {
         }
         {
           stockProduct ?
-          <Link href={`/producer/AddStockProduct`} className='text-black'>
+          <Link href={{
+              pathname: `/producer/AddStockProduct`,
+              query: {data: "post"}
+            }} 
+            className='text-black'
+          >
             <AddCircleOutlineOutlinedIcon fontSize='small' />
           </Link> :
-          <Link href={`/producer/AddOndemandProduct`} className='text-black'>
+          <Link href={{
+            pathname: `/producer/AddOndemandProduct`,
+            query: {data: "post"}
+          }} 
+          className='text-black'
+          >
             <AddCircleOutlineOutlinedIcon fontSize='small' />
           </Link> 
         }
@@ -91,6 +102,8 @@ function AllProductPage() {
               >
                 <ProductCardComponent
                   key={product._id} 
+                  id={product._id}
+                  stockProduct={true}
                   name={product.name}
                   stock={product.stock}
                   unit={product.unit}
@@ -110,8 +123,9 @@ function AllProductPage() {
               >
                 <ProductCardComponent
                   key={product._id} 
-                  type={"ondemand"}
+                  id={product._id} 
                   name={product.name}
+                  stockProduct={false}
                   capacity={product.capacity}
                   unit={product.unit}
                   price={product.price}

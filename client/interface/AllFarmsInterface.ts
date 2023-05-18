@@ -1,52 +1,52 @@
-export interface AllFarmsInterface {
-  data: {
-    data: {
-      data: [
-        {
-          name: string,
-          description: string,
-          summery: string,
-          imageCover: string,
-          images: string,
-          meat: boolean,
-          produce: boolean,
-          ratingsAverage: number,
-          ratingsQuantity: number,
-          _id: string
-        }
-      ]
-    }
-  }
-}
+// export interface AllFarmsInterface {
+//   data: {
+//     data: {
+//       data: [
+//         {
+//           name: string,
+//           description: string,
+//           summery: string,
+//           imageCover: string,
+//           images: string,
+//           meat: boolean,
+//           produce: boolean,
+//           ratingsAverage: number,
+//           ratingsQuantity: number,
+//           _id: string
+//         }
+//       ]
+//     }
+//   }
+// }
 
-export interface FarmDetailsInterface {
-  name: string,
-  description: string,
-  summery: string,
-  imageCover: string,
-  images: string,
-  location: {
-    address: string
-  },
-  meat: boolean,
-  produce: boolean,
-  ratingsAverage: number,
-  ratingsQuantity: number,
-  _id: string,
-  id: string
-}
+// export interface FarmDetailsInterface {
+//   name: string,
+//   description: string,
+//   summery: string,
+//   imageCover: string,
+//   images: string,
+//   location: {
+//     address: string
+//   },
+//   meat: boolean,
+//   produce: boolean,
+//   ratingsAverage: number,
+//   ratingsQuantity: number,
+//   _id: string,
+//   id: string
+// }
 
-export interface FarmCardInterface {
-  name: string,
-  id: string,
-  images: string,
-  location: {
-    address: string
-  },
-  meat: boolean,
-  produce: boolean,
-  ratingsAverage: number
-}
+// export interface FarmCardInterface {
+//   name: string,
+//   id: string,
+//   images: string,
+//   location: {
+//     address: string
+//   },
+//   meat: boolean,
+//   produce: boolean,
+//   ratingsAverage: number
+// }
 
 export interface ItemInterface {
   _id: string,
@@ -136,4 +136,29 @@ export interface BusinessProfileDetailsUpdateInterface {
   shippingRadius: number,
   shippingOndemandTime: string,
   shippingOndemandCost: number
+}
+
+export interface OndemandProduct {
+  product: string,
+  name: string,
+  image: string,
+  capacity: number,
+  unit: "lb" | "kg" | "oz",
+  price: number,
+  organic: "yes" | "no",
+  id: string,
+  freshRemain: number
+}
+
+export interface StockProduct {
+  product: string,
+  name: string,
+  batch: string,
+  image: string,
+  stock: number,
+  unit: "lb" | "kg" | "oz",
+  price: number,
+  organic: "yes" | "no",
+  id: string,
+  freshRemain: number
 }

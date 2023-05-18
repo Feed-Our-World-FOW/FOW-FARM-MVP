@@ -60,6 +60,7 @@ module.exports = {
       'red': '#FF0042',
       'light-pearl': '#abffea',
       'white': '#FFFEFE',
+      'dark-blue': '#094D92',
       'light-white': '#F9F0F0',
       'golden': '#ebca3b',
       'black': '#000000',
