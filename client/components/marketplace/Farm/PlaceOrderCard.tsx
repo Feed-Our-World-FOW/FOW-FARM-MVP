@@ -5,6 +5,7 @@ import { getMyCart, getMyConsumerProfile } from '../API'
 import LocationCard from '../location/LocationCard'
 import router from 'next/router';
 import DonationCard from '../donation/DonationCard'
+import OrderSuccessCard from '../../orderSuccess/OrderSuccessCard'
 
 
 function PlaceOrderCard(props: any) {
@@ -19,16 +20,19 @@ function PlaceOrderCard(props: any) {
   })
   const [walletAddress, setWalletAddress] = useState("")
   const [donation, setDonation] = useState(false)
+  const [orderSuccess, setOrderSuccess] = useState(false)
+
+
 
   const handleOrder = async () => {
     try {
       setDonation(true)
       props.setShowDonation(true)
+      // setOrderSuccess(true)
     } catch (error) {
       console.log(error)
     }
   }
-
 
   const fetch = async () => {
     try {
@@ -39,7 +43,6 @@ function PlaceOrderCard(props: any) {
       setTotalItems(data.items.length)
       
       setCartItems(data.items)
-      // console.log("data: ", data)
 
       const res = await getMyConsumerProfile(Token)
       const data2 = res.data.data.data[0]
@@ -48,19 +51,18 @@ function PlaceOrderCard(props: any) {
         lng: data2.location.coordinates[0]
       })
       // console.log("props: ", props)
-      // console.log("routerData: ", routerData)
+     
       if(routerData.stock) {
         if(props.standard && !props.express) {
-          console.log("deliveryCharge stock standard: ", data.items[0].stockProduct.businessProfile.shippingCostStandard)
           setDeliveryCharge(data.items[0].stockProduct.businessProfile.shippingCostStandard)
+
         } else if(!props.standard && props.express) {
-          console.log("deliveryCharge stock express: ", data.items[0].stockProduct.businessProfile.shippingCostExpress)
           setDeliveryCharge(data.items[0].stockProduct.businessProfile.shippingCostExpress)
+
         }
-        // setDeliveryCharge()
       }else if(routerData.ondemand) {
-        console.log("deliveryCharge ondemand: ", data.items[0].ondemandProduct.businessProfile.shippingOndemandCost)
         setDeliveryCharge(data.items[0].ondemandProduct.businessProfile.shippingOndemandCost)
+
       }
 
       const addr1 = props.walletAddress.slice(0, 14)
@@ -82,6 +84,7 @@ function PlaceOrderCard(props: any) {
 
   const styles = {
     card: `w-full flex flex-col justify-center items-center`,
+    card2: `w-full flex flex-col justify-center items-center mb-10`,
     headerTxt: `text-2sm font-bold`,
     container: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center`,
     container1: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center mt-5 h-36 mb-5`,
@@ -99,8 +102,12 @@ function PlaceOrderCard(props: any) {
           <DonationCard 
             setDonation={setDonation}
             setShowDonation={props.setShowDonation}
+            standard={props.standard}
+            express={props.express}
+            setOrderSuccess={setOrderSuccess}
           /> 
         </Box> :
+        
         <Box className={styles.card}>
 
           <Box className="w-full flex justify-center items-center mb-3">
@@ -155,20 +162,34 @@ function PlaceOrderCard(props: any) {
               lng={location.lng}
             />
           </Box>
-    
-          <Box className={styles.container2}>
-            <Box className="w-10/12 flex justify-start items-center mb-5 mt-3">
-              <span className="text-2sm font-bold">Payment</span>
+
+        {
+          !donation && orderSuccess ?
+          <Box className={styles.card2}>
+            <OrderSuccessCard 
+              setOrderSuccess={setOrderSuccess}
+              setShowDonation={props.setShowDonation}
+            /> 
+          </Box> :
+
+          <Box className="w-full flex flex-col justify-center items-center">
+            <Box className={styles.container2}>
+              <Box className="w-10/12 flex justify-start items-center mb-5 mt-3">
+                <span className="text-2sm font-bold">Payment</span>
+              </Box>
+              <Box className="w-10/12 flex flex-col justify-center items-start mb-5">
+                <span className="text-2sm font-semibold">Ankush Banik</span>
+                <span className="text-2sm font-semibold">
+                  {walletAddress}
+                </span>
+              </Box>
             </Box>
-            <Box className="w-10/12 flex flex-col justify-center items-start mb-5">
-              <span className="text-2sm font-semibold">Ankush Banik</span>
-              <span className="text-2sm font-semibold">
-                {walletAddress}
-              </span>
-            </Box>
+      
+            <button className={styles.bigBtn} onClick={handleOrder}>Place order now</button>
           </Box>
+        }
+
     
-          <button className={styles.bigBtn} onClick={handleOrder}>Place order now</button>
         </Box>
       }
     </Box>

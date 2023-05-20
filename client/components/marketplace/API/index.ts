@@ -9,6 +9,7 @@ const STOCK_URL = `${URL}/api/v1/stockProduct`
 const ONDEMAND_URL = `${URL}/api/v1/ondemandProduct`
 const CART_URL = `${URL}/api/v1/cart`
 const CONSUMER_URL = `${URL}/api/v1/consumer`
+const BUY_URL = `${URL}/api/v1/buy`
 
 
 const BUSINESS_API = axios.create({ baseURL: BUSINESS_URL })
@@ -17,6 +18,7 @@ const STOCK_API = axios.create({ baseURL: STOCK_URL })
 const ONDEMAND_API = axios.create({ baseURL: ONDEMAND_URL })
 const CART_API = axios.create({ baseURL: CART_URL })
 const CONSUMER_API = axios.create({ baseURL: CONSUMER_URL })
+const BUY_API = axios.create({ baseURL: BUY_URL })
 
 
 export const signupMethod = (signupDetails: SignupFormInterface) => USER_API.post(`/signup`, signupDetails)
@@ -100,3 +102,12 @@ export const updateMyConsumerProfileLocation = (
     }
   }
 ) => CONSUMER_API.patch(`/myProfile`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const createBuy = (
+  _token: string,
+  _details: {
+    paymentOption: string,
+    deliveryType: string,
+
+  }
+) => BUY_API.post(`/`, _details, { headers: { Authorization: `Bearer ${_token}`}})

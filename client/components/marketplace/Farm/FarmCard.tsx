@@ -2,12 +2,11 @@ import React from 'react'
 import Image from 'next/image'
 import Rating from '@mui/material/Rating'
 import Stack from '@mui/material/Stack'
-import { FarmCardInterface } from '../../../interface/AllFarmsInterface'
 import ImageCard from '../Img/ImageCard'
 import { Box, Paper } from '@mui/material'
 
 
-function FarmCard(props: FarmCardInterface) {
+function FarmCard(props: any) {
 
   const styles = {
     wholeCard: `w-36 h-44 bg-white rounded-md`,
