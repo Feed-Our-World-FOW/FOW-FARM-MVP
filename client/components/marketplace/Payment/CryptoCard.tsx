@@ -31,6 +31,7 @@ function CryptoCard(props: any) {
   const handleConnectWallet = async () => {
     try {
       setTrigger(prev => !prev)
+      props.setShowWallet(true)
       // if(typeof window !== 'undefined') {
       //   const chainId = await window.ethereum.request({ method: 'eth_chainId' })
       //   // Alfajores -> 0xaef3
@@ -59,6 +60,7 @@ function CryptoCard(props: any) {
         order: false,
         value: 3
       })
+      props.setWalletAddress(walletAddress)
     } catch (error) {
       console.log(error)
     }
@@ -83,13 +85,14 @@ function CryptoCard(props: any) {
     <Box className={styles.page}>
         {
           trigger ?
-          <Box className="w-full h-72 flex justify-center items-center">
+          <Box className="w-full h-80 flex justify-center items-center">
             <ConnectWallet
               trigger={trigger}
               setTrigger={setTrigger}
               setConnect={setConnect}
               setWalletAddress={setWalletAddress}
               setBalance={setBalance}
+              setShowWallet={props.setShowWallet}
               className="h-60"
             /> 
           </Box> :
@@ -115,13 +118,15 @@ function CryptoCard(props: any) {
                   </Box>
                   <span className="text-2sm font-normal">{balance} cUSD</span>
                 </Box>
-      
+                {/* {props.setShowTerms} */}
               </Box>
               <button className={styles.btn1} onClick={handleConnectWallet}>{connect ? `Connected` : `Connect Wallet`}</button>
             </Box>
             <Box className="w-9/12 mb-5 flex justify-between items-center">
               <input type="checkbox" name="" id="" />
-              <span className='text-2sm font-semibold'>I agree to the terms of the payment</span>
+              <span className='text-2sm font-semibold'>
+                I agree to the <span className='underline' onClick={() => props.setShowTerms(true)}>terms of the payment</span>
+              </span>
             </Box>
             <button className={styles.btn} onClick={handleContinue} disabled={!connect}>Continue</button>
           </Box>

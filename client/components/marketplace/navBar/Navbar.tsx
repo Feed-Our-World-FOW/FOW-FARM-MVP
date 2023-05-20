@@ -52,6 +52,7 @@ function Navbar(props: any) {
   const styles = {
     fullPage: `w-screen flex flex-col justify-between items-center fixed top-0 left-0`,
     upperNav: `flex w-full h-20 justify-around items-center bg-white max-w-screen-sm`,
+    triggerUpperNav: `flex w-full h-20 justify-around items-center bg-white max-w-screen-sm bg-transparent`,
     bar: `flex justify-between items-center w-full h-3/6`,
     searchBar: `flex justify-around items-center w-7/12 h-4/6 bg-white rounded-md p-2`,
     input: `w-11/12 h-full flex justify-center items-center focus:outline-none placeholder:text-2sm p-2 rounded-md`,
@@ -63,7 +64,7 @@ function Navbar(props: any) {
     <Box className="w-full justify-center items-center">
 
       <Box className={styles.fullPage}>
-        <Box className={styles.upperNav}>
+        <Box className={props.trigger ? styles.triggerUpperNav : styles.upperNav}>
       
           <Box className={styles.bar}>
             <Box className="ml-5">

@@ -54,6 +54,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      'blue-white': '#f2fcfa',
       'pearl': '#84F5BF',
       'green': '#5EC281',
       'dark-gray': '#3D3F3E',
@@ -65,7 +66,8 @@ module.exports = {
       'golden': '#ebca3b',
       'black': '#000000',
       'light-gray': '#D9D9D9',
-      'dark-blue': '#0f53bf'
+      'dark-blue': '#0f53bf',
+      'blur': 'rgba(61, 63, 62, 0.6)'
     }
   },
   plugins: [],

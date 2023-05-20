@@ -29,6 +29,7 @@ function ConnectWallet(props: any) {
 
   const handleConnectMetamask = async () => {
     try {
+      props.setShowWallet(false)
       console.log("Metamask")
       if(typeof window !== 'undefined') {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' })
@@ -56,7 +57,7 @@ function ConnectWallet(props: any) {
   const handleConnectTrust = async () => {
     try {
       console.log("Trust")
-      
+      props.setShowWallet(false)
     } catch (error) {
       console.log(error)
     }
@@ -71,7 +72,7 @@ function ConnectWallet(props: any) {
   };
 
   const styles = {
-    paper: `w-11/12 h-full border-1 rounded-2xl flex flex-col justify-center items-center animate__animated animate__zoomIn`,
+    paper: `w-11/12 h-full mb-3 rounded-2xl flex flex-col justify-center items-center animate__animated animate__zoomIn`,
     container: `w-full h-full flex flex-col justify-start items-center`,
     cancellBox: `w-full flex justify-end items-center mt-2`,
     walletBox: `mt-7 w-11/12 flex justify-start items-center`,
@@ -84,7 +85,7 @@ function ConnectWallet(props: any) {
       <Box className={styles.container}>
         <Box className={styles.cancellBox}>
           <ClearIcon 
-            onClick={() => props.setTrigger(false)}
+            onClick={() => {props.setTrigger(false);props.setShowWallet(false)}}
             fontSize='small'
             className='mr-2'
           />

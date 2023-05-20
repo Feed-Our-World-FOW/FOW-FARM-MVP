@@ -9,6 +9,7 @@ function DeliveryOption(props: any) {
   const data = router.query
 
   const [businessProfile, setBusinessProfile] = useState<any>({})
+  const [disable, setDisable] = useState(true)
 
   const handleContinue = () => {
     props.setConfirm({
@@ -32,6 +33,40 @@ function DeliveryOption(props: any) {
       const business = product?.data.data.data.businessProfile
       setBusinessProfile(business)
       console.log(business)
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleStandard = async () => {
+    try {
+      console.log("standard")
+      setDisable(false)
+      props.setStandard(true)
+      props.setExpress(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleExpress = async () => {
+    try {
+      setDisable(false)
+      props.setStandard(false)
+      props.setExpress(true)
+      console.log("express")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleOndemand = async () => {
+    try {
+      setDisable(false)
+      props.setStandard(false)
+      props.setExpress(false)
+      console.log("express")
     } catch (error) {
       console.log(error)
     }
@@ -45,7 +80,7 @@ function DeliveryOption(props: any) {
   const styles = {
     page: `w-full h-full flex flex-col justify-center items-center`,
     btn: `mr-auto w-36 border-1 border-light-gray h-8 rounded-3xl text-2sm font-semibold focus:bg-dark-gray focus:text-white`,
-    bigBtn: `w-11/12 bg-green rounded-3xl text-2sm font-semibold h-8 mb-5`,
+    bigBtn: `w-11/12 bg-green rounded-3xl text-2sm font-semibold h-8 mb-5 disabled:bg-light-gray`,
     container: `w-11/12 h-52 border-1 border-light-gray rounded-3xl flex flex-col justify-around items-center mb-5`,
     txtSemibold: `text-2sm font-semibold`,
     txtNormal: `text-2sm font-normal`
@@ -57,13 +92,13 @@ function DeliveryOption(props: any) {
         <span className={styles.txtSemibold}>Shipping</span>
       </Box>
 
-      <Box className={styles.container}>
+      <Box className={styles.container} sx={data.ondemand ? {filter: 'blur(2px)'} : {}}>
         <Box className="w-full flex justify-center items-center">
           <span className={styles.txtSemibold}>Stock</span>
         </Box>
 
         <Box className="w-10/12 flex flex-col justify-between items-center">
-          <button className={styles.btn}>Standard</button>
+          <button className={styles.btn} onClick={handleStandard}>Standard</button>
           <Box className="w-full flex justify-between items-center mt-2 ml-2">
             <span className={styles.txtNormal}>{businessProfile.shippingTimeStandard}</span>
             <span className={styles.txtNormal}>$ {businessProfile.shippingCostStandard}</span>
@@ -71,7 +106,7 @@ function DeliveryOption(props: any) {
         </Box>
 
         <Box className="w-10/12 flex flex-col justify-between items-center mb-3">
-          <button className={styles.btn}>Express</button>
+          <button className={styles.btn} onClick={handleExpress}>Express</button>
           <Box className="w-full flex justify-between items-center mt-2 ml-2">
             <span className={styles.txtNormal}>{businessProfile.shippingTimeExpress}</span>
             <span className={styles.txtNormal}>$ {businessProfile.shippingCostExpress}</span>
@@ -80,27 +115,32 @@ function DeliveryOption(props: any) {
       </Box>
 
 
-      <Box className={styles.container}>
+      <Box className={styles.container} sx={!data.ondemand ? {filter: 'blur(2px)'} : {}}>
         <Box className="w-full flex justify-center items-center">
           <span className={styles.txtSemibold}>On demand</span>
         </Box>
 
         <Box className="w-10/12 flex flex-col justify-between items-center">
           <Box className="w-full flex justify-between items-center mt-2 ml-2">
-            <span className={styles.txtNormal}>30 - 40 business days</span>
-            <span className={styles.txtNormal}>$ 0.00</span>
+            <button className={styles.btn} onClick={handleOndemand} >standard</button>
+            <span className={styles.txtNormal}>$ {businessProfile.shippingOndemandCost}</span>
           </Box>
         </Box>
 
         <Box className="w-11/12 flex flex-col justify-between items-center mb-3">
           <Box className="w-full h-8 border-1 rounded-3xl border-light-gray flex justify-between items-center">
-            <span className='text-2sm ml-7'>Expected delivery date</span>
+            {/* <span className='text-2sm ml-7'>Expected delivery date</span> */}
+            <span className='text-2sm ml-7'>{businessProfile.shippingOndemandTime}</span>
             <CalendarMonthOutlinedIcon fontSize='small' className='mr-3' />
           </Box>
         </Box>
       </Box>
 
-      <button className={styles.bigBtn} onClick={handleContinue}>
+      <button 
+        className={styles.bigBtn} 
+        onClick={handleContinue}
+        disabled={disable}
+      >
         continue
       </button>
     </Box>

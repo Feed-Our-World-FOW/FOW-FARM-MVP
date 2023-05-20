@@ -56,7 +56,7 @@ function ChoosePaymentOptionCard(props: any) {
       </Box>
       <Box className="w-full flex flex-col justify-between items-center mt-2">
         <button className={styles.btn} onClick={() => handleSetPayment("upi")} disabled>{`UPI / Netbanking`}</button>
-        <button className={styles.btn} onClick={() => handleSetPayment("debit")}>{`Debit / ATM card`}</button>
+        <button className={styles.btn} onClick={() => handleSetPayment("debit")} disabled>{`Debit / ATM card`}</button>
         <button className={styles.btn} onClick={() => handleSetPayment("crypto")} autoFocus>{`Crypto(CUSD)`}</button>
       </Box>
 
@@ -65,6 +65,9 @@ function ChoosePaymentOptionCard(props: any) {
           crypto ?
           <CryptoCard 
             setConfirm={props.setConfirm}
+            setWalletAddress={props.setWalletAddress}
+            setShowTerms={props.setShowTerms}
+            setShowWallet={props.setShowWallet}
           /> :
           <DebitCard 
             setConfirm={props.setConfirm}
