@@ -59,6 +59,7 @@ function Navbar(props: any) {
     imgCover: `h-10 w-10 rounded-full`,
     linkStyle: `flex flex-col justify-center items-center h-20 w-20 text-black no-underline`,
     headTxt: `text-3sm font-bold`,
+    cartless: `w-full flex justify-center items-center mr-8`
   }
   return (
     <Box className="w-full justify-center items-center">
@@ -83,15 +84,15 @@ function Navbar(props: any) {
               props.farm ? 
               <span className={styles.headTxt}>Farm</span> : 
               props.produce ?
-              <Box className="w-full flex justify-center items-center mr-8">
+              <Box className={styles.cartless}>
                 <span className={styles.headTxt}>Produce</span> 
               </Box> :
               props.addProductInStock ?
-              <Box className="w-full flex justify-center items-center mr-8">
+              <Box className={styles.cartless}>
                 <span className={styles.headTxt}>Add Product in stock</span> 
               </Box> :
               props.addProductOndemand ?
-              <Box className="w-full flex justify-center items-center mr-8">
+              <Box className={styles.cartless}>
                 <span className={styles.headTxt}>Add Product On demand</span> 
               </Box> :
               props.product ?
@@ -99,8 +100,12 @@ function Navbar(props: any) {
               props.order ?
               <span className={styles.headTxt}>Order</span> : 
               props.myOrder ?
-              <Box className="w-full flex justify-center items-center mr-8">
+              <Box className={styles.cartless}>
                 <span className={styles.headTxt}>My orders</span> 
+              </Box> :
+              props.orderDetails ?
+              <Box className={styles.cartless}>
+                <span className={styles.headTxt}>{(props.ids).slice(16, 24)}</span> 
               </Box> :
               props.rating ?
               <span className={styles.headTxt}>Rating</span> : 
