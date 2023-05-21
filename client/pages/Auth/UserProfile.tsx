@@ -252,14 +252,14 @@ function UserProfile() {
           <Box className="w-10/12 rounded-2xl h-12 flex justify-around items-center">
             <span className='text-sm font-semibold mr-auto'>Record</span>
           </Box>
-          <Box className="border-1 border-light-gray w-10/12 rounded-2xl h-12 flex justify-around items-center">
+          <Box className="border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center">
             <span className='text-sm'>My Orders</span>
             <span className='text-sm'>{myProfile.orders}</span>
-            <Box className="ml-7">
+            <Link href={`/consumer/orders/MyOrdersPage`} className="ml-7">
               <ArrowForwardIosIcon fontSize='small' />
-            </Box>
+            </Link>
           </Box>
-          <Box className="border-1 border-light-gray w-10/12 rounded-2xl h-12 flex justify-around items-center">
+          <Box className="border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center mb-5">
             <span className='text-sm'>My favourite</span>
             <span className='text-sm'>{myProfile.favourite}</span>
             <Box className="ml-7">

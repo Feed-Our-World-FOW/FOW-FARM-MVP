@@ -5,7 +5,7 @@ import { getMyCart, getMyConsumerProfile } from '../API'
 import LocationCard from '../location/LocationCard'
 import router from 'next/router';
 import DonationCard from '../donation/DonationCard'
-import OrderSuccessCard from '../../orderSuccess/OrderSuccessCard'
+import OrderSuccessCard from './OrderSuccessCard'
 
 
 function PlaceOrderCard(props: any) {

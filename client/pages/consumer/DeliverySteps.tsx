@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import ConfirmAddressCard from '../../components/marketplace/Farm/ConfirmAddressCard'
 import ChoosePaymentOptionCard from '../../components/marketplace/Payment/ChoosePaymentOptionCard'
-import PlaceOrderCard from '../../components/marketplace/Farm/PlaceOrderCard'
+import PlaceOrderCard from '../../components/marketplace/order/PlaceOrderCard'
 import Navbar from '../../components/marketplace/navBar/Navbar'
 import WhereToVoteOutlinedIcon from '@mui/icons-material/WhereToVoteOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -51,18 +51,6 @@ function DeliverySteps() {
   return (
     <Box className={showTerms || showWallet || showDonation ? styles.triggerPage : styles.page}>
       <Box className={showTerms || showWallet || showDonation ? styles.triggerContainer : styles.container}>
-        {/*
-          showTerms ?
-          <Box></Box> :
-          <Box className={styles.navBox}>
-            <Navbar 
-              // load={handleReload} 
-              order={true}
-              arrow={true}
-              trigger={showTerms || showWallet}
-            />
-          </Box>
-  */}
         <Box className={styles.navBox}>
           <Navbar 
             // load={handleReload} 

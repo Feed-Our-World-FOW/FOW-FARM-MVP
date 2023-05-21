@@ -111,3 +111,6 @@ export const createBuy = (
 
   }
 ) => BUY_API.post(`/`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const getMyBuyConsumer = (_token: string) => BUY_API.get(`/myOrder`, { headers: { Authorization: `Bearer ${_token}`}})
+export const getSingleBuy = (_token: string, _id: string) => BUY_API.get(`/${_id}`, { headers: { Authorization: `Bearer ${_token}`}})

@@ -98,6 +98,10 @@ function Navbar(props: any) {
               <span className={styles.headTxt}>Product</span> : 
               props.order ?
               <span className={styles.headTxt}>Order</span> : 
+              props.myOrder ?
+              <Box className="w-full flex justify-center items-center mr-8">
+                <span className={styles.headTxt}>My orders</span> 
+              </Box> :
               props.rating ?
               <span className={styles.headTxt}>Rating</span> : 
               <span className={styles.headTxt}>Discover</span>
