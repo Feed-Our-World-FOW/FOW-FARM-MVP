@@ -11,7 +11,7 @@ import { fetchToken } from '../../components/marketplace/token'
 import Skeleton from '@mui/material/Skeleton';
 import { Alert, AlertColor, Box } from '@mui/material'
 import BottomNav from '../../components/marketplace/navBar/BottomNav'
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ProductCardComponent from '../../components/marketplace/product/ProductCardComponent'
@@ -59,7 +59,7 @@ function FarmPage() {
         setCartItems(cartData)
       }
       
-      // console.log("Data",data)
+      console.log("Data",data)
       setShowStockProduct(true)
 
       setFarmDetails(data)
@@ -120,8 +120,16 @@ function FarmPage() {
           </Box>
           <Box className={styles.low_container}>
             <Box className={styles.statBox}>
-              <Link href={'/consumer/comment/CommentPage'}>
-                <StarOutlineIcon />
+              <Link 
+                href={{
+                  pathname: '/consumer/comment/CommentPage',
+                  query: {
+                    data: farmDetails.id,
+                    ratingsAverage: farmDetails.ratingsAverage,
+                    ratingsQuantity: farmDetails.ratingsQuantity
+                  }
+                }}>
+                <StarBorderRoundedIcon />
               </Link>
               <span className='text-sm font-semibold'>{farmDetails.ratingsAverage}</span>
             </Box>

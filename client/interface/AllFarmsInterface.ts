@@ -1,53 +1,3 @@
-// export interface AllFarmsInterface {
-//   data: {
-//     data: {
-//       data: [
-//         {
-//           name: string,
-//           description: string,
-//           summery: string,
-//           imageCover: string,
-//           images: string,
-//           meat: boolean,
-//           produce: boolean,
-//           ratingsAverage: number,
-//           ratingsQuantity: number,
-//           _id: string
-//         }
-//       ]
-//     }
-//   }
-// }
-
-// export interface FarmDetailsInterface {
-//   name: string,
-//   description: string,
-//   summery: string,
-//   imageCover: string,
-//   images: string,
-//   location: {
-//     address: string
-//   },
-//   meat: boolean,
-//   produce: boolean,
-//   ratingsAverage: number,
-//   ratingsQuantity: number,
-//   _id: string,
-//   id: string
-// }
-
-// export interface FarmCardInterface {
-//   name: string,
-//   id: string,
-//   images: string,
-//   location: {
-//     address: string
-//   },
-//   meat: boolean,
-//   produce: boolean,
-//   ratingsAverage: number
-// }
-
 export interface ItemInterface {
   _id: string,
   amount: number,
@@ -98,12 +48,6 @@ export interface CommentInterface {
   },
   Prototype: Function
 }
-
-
-// export interface ImageTypeInterface {
-//   image: string,
-//   // type: "farms" | "users" | "ondemandProduct" | "stockProducts"
-// }
 
 export interface WriteCommentInterface {
   comment: boolean,

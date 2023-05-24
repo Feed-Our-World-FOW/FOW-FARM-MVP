@@ -3,12 +3,32 @@ import React, { useState } from 'react'
 import { ethers } from 'ethers';
 import ClearIcon from '@mui/icons-material/Clear';
 import Image from 'next/image';
+import Web3Modal from "web3modal"
 import 'animate.css'
+
 
 function ConnectWallet(props: any) {
   const [open, setOpen] = useState(false)
   const [alertTxt, setAlertTxt] = useState('')
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
+
+  const providerOptions = {
+
+  }
+
+  const connectWallet = async () => {
+    try {
+      let web3modal = new Web3Modal({
+        cacheProvider: false,
+        providerOptions
+      })
+      const web3ModalInstance = await web3modal.connect()
+      const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance)
+      console.log(web3ModalProvider)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const fetch = async () => {
     try {
@@ -58,6 +78,7 @@ function ConnectWallet(props: any) {
     try {
       console.log("Trust")
       props.setShowWallet(false)
+      connectWallet()
     } catch (error) {
       console.log(error)
     }

@@ -10,6 +10,7 @@ const ONDEMAND_URL = `${URL}/api/v1/ondemandProduct`
 const CART_URL = `${URL}/api/v1/cart`
 const CONSUMER_URL = `${URL}/api/v1/consumer`
 const BUY_URL = `${URL}/api/v1/buy`
+const REVIEW_URL = `${URL}/api/v1/reviews`
 
 
 const BUSINESS_API = axios.create({ baseURL: BUSINESS_URL })
@@ -19,6 +20,7 @@ const ONDEMAND_API = axios.create({ baseURL: ONDEMAND_URL })
 const CART_API = axios.create({ baseURL: CART_URL })
 const CONSUMER_API = axios.create({ baseURL: CONSUMER_URL })
 const BUY_API = axios.create({ baseURL: BUY_URL })
+const REVIEW_API = axios.create({ baseURL: REVIEW_URL })
 
 
 export const signupMethod = (signupDetails: SignupFormInterface) => USER_API.post(`/signup`, signupDetails)
@@ -114,3 +116,14 @@ export const createBuy = (
 
 export const getMyBuyConsumer = (_token: string) => BUY_API.get(`/myOrder`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getSingleBuy = (_token: string, _id: string) => BUY_API.get(`/${_id}`, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const getReviewForFarm = (_token: string, _farmId: string) => REVIEW_API.get(`/farm/${_farmId}`, { headers: { Authorization: `Bearer ${_token}`}})
+export const createReviewForFarm = (
+  _token: string, 
+  _farmId: string,
+  _details: {
+    review: string,
+    rating: number
+  }
+) => REVIEW_API.post(`/farm/${_farmId}`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+

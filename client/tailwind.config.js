@@ -23,6 +23,7 @@ module.exports = {
     },
     fontSize: {
       'xs': '8px',
+      '2xs': '9px',
       'sm': '10px',
       '2sm': '12px',
       '2.5sm': '13.5px',
@@ -66,6 +67,7 @@ module.exports = {
       'golden': '#ebca3b',
       'black': '#000000',
       'light-gray': '#D9D9D9',
+      'graysh-black': '#666666',
       'dark-blue': '#0f53bf',
       'blur': 'rgba(61, 63, 62, 0.6)'
     }

@@ -1,42 +1,72 @@
-import { Box, Typography } from '@mui/material'
-import React from 'react'
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import { Box, Typography, styled } from '@mui/material'
+import React, { useState } from 'react'
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+import Rating from '@mui/material/Rating';
+import ImageCard from '../Img/ImageCard';
+import Avatar from '@mui/material/Avatar';
+import { deepOrange } from '@mui/material/colors'
 
 
-function CommentCardComponent() {
+function CommentCardComponent(props: any) {
+  // const [value, setValue] = useState<number | null>(2);
+
+  const StyledRating = styled(Rating)({
+    '& .MuiRating-iconFilled': {
+      color: '#000000',
+    },
+    '& .MuiRating-iconHover': {
+      color: '#000000',
+    },
+  });
+
   return (
-    <div className='w-full flex justify-center items-center mt-5'>
-      <Box className="w-11/12 min-h-12 flex">
-          <Box className='h-full w-2/12 flex justify-center items-start'>
-            <Box className='border-1 w-10 h-10 rounded-full'>
-
-            </Box>
-          </Box>
-          <Box className='h-full w-10/12 flex flex-col'>
-            <Box className='w-full min-h-5 flex justify-start items-center'>
-              <span className='text-3sm font-medium text-dark-gray'>Ankush Banik</span>
-            </Box>
-            <Box className='w-8/12 h-5 flex justify-start items-center'>
-              <Box className='flex justify-center items-center'>
-                <StarOutlineIcon fontSize='small' />
-                <StarOutlineIcon fontSize='small' />
-                <StarOutlineIcon fontSize='small' />
-                <StarOutlineIcon fontSize='small' />
-                <StarOutlineIcon fontSize='small' />
-              </Box>
-              <Box className='flex justify-center items-center ml-5'>
-                <span className='text-2sm font-semibold text-dark-gray'>4 day</span>
-              </Box>
-            </Box>
-            <Box className='w-full min-h-5'>
-              <Typography  className='text-2sm tracking-tighter leading-[1rem] font-medium'>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquam enim sunt animi voluptatibus 
-                molestiae odio rem excepturi atque, dolore dolores!
-              </Typography>
-            </Box>
+    <Box className='w-full flex justify-center items-center mb-5'>
+      <Box className="w-11/12 min-h-12 flex justify-around">
+        <Box className='h-full w-2/12 flex justify-center items-start'>
+          <Box className='w-10 h-10 rounded-full'>
+            {
+              props.userPhoto ?
+              <ImageCard 
+                image={props.userPhoto}
+                rounded={true}
+              /> :
+              <Avatar
+                sx={{ bgcolor: deepOrange[500] }}
+                alt={props?.userName}
+                src="/broken-image.jpg"
+              />
+            }
           </Box>
         </Box>
-    </div>
+        <Box className='h-full w-9/12 flex flex-col'>
+          <Box className='w-full flex justify-start items-center mb-1'>
+            <span className='text-2sm font-semibold text-dark-gray'>{props.userName}</span>
+          </Box>
+          <Box className='w-9/12 h-5 mb-2 flex justify-start items-center'>
+            <Box className='flex justify-center items-center'>
+              <StyledRating
+                name="simple-controlled"
+                value={props.rating}
+                size="small"
+                icon={<StarBorderRoundedIcon fontSize='inherit' />}
+                readOnly 
+                precision={0.1}
+              />
+            </Box>
+            <Box className='flex justify-center items-center ml-5'>
+              <span className='text-2xs font-semibold text-dark-gray'>
+                {`(${props.createdAt && (props.createdAt as string).slice(0, 10)})`}
+              </span>
+            </Box>
+          </Box>
+          <Box className='w-full'>
+            <Typography  className='text-2sm leading-[1rem] font-medium'>
+              {props.review}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

@@ -44,7 +44,8 @@ function OrderDetailsPage() {
     detailsContainer: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center mt-5`,
     smallTxt: `text-2sm font-semibold`,
     smallTxt1: `text-2sm font-semibold ml-3`,
-    container1: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center mt-5 h-36 mb-5`
+    container1: `w-11/12 rounded-2xl flex flex-col justify-start items-center mt-5 h-36 mb-5`,
+    container2: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center mt-5 mb-5`
   }
 
   return (
@@ -128,6 +129,20 @@ function OrderDetailsPage() {
             lat={orderDetails?.consumerProfile?.location?.coordinates[1]}
             lng={orderDetails?.consumerProfile?.location?.coordinates[0]}
           />
+        </Box>
+
+        <Box className={styles.container2}>
+          <Box className="w-10/12 flex justify-start items-center mt-3">
+            <span className='text-2sm font-bold'>Payment</span>
+          </Box>
+
+          <Box className="w-10/12 flex flex-col justify-center items-start mt-3 mb-3">
+            <span className='text-2sm font-semibold'>{orderDetails?.consumerProfile?.user?.name}</span>
+            <span className='text-2sm mt-1'>
+              <span className='text-2sm font-semibold'>Receipt: </span>{`http://celo.org/abc`}
+            </span>
+          </Box>
+          
         </Box>
 
       </Box>

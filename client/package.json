@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coinbase/wallet-sdk": "^3.6.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
@@ -30,7 +31,8 @@
     "react-file-base64": "^1.0.3",
     "react-responsive-carousel": "^3.2.23",
     "react-swipeable-views-react-18-fix": "^0.14.1",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.7.3",
+    "web3modal": "^1.9.12"
   },
   "devDependencies": {
     "@types/node": "18.11.18",
