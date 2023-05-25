@@ -32,10 +32,15 @@ function DonationCard(props: any) {
   const fetch = async () => {
     try {
       const token = fetchToken()
-      if(router.ondemand) {
+      if(typeof router.ondemand !== 'undefined') {
         console.log("buydetails: ", buydetails)
-      }else if(router.stock) {
+        setBuydetails({
+          paymentOption: "Crypto",
+          deliveryType: "standard"
+        })
+      }else if(typeof router.stock !== 'undefined') {
         if(props.standard) {
+          console.log("standard is true")
           setBuydetails({
             paymentOption: "Crypto",
             deliveryType: "standard"
@@ -56,8 +61,11 @@ function DonationCard(props: any) {
 
   const buy = async () => {
     try {
+      fetch()
       const token = fetchToken()
-      // const res = await createBuy(token, buydetails)
+      const res = await createBuy(token, buydetails)
+
+      window.location.replace('/')
     } catch (error) {
       console.log(error)
     }
@@ -119,7 +127,7 @@ function DonationCard(props: any) {
     <Box className={styles.container}>
       <span className={styles.boldTxt}>Donation</span>
 
-      <Box className={styles.txtBox}>
+      <Box className={styles.txtBox} onClick={fetch}>
         <span className={styles.semiboldTxt}>Would you like to take a few seconds to </span>
         <span className={styles.semiboldTxt}>donate and benefit organizations?</span>
         <span className={styles.semiboldTxt}>Your donation will be distributed among the</span>

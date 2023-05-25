@@ -6,15 +6,39 @@ import { fetchToken } from '../../../components/marketplace/token'
 import Navbar from '../../../components/marketplace/navBar/Navbar'
 import ImageCard from '../../../components/marketplace/Img/ImageCard'
 import LocationCard from '../../../components/marketplace/location/LocationCard'
-import Avatar from '@mui/material/Avatar';
+import Avatar from '@mui/material/Avatar'
 import { deepOrange } from '@mui/material/colors'
+import { updateMyOrderPaid } from '../../../components/marketplace/API'
+import { updateMyOrderDelivery } from '../../../components/marketplace/API'
 
 
-function OrderDetailsPage() {
+function OrderDetailsBusinessPage() {
   const router = useRouter()
   const data = router.query
 
   const [orderDetails, setOrderDetails] = useState<any>({})
+
+  const handleDelivery = async () => {
+    try {
+      const token = fetchToken()
+      const res = await updateMyOrderDelivery(token, data.id as string, { delivered: true })
+      console.log(res)
+      history.back()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handlePaid = async () => {
+    try {
+      const token = fetchToken()
+      const res = await updateMyOrderPaid(token, data.id as string, { paid: true })
+      console.log(res)
+      history.back()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const fetch = async () => {
     try {
@@ -33,7 +57,6 @@ function OrderDetailsPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   const styles = {
     page: `w-screen flex flex-col justify-center items-center`,
     container: `w-screen max-w-md flex flex-col justify-center items-center`,
@@ -41,13 +64,15 @@ function OrderDetailsPage() {
     headerBox: `w-11/12 h-9 mt-20 flex justify-between items-center`,
     headerBar: `w-9/12 h-full border-1 border-light-gray rounded-3xl flex justify-start items-center`,
     imgBox: `ml-3 w-8 h-8 rounded-full`,
-    darkBarBox: `w-full flex justify-center items-center mt-3`,
-    darkBar: `w-40 h-9 bg-dark-gray rounded-3xl flex justify-center items-center`,
+    barBox: `w-full flex justify-center items-center mt-3`,
+    redBar: `w-40 h-8 bg-dark-red rounded-3xl flex justify-center items-center`,
+    greenBar: `w-40 h-8 bg-green rounded-3xl flex justify-center items-center`,
     detailsContainer: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center mt-5`,
     smallTxt: `text-2sm font-semibold`,
     smallTxt1: `text-2sm font-semibold ml-3`,
     container1: `w-11/12 rounded-2xl flex flex-col justify-start items-center mt-5 h-36 mb-5`,
-    container2: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center mt-5 mb-5`
+    container2: `w-11/12 border-1 rounded-2xl border-light-gray flex flex-col justify-start items-center mt-5 mb-5`,
+    btn: `w-11/12 h-8 rounded-2xl bg-green text-2.5sm font-semibold mt-5`
   }
 
   return (
@@ -87,10 +112,28 @@ function OrderDetailsPage() {
           <span className='text-2sm font-bold'>Status</span>
         </Box>
 
-        <Box className={styles.darkBarBox}>
-          <Box className={styles.darkBar}>
-            <span className='text-3sm text-white'>{orderDetails?.delivered ? "2. Delivered" : "1. New"}</span>
-          </Box>
+        <Box className={styles.barBox}>
+          {
+            orderDetails?.delivered ?
+            <Box className={styles.greenBar}>
+              <span className='text-3sm text-white'>Delivered</span>
+            </Box> :
+            <Box className={styles.redBar}>
+              <span className='text-3sm text-white'>Not Delivered</span>
+            </Box>
+          }
+        </Box>
+
+        <Box className={styles.barBox}>
+          {
+            orderDetails?.paid ?
+            <Box className={styles.greenBar}>
+              <span className='text-3sm text-white'>Paid</span>
+            </Box> :
+            <Box className={styles.redBar}>
+              <span className='text-3sm text-white'>Not Paid</span>
+            </Box>
+          }
         </Box>
 
         <Box className={styles.detailsContainer}>
@@ -155,9 +198,23 @@ function OrderDetailsPage() {
           
         </Box>
 
+        <Box className="mt-5 mb-8 w-full flex flex-col justify-center items-center">
+          {
+            orderDetails?.delivered ?
+            <Box></Box> :
+            <button className={styles.btn} onClick={handleDelivery}>Delivered</button>
+          }
+
+          {
+            orderDetails?.paid ?
+            <Box></Box> :
+            <button className={styles.btn} onClick={handlePaid}>Paid</button>
+          }
+        </Box>
+
       </Box>
     </Box>
   )
 }
 
-export default OrderDetailsPage
+export default OrderDetailsBusinessPage

@@ -304,15 +304,17 @@ function ProducerProfile() {
           <Box className={styles.infoBox}>
             <Box className={styles.subInfoBox}>
               <span className='text-2sm'>Orders received</span>
-              <span className='text-2sm'>90</span>
-              <ArrowForwardIosIcon />
+              <span className='text-2sm'>{myProfile?.orderReceived}</span>
+              <Link href='/producer/order/AllMyOrders'>
+                <ArrowForwardIosIcon className="text-black" />
+              </Link>
             </Box>
           </Box>
           <Box className={styles.infoBox}>
             <Box className={styles.subInfoBox}>
               <span className='text-2sm'>Rating</span>
               <Box className="flex justify-center items-center">
-                <span className='text-2sm'>4.8</span>
+                <span className='text-2sm'>{myProfile?.ratingsAverage}</span>
                 <StarBorderIcon fontSize='small' className='ml-2' />
               </Box>
               <ArrowForwardIosIcon />

@@ -6,8 +6,8 @@ import {MarkerF} from '@react-google-maps/api'
 
 function LocationCard(props: any) {
   let myLocation = {
-    lat: props.lat,
-    lng: props.lng
+    lat: props?.lat,
+    lng: props?.lng
   }
   const containerStyle = {
     width: '100%',
