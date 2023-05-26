@@ -4,6 +4,19 @@ import Link from 'next/link'
 import FarmCardComponent from './FarmCardComponent'
 import { fetchToken } from '../token'
 import { Alert, Snackbar } from '@mui/material'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      loading: false,
+      array: null,
+      allFarms: null,
+      
+    }
+  }
+}
 
 function AllFarmsCard(props: any) {
   const [open, setOpen] = useState(false)

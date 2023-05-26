@@ -8,6 +8,25 @@ import { fetchToken } from '../token';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { addProductToCart } from '../API';
 import 'animate.css'
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      defaultUnit: "",
+      productPrice: 0,
+      setAmount: null, 
+      setOrderDetails: null, 
+      stock: false,
+      setOpen: null,
+      id: "",
+      amount: 0,
+      open: false,
+      
+    }
+  }
+}
 
 function AddProductCart(props: any) {
   const defaultUnit = props.defaultUnit

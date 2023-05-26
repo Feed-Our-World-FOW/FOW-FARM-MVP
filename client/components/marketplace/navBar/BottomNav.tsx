@@ -5,6 +5,16 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import Link from 'next/link';
 import { fetchToken } from '../token';
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      produce: false,
+    }
+  }
+}
 
 function BottomNav(props: any) {
   const [loggedIn, setLoggedIn] = useState(false)

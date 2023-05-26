@@ -8,6 +8,18 @@ import { deepOrange } from '@mui/material/colors'
 import { fetchToken } from '../token';
 import { useRouter } from 'next/router';
 import { createReviewForFarm } from '../API';
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setLoad: null,
+      userPhoto: "",
+      userName: "",
+    }
+  }
+}
 
 function WriteCommentCardComponent(props: any) {
   const router = useRouter()

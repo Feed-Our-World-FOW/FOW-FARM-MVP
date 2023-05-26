@@ -9,6 +9,22 @@ import { fetchToken } from '../token'
 import Router from 'next/router'
 import ClearIcon from '@mui/icons-material/Clear';
 import 'animate.css'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      standard: false,
+      express: false,
+      businessAddress: "",
+      totalAmountInCELO: "",
+      setShowDonation: null,
+      setDonation: null,
+      setOrderSuccess: null,
+    }
+  }
+}
 
 function DonationCard(props: any) {
   const router = Router.query
@@ -91,7 +107,7 @@ function DonationCard(props: any) {
   const handleCancell = async () => {
     try {
 
-      const res = await transaction(props.businessAddress, props?.totalAmountInCELO)
+      const res = await transaction(props?.businessAddress, props?.totalAmountInCELO)
 
       if(res === 'error') {
         setOpen(true)
@@ -123,7 +139,7 @@ function DonationCard(props: any) {
         return
       }
       
-      const res2 = await transaction(props.businessAddress, props?.totalAmountInCELO)
+      const res2 = await transaction(props?.businessAddress, props?.totalAmountInCELO)
 
       if(res2 === 'error') {
         setOpen(true)

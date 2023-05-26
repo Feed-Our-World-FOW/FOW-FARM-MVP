@@ -6,6 +6,22 @@ import ImageCard from '../Img/ImageCard'
 import PeopleIcon from '@mui/icons-material/People'
 import Link from 'next/link'
 import { Box } from '@mui/material'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      _id: "",
+      image: "",
+      name: "",
+      weight: "",
+      ratingsAverage: 0,
+      ratingsQuantity: 0,
+      price: 0
+    }
+  }
+}
 
 function ProductCard(props: any) {
 

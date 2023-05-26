@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import { GoogleMap, LoadScript, useJsApiLoader } from '@react-google-maps/api';
 import { Box } from '@mui/material';
 import {MarkerF} from '@react-google-maps/api'
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      lat: 0,
+      lng: 0
+    }
+  }
+}
 
 
 function LocationCard(props: any) {

@@ -1,6 +1,16 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import 'animate.css'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setShowTerms: null,
+    }
+  }
+}
 
 function Terms(props: any) {
 

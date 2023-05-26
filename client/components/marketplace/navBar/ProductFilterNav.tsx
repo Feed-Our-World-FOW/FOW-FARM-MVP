@@ -1,5 +1,18 @@
 import { Box } from '@mui/material'
+import { GetStaticProps } from 'next'
 import React, { useEffect, useState } from 'react'
+
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setShowStockProduct: null,
+      setStockProduct: null,
+      produce: false,
+    }
+  }
+}
 
 function ProductFilterNav(props: any) {
   const [focusStock, setFocusStock] = useState(false)

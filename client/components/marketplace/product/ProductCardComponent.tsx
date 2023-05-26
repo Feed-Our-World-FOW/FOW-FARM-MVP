@@ -4,6 +4,21 @@ import { Box, Paper } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import Link from 'next/link';
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      images: "",
+      name: "",
+      stock: 0,
+      capacity: 0,
+      unit: "",
+      id: "",
+    }
+  }
+}
 
 function ProductCardComponent(props: any) {
 

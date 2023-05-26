@@ -3,6 +3,19 @@ import { Box } from '@mui/material'
 import { ethers } from 'ethers'
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
 import ConnectWallet from '../../crypto/ConnectWallet'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setConfirm: null,
+      setWalletAddress: null,
+      setShowTerms: null, 
+      setShowWallet: null, 
+    }
+  }
+}
 
 function CryptoCard(props: any) {
   const [connect, setConnect] = useState(false)

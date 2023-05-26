@@ -4,6 +4,16 @@ import { Box, Container } from '@mui/material';
 import { getMyConsumerProfile } from '../API';
 import { fetchToken } from '../token';
 import LocationCard from '../location/LocationCard';
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setConfirm: null,
+    }
+  }
+}
 
 function ConfirmAddressCard(props: any) {
   const [location, setLocation] = useState({

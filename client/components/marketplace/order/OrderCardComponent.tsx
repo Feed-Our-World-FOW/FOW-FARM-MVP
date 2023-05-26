@@ -2,6 +2,17 @@ import { Box } from '@mui/material'
 import React from 'react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import Link from 'next/link'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      id: "",
+      createdAt: "",
+    }
+  }
+}
 
 function OrderCardComponent(props: any) {
 

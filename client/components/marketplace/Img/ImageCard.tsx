@@ -1,6 +1,16 @@
 import React from 'react'
 import Image from 'next/image'
-// import { ImageTypeInterface } from '../../../interface/AllFarmsInterface'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      image: "",
+      rounded: false
+    }
+  }
+}
 
 
 function ImageCard(props: any) {

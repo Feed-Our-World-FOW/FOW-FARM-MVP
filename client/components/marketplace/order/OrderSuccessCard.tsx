@@ -1,6 +1,17 @@
 import { Box } from '@mui/material'
 import React from 'react'
 import 'animate.css'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setOrderSuccess: null,
+      setShowDonation: null,
+    }
+  }
+}
 
 function OrderSuccessCard(props: any) {
 
@@ -15,6 +26,7 @@ function OrderSuccessCard(props: any) {
       <span className='text-2sm font-semibold mt-5'>
         You order number is <span className='text-2sm font-bold'>12672719</span>
       </span>
+      
       <span className='text-2sm font-semibold mt-2'>{`You’ll receive an email confirming your order`}</span>
       <span className='text-2sm font-semibold'>{` details.`}</span>
       <button 

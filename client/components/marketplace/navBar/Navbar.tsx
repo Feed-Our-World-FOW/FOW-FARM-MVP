@@ -9,6 +9,29 @@ import { Box } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
+import { GetStaticProps } from 'next'
+
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      trigger: false,
+      load: false,
+      arrow: false,
+      farm: false,
+      produce: false,
+      addProductInStock: false,
+      addProductOndemand: false,
+      product: false,
+      order: false,
+      myOrder: false,
+      orderDetails: false,
+      rating: false,
+      noCart: false,
+    }
+  }
+}
 
 
 function Navbar(props: any) {

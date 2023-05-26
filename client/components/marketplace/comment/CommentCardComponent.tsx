@@ -5,6 +5,20 @@ import Rating from '@mui/material/Rating';
 import ImageCard from '../Img/ImageCard';
 import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors'
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      userPhoto: "",
+      userName: "",
+      rating: 0,
+      createdAt: "",
+      review: ""
+    }
+  }
+}
 
 
 function CommentCardComponent(props: any) {
@@ -25,9 +39,9 @@ function CommentCardComponent(props: any) {
         <Box className='h-full w-2/12 flex justify-center items-start'>
           <Box className='w-10 h-10 rounded-full'>
             {
-              props.userPhoto ?
+              props?.userPhoto ?
               <ImageCard 
-                image={props.userPhoto}
+                image={props?.userPhoto}
                 rounded={true}
               /> :
               <Avatar
@@ -40,13 +54,13 @@ function CommentCardComponent(props: any) {
         </Box>
         <Box className='h-full w-9/12 flex flex-col'>
           <Box className='w-full flex justify-start items-center mb-1'>
-            <span className='text-2sm font-semibold text-dark-gray'>{props.userName}</span>
+            <span className='text-2sm font-semibold text-dark-gray'>{props?.userName}</span>
           </Box>
           <Box className='w-9/12 h-5 mb-2 flex justify-start items-center'>
             <Box className='flex justify-center items-center'>
               <StyledRating
                 name="simple-controlled"
-                value={props.rating}
+                value={props?.rating}
                 size="small"
                 icon={<StarBorderRoundedIcon fontSize='inherit' />}
                 readOnly 
@@ -55,13 +69,13 @@ function CommentCardComponent(props: any) {
             </Box>
             <Box className='flex justify-center items-center ml-5'>
               <span className='text-2xs font-semibold text-dark-gray'>
-                {`(${props.createdAt && (props.createdAt as string).slice(0, 10)})`}
+                {`(${props?.createdAt && (props?.createdAt as string).slice(0, 10)})`}
               </span>
             </Box>
           </Box>
           <Box className='w-full'>
             <Typography  className='text-2sm leading-[1rem] font-medium'>
-              {props.review}
+              {props?.review}
             </Typography>
           </Box>
         </Box>

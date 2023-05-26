@@ -5,6 +5,22 @@ import ImageCard from '../Img/ImageCard'
 import { removeItemFromCart } from '../API'
 import { fetchToken } from '../token'
 import 'animate.css'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      loadFunc: null,
+      image: "",
+      name: "",
+      quantity: 0,
+      unit: "",
+      id: "",
+      orderTotal: "",
+    }
+  }
+}
 
 function CartProductCardComponent(props: any) {
   const [click, setClick] = useState(false)

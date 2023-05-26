@@ -7,6 +7,19 @@ import router from 'next/router';
 import DonationCard from '../donation/DonationCard'
 import OrderSuccessCard from './OrderSuccessCard'
 import { getAmount } from '../API'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setShowDonation: null,
+      standard: false,
+      express: false,
+      walletAddress: "",
+    }
+  }
+}
 
 
 function PlaceOrderCard(props: any) {

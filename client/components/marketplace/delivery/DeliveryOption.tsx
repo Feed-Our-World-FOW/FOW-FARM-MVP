@@ -4,6 +4,19 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import { getSingleStockProduct, getSingleOndemandProduct } from '../API';
 import { fetchToken } from '../token';
 import router from 'next/router';
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setConfirm: null,
+      setStandard: null,
+      setExpress: null,
+      
+    }
+  }
+}
 
 function DeliveryOption(props: any) {
   const data = router.query

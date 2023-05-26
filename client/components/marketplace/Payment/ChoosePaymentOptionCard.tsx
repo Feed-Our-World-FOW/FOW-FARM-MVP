@@ -2,6 +2,19 @@ import React, { useState } from 'react'
 import { Box } from '@mui/material'
 import DebitCard from './DebitCard'
 import CryptoCard from './CryptoCard'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setConfirm: null,
+      setWalletAddress: null,
+      setShowTerms: null, 
+      setShowWallet: null, 
+    }
+  }
+}
 
 
 function ChoosePaymentOptionCard(props: any) {

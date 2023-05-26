@@ -6,6 +6,22 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { updateMyBusinessProfileDetails } from '../../marketplace/API';
 import { fetchToken } from '../../marketplace/token';
 import { BusinessProfileDetailsUpdateInterface } from '../../../interface/AllFarmsInterface';
+import { GetStaticProps } from 'next';
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      shippingCostStandard: 0,
+      shippingTimeStandard: "",
+      shippingCostExpress: 0,
+      shippingTimeExpress: "",
+      shippingRadius: 0,
+      shippingOndemandTime: "",
+      shippingOndemandCost: 0
+    }
+  }
+}
 
 
 function DetailsComponent(props: BusinessProfileDetailsUpdateInterface) {

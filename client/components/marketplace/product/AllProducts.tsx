@@ -4,6 +4,19 @@ import React, { useState, useEffect } from 'react'
 import ProductCardComponent from './ProductCardComponent'
 import { Alert, Snackbar } from '@mui/material'
 import { fetchToken } from '../token'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      loading: null,
+      array: null,
+      allStockProducts: [],
+      allOndemandProducts: []
+    }
+  }
+}
 
 function AllProducts(props: any) {
   const [open, setOpen] = useState(false)

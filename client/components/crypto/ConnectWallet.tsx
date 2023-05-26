@@ -6,8 +6,21 @@ import Image from 'next/image';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3Modal from "web3modal"
 import 'animate.css'
-// import { Web3Button } from '@web3modal/react';
+import { GetStaticProps } from 'next';
 
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setBalance: null,
+      setWalletAddress: null,
+      setShowWallet: null,
+      setConnect: null,
+      setTrigger: null
+    }
+  }
+}
 
 function ConnectWallet(props: any) {
   const [open, setOpen] = useState(false)

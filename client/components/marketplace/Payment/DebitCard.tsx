@@ -1,5 +1,15 @@
 import { Box } from '@mui/material'
+import { GetStaticProps } from 'next'
 import React from 'react'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    revalidate: 5,
+    props: {
+      setConfirm: null,
+    }
+  }
+}
 
 function DebitCard(props: any) {
 
