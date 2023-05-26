@@ -22,7 +22,7 @@ function OrderDetailsPage() {
       const res = await getSingleBuy(token, data.id as string)
       const details = res.data.data.data
       setOrderDetails(details)
-      console.log(details)
+      // console.log(details)
     } catch (error) {
       console.log(error)
     }

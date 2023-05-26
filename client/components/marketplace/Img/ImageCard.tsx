@@ -25,7 +25,6 @@ function ImageCard(props: any) {
         width={200}
         height={200}
         className={props.rounded ? styles.rounded_img : styles.img}
-        onClick={() => console.log(props.image)}
       />
     </div>
   )

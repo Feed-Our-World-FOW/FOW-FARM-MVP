@@ -36,7 +36,7 @@ function ShowMap() {
   const handleFindMyLocation = () => {
     try {
       setOpen(true)
-      console.log("start")
+      // console.log("start")
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           setCurrentPosition({

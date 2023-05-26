@@ -76,7 +76,7 @@ function ProductPage() {
       const  productData = product.data.data.data
       setStock(true)
       setProductDetails(productData)
-      console.log(productData)
+      // console.log(productData)
       setOrderDetails({...orderDetails, orderUnit: productData.unit})
       setLoading(false)
       
@@ -95,7 +95,7 @@ function ProductPage() {
       setStock(false)
       setProductDetails(productData)
       setOrderDetails({...orderDetails, orderUnit: productData.unit})
-      console.log(productData)
+      // console.log(productData)
       
       setLoading(false)
     } catch (error) {

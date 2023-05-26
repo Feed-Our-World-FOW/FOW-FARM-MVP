@@ -39,7 +39,7 @@ function ConnectWallet(props: any) {
       })
       const web3ModalInstance = await web3modal.connect()
       const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance)
-      console.log(web3ModalProvider)
+      // console.log(web3ModalProvider)
     } catch (error) {
       console.log(error)
     }
@@ -50,11 +50,11 @@ function ConnectWallet(props: any) {
       if(typeof window !== 'undefined') {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
-        console.log("Signer: ", await signer.getAddress())
+        // console.log("Signer: ", await signer.getAddress())
         const address = await signer?.getAddress()
         const bal = await signer?.getBalance()
         const setBal = ethers.utils.formatEther(bal)
-        console.log("Balance: ", await signer?.getBalance())
+        // console.log("Balance: ", await signer?.getBalance())
         props.setBalance(setBal.slice(0, 5))
         props.setWalletAddress(address)
       }
@@ -66,7 +66,7 @@ function ConnectWallet(props: any) {
   const handleConnectMetamask = async () => {
     try {
       props.setShowWallet(false)
-      console.log("Metamask")
+      // console.log("Metamask")
       if(typeof window !== 'undefined') {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' })
         // Alfajores -> 0xaef3
@@ -92,7 +92,7 @@ function ConnectWallet(props: any) {
 
   const handleConnectTrust = async () => {
     try {
-      console.log("Trust")
+      // console.log("Trust")
       props.setShowWallet(false)
       connectWallet()
       props.setConnect(true)

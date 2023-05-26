@@ -31,7 +31,7 @@ function CartPage() {
       setTotalItems(data.items.length)
 
       setCartItems(data.items)
-      console.log(data.items)
+      // console.log(data.items)
 
       if(data.items[0].ondemandProduct) {
         

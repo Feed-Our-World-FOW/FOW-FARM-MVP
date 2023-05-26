@@ -26,10 +26,10 @@ function WriteCommentCardComponent(props: any) {
       const token = fetchToken()
       const farmId = data.data as string
       const res = await createReviewForFarm(token, farmId, reviewDetails)
-      console.log(reviewDetails)
-      console.log(res)
+      // console.log(reviewDetails)
+      // console.log(res)
 
-      console.log(farmId)
+      // console.log(farmId)
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt(`Your review got added successfully!!!`)
@@ -96,7 +96,7 @@ function WriteCommentCardComponent(props: any) {
             <Avatar
               sx={{ bgcolor: deepOrange[500] }}
               alt={props?.userName}
-              onClick={() => console.log(props.userName)}
+              // onClick={() => console.log(props.userName)}
               src="/broken-image.jpg"
             />
 

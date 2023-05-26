@@ -32,8 +32,8 @@ function DeliveryOption(props: any) {
       }
       const business = product?.data.data.data.businessProfile
       setBusinessProfile(business)
-      console.log(business)
-      console.log(data)
+      // console.log(business)
+      // console.log(data)
     } catch (error) {
       console.log(error)
     }
@@ -41,7 +41,7 @@ function DeliveryOption(props: any) {
 
   const handleStandard = async () => {
     try {
-      console.log("standard")
+      // console.log("standard")
       setDisable(false)
       props.setStandard(true)
       props.setExpress(false)
@@ -55,7 +55,7 @@ function DeliveryOption(props: any) {
       setDisable(false)
       props.setStandard(false)
       props.setExpress(true)
-      console.log("express")
+      // console.log("express")
     } catch (error) {
       console.log(error)
     }
@@ -66,7 +66,7 @@ function DeliveryOption(props: any) {
       setDisable(false)
       props.setStandard(false)
       props.setExpress(false)
-      console.log("express")
+      // console.log("express")
     } catch (error) {
       console.log(error)
     }

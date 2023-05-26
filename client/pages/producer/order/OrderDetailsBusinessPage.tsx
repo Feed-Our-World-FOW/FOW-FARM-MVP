@@ -22,7 +22,7 @@ function OrderDetailsBusinessPage() {
     try {
       const token = fetchToken()
       const res = await updateMyOrderDelivery(token, data.id as string, { delivered: true })
-      console.log(res)
+      // console.log(res)
       history.back()
     } catch (error) {
       console.log(error)
@@ -33,7 +33,7 @@ function OrderDetailsBusinessPage() {
     try {
       const token = fetchToken()
       const res = await updateMyOrderPaid(token, data.id as string, { paid: true })
-      console.log(res)
+      // console.log(res)
       history.back()
     } catch (error) {
       console.log(error)
@@ -46,7 +46,7 @@ function OrderDetailsBusinessPage() {
       const res = await getSingleBuy(token, data.id as string)
       const details = res.data.data.data
       setOrderDetails(details)
-      console.log(details)
+      // console.log(details)
     } catch (error) {
       console.log(error)
     }

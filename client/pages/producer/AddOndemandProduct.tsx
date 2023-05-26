@@ -87,8 +87,8 @@ function AddOndemandProduct() {
       formData.append('organic', productDetails.organic)
 
       const res = await createMyOndemandProduct(token, formData)
-      console.log(formData)
-      console.log(productDetails)
+      // console.log(formData)
+      // console.log(productDetails)
 
       setOpen(true)
       setAlertStatus("success")

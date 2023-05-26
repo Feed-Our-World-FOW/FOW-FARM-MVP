@@ -89,8 +89,8 @@ function AddStockProduct() {
       formData.append('organic', productDetails.organic)
 
       const res = await createMyStockProduct(token, formData)
-      console.log(formData)
-      console.log(productDetails)
+      // console.log(formData)
+      // console.log(productDetails)
 
       setOpen(true)
       setAlertStatus("success")

@@ -14,7 +14,7 @@ function MyOrdersPage() {
       const res = await getMyBuyConsumer(token)
       const data = res.data.data.data
       setMyBuy(data)
-      console.log(data)
+      // console.log(data)
     } catch (error) {
       console.log(error)
     }

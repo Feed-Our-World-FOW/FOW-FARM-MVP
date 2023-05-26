@@ -14,7 +14,7 @@ function AllMyOrders() {
       const res = await getMyOrdersProducer(token)
       const data = res.data.data.data
       setMyBuy(data)
-      console.log("data: ", data)
+      // console.log("data: ", data)
     } catch (error) {
       console.log(error)
     }

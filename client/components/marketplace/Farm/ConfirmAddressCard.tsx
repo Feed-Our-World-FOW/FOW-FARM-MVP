@@ -17,7 +17,7 @@ function ConfirmAddressCard(props: any) {
       const token = fetchToken()
       const res = await getMyConsumerProfile(token)
       const data = res.data.data.data[0]
-      console.log(data)
+      // console.log(data)
       setLocation({
         lat: data.location.coordinates[1],
         lng: data.location.coordinates[0]

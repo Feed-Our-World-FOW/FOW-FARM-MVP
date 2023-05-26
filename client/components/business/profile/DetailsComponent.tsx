@@ -25,7 +25,7 @@ function DetailsComponent(props: BusinessProfileDetailsUpdateInterface) {
       const token = fetchToken()
       const res = await updateMyBusinessProfileDetails(token, profileDetails)
       setEditDetails(false)
-      console.log(profileDetails)
+      // console.log(profileDetails)
       window.location.reload()
     } catch (error) {
       console.log(error)

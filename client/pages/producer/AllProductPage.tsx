@@ -26,8 +26,8 @@ function AllProductPage() {
       setMyStockProducts(stock)
       setMyOndemandProducts(ondemand)
       setStockProduct(true)
-      console.log(stock)
-      console.log(ondemand)
+      // console.log(stock)
+      // console.log(ondemand)
     } catch (error) {
       console.log(error)
     }

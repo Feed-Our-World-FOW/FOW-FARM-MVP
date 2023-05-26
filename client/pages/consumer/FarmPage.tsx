@@ -48,7 +48,7 @@ function FarmPage() {
   const fetch = async () => {
     try {
       const token = fetchToken()
-      console.log(id.data)
+      // console.log(id.data)
       setToken(token)
       const x = await getSingleBusiness(id.data, token)
       const data = x.data.data.data
@@ -59,7 +59,7 @@ function FarmPage() {
         setCartItems(cartData)
       }
       
-      console.log("Data",data)
+      // console.log("Data",data)
       setShowStockProduct(true)
 
       setFarmDetails(data)

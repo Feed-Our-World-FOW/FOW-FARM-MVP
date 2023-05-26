@@ -51,7 +51,7 @@ function UserProfile() {
         photo: data.user.photo
       })
       
-      console.log(data)
+      // console.log(data)
     } catch (error) {
       console.log(error)
     }

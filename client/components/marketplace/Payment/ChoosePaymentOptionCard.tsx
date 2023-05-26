@@ -28,19 +28,19 @@ function ChoosePaymentOptionCard(props: any) {
       setUpi(true)
       setDebit(false)
       setCrypto(false)
-      console.log("upi")
+      // console.log("upi")
     }
     else if(type === "debit") {
       setUpi(false)
       setDebit(true)
       setCrypto(false)
-      console.log("debit")
+      // console.log("debit")
     }
     else if(type === "crypto") {
       setUpi(false)
       setDebit(false)
       setCrypto(true)
-      console.log("crypto")
+      // console.log("crypto")
     }
   }
 

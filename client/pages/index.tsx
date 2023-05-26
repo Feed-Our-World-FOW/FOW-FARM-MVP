@@ -41,8 +41,8 @@ const Home: NextPage = () => {
       } else if(data.role === "business") {
         setConsumer(false)
       }
-      console.log(data.role)
-      console.log(data.role === "user")
+      // console.log(data.role)
+      // console.log(data.role === "user")
     } catch (error) {
       console.log(error)
     }
