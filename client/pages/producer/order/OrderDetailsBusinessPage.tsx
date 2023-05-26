@@ -55,7 +55,7 @@ function OrderDetailsBusinessPage() {
   useEffect(() => {
     fetch()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   const styles = {
     page: `w-screen flex flex-col justify-center items-center`,
