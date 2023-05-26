@@ -36,19 +36,21 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 function Navbar(props: any) {
 
-  const [token, setToken] = useState('')
   const [totalAmount, setTotalAmount] = useState(0)
 
   const fetch = async () => {
     try {
-      const tokenObj = localStorage.getItem('Token') || null
-
       let Token = fetchToken()
-      setToken(Token)
-      const response = await getMyCart(Token)
-      if(response.data.data.data.length > 0) {
+      // const response = await getMyCart(Token)
+      let response:any
+      if(Token) {
+        response = await getMyCart(Token)
+      } else if(typeof Token === "undefined") {
+        return
+      }
+      if(response?.data?.data.data.length > 0) {
 
-        const cartData = response.data.data.data[0]
+        const cartData = response?.data.data.data[0]
 
         setTotalAmount(cartData.items.length)
       }

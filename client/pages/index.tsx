@@ -10,23 +10,6 @@ import { getMe } from '../components/marketplace/API'
 const Home: NextPage = () => {
   const [consumer, setConsumer] = useState(true)
 
-  // const providerOptions = {
-
-  // }
-
-  // const connectWallet = async () => {
-  //   try {
-  //     let web3modal = new Web3Modal({
-  //       cacheProvider: false,
-  //       providerOptions
-  //     })
-  //     const web3ModalInstance = await web3modal.connect()
-  //     const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance)
-  //     console.log(web3ModalProvider)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
 
   const fetch = async() => {
     try {
@@ -34,6 +17,9 @@ const Home: NextPage = () => {
       let me
       if(token) {
         me = await getMe(token)
+      }else if (typeof token === "undefined") {
+        setConsumer(true)
+        return
       }
       const data = me?.data.data.data
       if(data.role === "user") {
@@ -41,7 +27,7 @@ const Home: NextPage = () => {
       } else if(data.role === "business") {
         setConsumer(false)
       }
-      // console.log(data.role)
+      
       // console.log(data.role === "user")
     } catch (error) {
       console.log(error)
