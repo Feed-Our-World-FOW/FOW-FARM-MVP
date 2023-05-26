@@ -3,8 +3,10 @@ import React, { useState } from 'react'
 import { ethers } from 'ethers';
 import ClearIcon from '@mui/icons-material/Clear';
 import Image from 'next/image';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3Modal from "web3modal"
 import 'animate.css'
+// import { Web3Button } from '@web3modal/react';
 
 
 function ConnectWallet(props: any) {
@@ -13,7 +15,20 @@ function ConnectWallet(props: any) {
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
 
   const providerOptions = {
-
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        infuraId: process.env.NEXT_PUBLIC_INFURA_ID
+      }
+    },
+    metamask: {
+      package: ethers.providers.Web3Provider,
+      options: {}
+    },
+    trust: {
+      package: ethers.providers.Web3Provider,
+      options: {}
+    }
   }
 
   const connectWallet = async () => {
@@ -39,6 +54,7 @@ function ConnectWallet(props: any) {
         const address = await signer?.getAddress()
         const bal = await signer?.getBalance()
         const setBal = ethers.utils.formatEther(bal)
+        console.log("Balance: ", await signer?.getBalance())
         props.setBalance(setBal.slice(0, 5))
         props.setWalletAddress(address)
       }
@@ -79,6 +95,9 @@ function ConnectWallet(props: any) {
       console.log("Trust")
       props.setShowWallet(false)
       connectWallet()
+      props.setConnect(true)
+      props.setTrigger(false)
+      fetch()
     } catch (error) {
       console.log(error)
     }

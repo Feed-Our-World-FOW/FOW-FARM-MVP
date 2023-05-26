@@ -1,7 +1,8 @@
 import axios from "axios"
 import { LoginFormInterface, SignupFormInterface } from "../../../interface/AllFarmsInterface"
 
-const URL = `http://localhost:5000`
+// const URL = `http://localhost:5000`
+const URL = `https://fow-farm-api.onrender.com`
 
 const BUSINESS_URL = `${URL}/api/v1/business`
 const USER_URL = `${URL}/api/v1/user`
@@ -110,12 +111,49 @@ export const createBuy = (
   _details: {
     paymentOption: string,
     deliveryType: string,
-
+    receipt: string,
+    paid: boolean
   }
 ) => BUY_API.post(`/`, _details, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const getMyBuyConsumer = (_token: string) => BUY_API.get(`/myOrder`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getSingleBuy = (_token: string, _id: string) => BUY_API.get(`/${_id}`, { headers: { Authorization: `Bearer ${_token}`}})
+export const getMyOrdersProducer = (_token: string) => BUY_API.get(`/businessOrder`, { headers: { Authorization: `Bearer ${_token}`}})
+export const updateMyOrderPaid = (
+  _token: string, 
+  _id: string, 
+  _details: { 
+    paid: boolean 
+  }
+) => BUY_API.patch(`/${_id}`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const updateMyOrderDelivery = (
+  _token: string, 
+  _id: string, 
+  _details: { 
+    delivered: boolean 
+  }
+) => BUY_API.patch(`/${_id}`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+
+export const getAmount = (
+  _token: string,
+  _paymentOption: string,
+  _deliveryType: string,
+  
+) => BUY_API.get(
+  `/getAmount?paymentOption=${_paymentOption}&deliveryType=${_deliveryType}`, 
+  { headers: { Authorization: `Bearer ${_token}` }}
+)
+
+// export const getAmount = (
+//   _token: string,
+//   _details: {
+//     paymentOption: string,
+//     deliveryType: string,
+//   }
+// ) => BUY_API.get(`/getAmount`, _details as any, { headers: { Authorization: `Bearer ${_token}`}})
+
+
 
 export const getReviewForFarm = (_token: string, _farmId: string) => REVIEW_API.get(`/farm/${_farmId}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const createReviewForFarm = (
@@ -126,4 +164,5 @@ export const createReviewForFarm = (
     rating: number
   }
 ) => REVIEW_API.post(`/farm/${_farmId}`, _details, { headers: { Authorization: `Bearer ${_token}`}})
+
 

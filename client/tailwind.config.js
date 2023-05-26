@@ -60,6 +60,7 @@ module.exports = {
       'green': '#5EC281',
       'dark-gray': '#3D3F3E',
       'red': '#FF0042',
+      'dark-red': '#d40622',
       'light-pearl': '#abffea',
       'white': '#FFFEFE',
       'dark-blue': '#094D92',

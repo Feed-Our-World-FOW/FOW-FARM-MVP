@@ -6,6 +6,7 @@ import LocationCard from '../location/LocationCard'
 import router from 'next/router';
 import DonationCard from '../donation/DonationCard'
 import OrderSuccessCard from './OrderSuccessCard'
+import { getAmount } from '../API'
 
 
 function PlaceOrderCard(props: any) {
@@ -21,6 +22,10 @@ function PlaceOrderCard(props: any) {
   const [walletAddress, setWalletAddress] = useState("")
   const [donation, setDonation] = useState(false)
   const [orderSuccess, setOrderSuccess] = useState(false)
+  const [userName, setUserName] = useState("")
+  const [businessAddress, setBusinessAddress] = useState("")
+  const [totalAmountInUSD, setTotalAmountInUSD] = useState(0)
+  const [totalAmountInCELO, setTotalAmountInCELO] = useState(0)
 
 
 
@@ -45,32 +50,48 @@ function PlaceOrderCard(props: any) {
       setCartItems(data.items)
 
       const res = await getMyConsumerProfile(Token)
-      const data2 = res.data.data.data[0]
+      const data2 = res?.data?.data?.data[0]
       setLocation({
-        lat: data2.location.coordinates[1],
-        lng: data2.location.coordinates[0]
+        lat: data2?.location?.coordinates[1],
+        lng: data2?.location?.coordinates[0]
       })
+      let res2
       // console.log("props: ", props)
-     
-      if(routerData.stock) {
-        if(props.standard && !props.express) {
-          setDeliveryCharge(data.items[0].stockProduct.businessProfile.shippingCostStandard)
+    //  console.log(data)
+      setUserName(data2?.user?.name)
+      if(typeof routerData?.stock !== "undefined") {
+        if(props?.standard && !props?.express) {
+          setDeliveryCharge(data?.items[0]?.stockProduct?.businessProfile?.shippingCostStandard)
+          res2 = await getAmount(Token, "Crypto", "standard" )
 
-        } else if(!props.standard && props.express) {
-          setDeliveryCharge(data.items[0].stockProduct.businessProfile.shippingCostExpress)
-
+        } else if(!props?.standard && props?.express) {
+          setDeliveryCharge(data?.items[0]?.stockProduct?.businessProfile?.shippingCostExpress)
+          res2 = await getAmount(Token, "Crypto", "express" )
+          
         }
-      }else if(routerData.ondemand) {
-        setDeliveryCharge(data.items[0].ondemandProduct.businessProfile.shippingOndemandCost)
+        setBusinessAddress(data?.items[0]?.stockProduct?.businessProfile?.walletAddress)
+
+      }else if(typeof routerData.ondemand !== "undefined") {
+        setDeliveryCharge(data?.items[0]?.ondemandProduct?.businessProfile?.shippingOndemandCost)
+        setBusinessAddress(data?.items[0]?.ondemandProduct?.businessProfile?.walletAddress)
+        res2 = await getAmount(Token, "Crypto", "standard" )
 
       }
 
-      const addr1 = props.walletAddress.slice(0, 14)
-      const addr2 = props.walletAddress.slice(27, 42)
+      // console.log(({ paymentOption: "Crypto", deliveryType: "standard" }))
+      // console.log("Here is the problem: ", await getAmount(Token, "Crypto", "express" ))
+
+      const addr1 = props?.walletAddress.slice(0, 14)
+      const addr2 = props?.walletAddress.slice(27, 42)
       let addr = addr1 + "  ...  " + addr2
       addr = addr.replace(/(.{4})(?!$)/g, "$1 ")
 
       setWalletAddress(addr)
+      const data3 = res2?.data?.data?.data
+      setTotalAmountInUSD(data3?.totalAmountInUSD as number)
+      setTotalAmountInCELO(data3?.totalAmountInCELO as number)
+      // console.log("res2?.data.data: ", res2?.data.data.data)
+      // console.log(res2)
 
     } catch (error) {
       console.log(error)
@@ -101,10 +122,14 @@ function PlaceOrderCard(props: any) {
         <Box className={styles.card}>
           <DonationCard 
             setDonation={setDonation}
-            setShowDonation={props.setShowDonation}
-            standard={props.standard}
-            express={props.express}
+            setShowDonation={props?.setShowDonation}
+            standard={props?.standard}
+            express={props?.express}
             setOrderSuccess={setOrderSuccess}
+            // amount={Number(Number(subTotal) + deliveryCharge).toFixed(3)}
+            totalAmountInUSD={totalAmountInUSD}
+            totalAmountInCELO={totalAmountInCELO}
+            businessAddress={businessAddress}
           /> 
         </Box> :
         
@@ -151,7 +176,14 @@ function PlaceOrderCard(props: any) {
     
             <Box className="w-10/12 flex justify-between items-center mb-5">
               <span className={styles.smallTxt}>Total</span>
-              <span className='text-2sm font-bold'>$ {Number(Number(subTotal) + deliveryCharge).toFixed(3)}</span>
+              {/* <span className='text-2sm font-bold'>$ {Number(Number(subTotal) + deliveryCharge).toFixed(3)}</span> */}
+              <span className='text-2sm font-bold'>$ {Number(totalAmountInUSD).toFixed(3)}</span>
+            </Box>
+
+            <Box className="w-10/12 flex justify-between items-center mb-5">
+              <span className={styles.smallTxt}></span>
+              {/* <span className='text-2sm font-bold'>$ {Number(Number(subTotal) + deliveryCharge).toFixed(3)}</span> */}
+              <span className='text-2sm font-bold'>{Number(totalAmountInCELO).toFixed(3)} CELO</span>
             </Box>
     
           </Box>
@@ -178,7 +210,7 @@ function PlaceOrderCard(props: any) {
                 <span className="text-2sm font-bold">Payment</span>
               </Box>
               <Box className="w-10/12 flex flex-col justify-center items-start mb-5">
-                <span className="text-2sm font-semibold">Ankush Banik</span>
+                <span className="text-2sm font-semibold">{userName}</span>
                 <span className="text-2sm font-semibold">
                   {walletAddress}
                 </span>

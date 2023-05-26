@@ -8,44 +8,12 @@ function CryptoCard(props: any) {
   const [connect, setConnect] = useState(false)
   const [walletAddress, setWalletAddress] = useState('0x000......000')
   const [balance, setBalance] = useState('0.00')
-
   const [trigger, setTrigger] = useState(false)
-
-  // const fetch = async () => {
-  //   try {
-  //     if(typeof window !== 'undefined') {
-  //       const provider = new ethers.providers.Web3Provider(window.ethereum)
-  //       const signer = provider.getSigner()
-  //       console.log("Signer: ", await signer.getAddress())
-  //       const address = await signer?.getAddress()
-  //       const bal = await signer?.getBalance()
-  //       const setBal = ethers.utils.formatEther(bal)
-  //       setBalance(setBal.slice(0, 5))
-  //       setWalletAddress(address)
-  //     }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
 
   const handleConnectWallet = async () => {
     try {
       setTrigger(prev => !prev)
       props.setShowWallet(true)
-      // if(typeof window !== 'undefined') {
-      //   const chainId = await window.ethereum.request({ method: 'eth_chainId' })
-      //   // Alfajores -> 0xaef3
-      //   // CELO (Mainnet) -> 0xa4ec
-      //   // if(chainId != '0xaef3') {
-      //   //   await window.ethereum.request({
-      //   //     method: 'wallet_switchEthereumChain',
-      //   //     params: [{ chainId: '0xaef3' }]
-      //   //   })
-      //   // }
-      //   await window.ethereum.request({ method: 'eth_requestAccounts' })
-      //   setConnect(true)
-      //   fetch()
-      // }
     } catch (error) {
       console.log(error)
     }
@@ -65,14 +33,6 @@ function CryptoCard(props: any) {
       console.log(error)
     }
   }
-
-
-  useEffect(() => {
-    // window.ethereum.on('accountsChanged', () => {
-    //   window.location.replace(location.pathname)
-    // })
-    // fetch()
-  }, [])
 
   const styles = {
     page: `w-full flex flex-col justify-center items-center`,

@@ -31,7 +31,7 @@ function OrderDetailsPage() {
   useEffect(() => {
     fetch()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
 
   const styles = {
@@ -122,7 +122,7 @@ function OrderDetailsPage() {
   
           <Box className="w-10/12 flex justify-between items-center">
             <span className={styles.smallTxt}>Shipping</span>
-            <span className={styles.smallTxt}>$ {Number(orderDetails?.totalAmount) - Number(orderDetails?.cart?.subTotal)}</span>
+            <span className={styles.smallTxt}>$ {Number(Number(orderDetails?.totalAmount) - Number(orderDetails?.cart?.subTotal)).toFixed(3)}</span>
           </Box>
   
           <Box className="w-11/12 border-1 mt-5 mb-5 border-light-gray"></Box>
@@ -149,7 +149,13 @@ function OrderDetailsPage() {
           <Box className="w-10/12 flex flex-col justify-center items-start mt-3 mb-3">
             <span className='text-2sm font-semibold'>{orderDetails?.consumerProfile?.user?.name}</span>
             <span className='text-2sm mt-1'>
-              <span className='text-2sm font-semibold'>Receipt: </span>{`http://celo.org/abc`}
+              <span className='text-2sm font-semibold'>Receipt: </span>
+              <button className='text-2sm font-semibold bg-green rounded-2xl h-6 w-28 ml-5'>
+                <a href={`https://explorer.celo.org/alfajores/tx/${orderDetails?.receipt}`} target='#'>
+                  {`Go to explorer>>`}
+                </a>
+              </button>
+              {/* {orderDetails?.receipt} */}
             </span>
           </Box>
           

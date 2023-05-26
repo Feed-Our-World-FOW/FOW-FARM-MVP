@@ -254,14 +254,14 @@ function UserProfile() {
           </Box>
           <Box className="border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center">
             <span className='text-sm'>My Orders</span>
-            <span className='text-sm'>{myProfile.orders}</span>
+            <span className='text-sm'>{myProfile?.orders}</span>
             <Link href={`/consumer/orders/MyOrdersPage`} className="ml-7">
               <ArrowForwardIosIcon fontSize='small' />
             </Link>
           </Box>
           <Box className="border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center mb-5">
             <span className='text-sm'>My favourite</span>
-            <span className='text-sm'>{myProfile.favourite}</span>
+            <span className='text-sm'>{myProfile?.favourite}</span>
             <Box className="ml-7">
               <ArrowForwardIosIcon fontSize='small' />
             </Box>
@@ -269,9 +269,9 @@ function UserProfile() {
           
         </Box>
 
-        <button className="w-full h-9 rounded-3xl bg-green flex justify-center items-center mt-5">
+        {/* <button className="w-full h-9 rounded-3xl bg-green flex justify-center items-center mt-5">
           <span className='text-3sm font-bold text-white'>Connect Wallet</span>
-        </button>
+        </button> */}
 
         <Snackbar open={open} autoHideDuration={4500} className='w-full'>
           <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
