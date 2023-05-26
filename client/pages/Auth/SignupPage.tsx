@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import { SignupFormInterface } from '../../interface/AllFarmsInterface'
 import { signupMethod } from '../../components/marketplace/API'
 import { Alert, AlertColor, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar } from '@mui/material'
+import { createMyConsumerProfile, createMyBusinessProfile } from '../../components/marketplace/API'
 
 
 function SignupPage() {
@@ -53,6 +54,12 @@ function SignupPage() {
       const token = signup.data.token
       const expire = new Date().getTime() + Number(expireTime)
       localStorage.setItem("Token", JSON.stringify({ value: `${token}`, expires: expire }))
+
+      if(signupForm.role === "user") {
+        await createMyConsumerProfile(token)
+      } else if(signupForm.role === "business") {
+        await createMyBusinessProfile(token)
+      }
 
       signupForm.name = ''
       signupForm.email = ''

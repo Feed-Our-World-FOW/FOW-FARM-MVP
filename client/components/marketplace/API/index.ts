@@ -35,6 +35,8 @@ export const updateMe = (
 
 export const getMe = (_token: string) => USER_API.get(`/me`, { headers: { Authorization: `Bearer ${_token}`}})
 
+export const createMyBusinessProfile = (_token: string) => BUSINESS_API.post(`/`, {}, { headers: { Authorization: `Bearer ${_token}`}})
+
 export const getAllBusiness = () => BUSINESS_API.get('/')
 export const getSingleBusiness = (_id: string, _token: string) => BUSINESS_API.get(`/${_id}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getMyBusinessProfile = (_token: string) => BUSINESS_API.get(`/myProfile`, { headers: { Authorization: `Bearer ${_token}`}})
@@ -93,6 +95,7 @@ export const addProductToCart = (
 export const getMyCart = (_token: string) => CART_API.get(`/myCart`, { headers: { Authorization: `Bearer ${_token}`}})
 export const removeItemFromCart = (_token: string, _itemId: string) => CART_API.delete(`/${_itemId}/remove`, { headers: { Authorization: `Bearer ${_token}`}})
 
+export const createMyConsumerProfile = (_token: string) => CONSUMER_API.post(`/`, {}, { headers: { Authorization: `Bearer ${_token}`}})
 export const getMyConsumerProfile = (_token: string) => CONSUMER_API.get(`/myProfile`, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const updateMyConsumerProfileLocation = (
