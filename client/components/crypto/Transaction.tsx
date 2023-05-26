@@ -3,7 +3,7 @@ import ABI from "../../pages/utils/FOW.json"
 
 export const transaction = async (_address: string, _amount: number): Promise<string> => {
   try {
-    const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    const contractAddress = "0x8C50E40E757ccaa02F4Da7bB3b9B5aE17AFf55df"
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()

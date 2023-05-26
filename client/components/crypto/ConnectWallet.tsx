@@ -71,12 +71,12 @@ function ConnectWallet(props: any) {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' })
         // Alfajores -> 0xaef3
         // CELO (Mainnet) -> 0xa4ec
-        // if(chainId != '0xaef3') {
-        //   await window.ethereum.request({
-        //     method: 'wallet_switchEthereumChain',
-        //     params: [{ chainId: '0xaef3' }]
-        //   })
-        // }
+        if(chainId != '0xaef3') {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0xaef3' }]
+          })
+        }
         await window.ethereum.request({ method: 'eth_requestAccounts' })
         props.setConnect(true)
         props.setTrigger(false)

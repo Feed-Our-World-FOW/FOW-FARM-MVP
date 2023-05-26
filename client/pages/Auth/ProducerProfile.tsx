@@ -99,12 +99,12 @@ function ProducerProfile() {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' })
         // Alfajores -> 0xaef3
         // CELO (Mainnet) -> 0xa4ec
-        // if(chainId != '0xaef3') {
-        //   await window.ethereum.request({
-        //     method: 'wallet_switchEthereumChain',
-        //     params: [{ chainId: '0xaef3' }]
-        //   })
-        // }
+        if(chainId != '0xaef3') {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0xaef3' }]
+          })
+        }
         await window.ethereum.request({ method: 'eth_requestAccounts' })
         setConnect(true)
         const provider = new ethers.providers.Web3Provider(window.ethereum)

@@ -82,7 +82,7 @@ function DonationCard(props: any) {
       const res = await createBuy(token, { paymentOption, deliveryType, receipt: hx, paid: true })
       
 
-      // window.location.replace('/')
+      window.location.replace('/')
     } catch (error) {
       console.log(error)
     }

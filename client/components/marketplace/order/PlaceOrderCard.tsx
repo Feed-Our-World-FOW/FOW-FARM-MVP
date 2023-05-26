@@ -101,7 +101,7 @@ function PlaceOrderCard(props: any) {
   useEffect(() => {
     fetch()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [routerData])
 
   const styles = {
     card: `w-full flex flex-col justify-center items-center`,

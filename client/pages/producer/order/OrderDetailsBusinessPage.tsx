@@ -192,7 +192,12 @@ function OrderDetailsBusinessPage() {
           <Box className="w-10/12 flex flex-col justify-center items-start mt-3 mb-3">
             <span className='text-2sm font-semibold'>{orderDetails?.consumerProfile?.user?.name}</span>
             <span className='text-2sm mt-1'>
-              <span className='text-2sm font-semibold'>Receipt: </span>{`http://celo.org/abc`}
+              <span className='text-2sm font-semibold'>Receipt: </span>
+              <button className='text-2sm font-semibold bg-green rounded-2xl h-6 w-28 ml-5'>
+                <a href={`https://explorer.celo.org/alfajores/tx/${orderDetails?.receipt}`} target='#'>
+                  {`Go to explorer>>`}
+                </a>
+              </button>
             </span>
           </Box>
           
