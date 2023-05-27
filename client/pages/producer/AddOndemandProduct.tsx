@@ -1,4 +1,4 @@
-import { Alert, AlertColor, Box, IconButton, Snackbar } from '@mui/material'
+import { Alert, AlertColor, Box, Button, IconButton, Snackbar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/marketplace/navBar/Navbar'
 import BottomNav from '../../components/marketplace/navBar/BottomNav';
@@ -7,7 +7,20 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { fetchToken } from '../../components/marketplace/token';
 import { OndemandProduct } from '../../interface/AllFarmsInterface';
-import { getSingleOndemandProduct, updateMyOndemandProduct, createMyOndemandProduct } from '../../components/marketplace/API';
+import { 
+  getSingleOndemandProduct, 
+  updateMyOndemandProduct, 
+  createMyOndemandProduct,
+  deleteOndemandProduct
+} from '../../components/marketplace/API';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 function AddOndemandProduct() {
@@ -30,8 +43,11 @@ function AddOndemandProduct() {
   const [alertTxt, setAlertTxt] = useState('')
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
   const [open, setOpen] = useState(false)
+  const [openDialog, setOpenDialog] = useState(false)
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
   const handleAddUpdate = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const id = data.id as string
@@ -70,7 +86,31 @@ function AddOndemandProduct() {
     }
   }
 
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDeleteProduct = async () => {
+    setOpenDialog(false);
+    setOpenBackdrop(true)
+    try {
+      const token = fetchToken()
+      console.log(productDetails.id)
+      const res = await deleteOndemandProduct(token, productDetails.id)
+      console.log(res)
+      window.location.replace(`/`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   const handleAddPost = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const formData = new FormData()
@@ -104,7 +144,7 @@ function AddOndemandProduct() {
       setAlertTxt(`${error.response.data.message}`)
 
       setTimeout(function() {
-        window.location.reload()
+        window.location.replace(`/Auth/ProducerProfile`)
       }, 2000)
     }
   }
@@ -190,6 +230,50 @@ function AddOndemandProduct() {
             <span className='text-2sm font-bold text-dark-gray'>{`2. on demand`}</span>
           </Box>
         </Box>
+
+        {
+          data.data === "patch"
+          &&
+          <Box className="w-full flex justify-end items-center">
+            <DeleteOutlineOutlinedIcon fontSize='medium' color='error' onClick={() => setOpenDialog(true)} />
+          </Box>
+        }
+
+
+
+
+        <Dialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"WARNING!!!"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure, do you want to delete this product??
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteProduct} className='font-bold capitalize'>Yes</Button>
+            <Button onClick={handleCloseDialog} autoFocus className='font-bold capitalize'>
+              No
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={openBackdrop}
+          onClick={() => setOpenBackdrop(false)}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+
+
+        
 
         <Box className={styles.subContainer}>
           <Box className={styles.txtBox}>

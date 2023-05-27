@@ -9,6 +9,8 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { addProductToCart } from '../API';
 import 'animate.css'
 import { GetStaticProps } from 'next';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -34,8 +36,7 @@ function AddProductCart(props: any) {
 
   const [open, setOpen] = useState(false);
   const [alertTxt, setAlertTxt] = useState("")
-  // const [addedProductPrice, setAddedProductPrice] = useState(0)
-
+  const [openBackdrop, setOpenBackdrop] = useState(false)
   const [unit, setUnit] = useState("")
   const [price, setPrice] = useState(0)
 
@@ -55,6 +56,7 @@ function AddProductCart(props: any) {
   }
 
   const handleAdd = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const add = await addProductToCart(props.id, token, props.orderDetails)
@@ -67,7 +69,9 @@ function AddProductCart(props: any) {
       // setAddedProductPrice(res.data.data.data.price)
 
       props.setOpen(true)
+      setOpenBackdrop(false)
     } catch (error: any) {
+      setOpenBackdrop(false)
       setOpen(true)
       setAlertTxt(error.response.data.message)
     }
@@ -147,6 +151,13 @@ function AddProductCart(props: any) {
           </button>
         </Box>
       </Box>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
 
       <Box className={!props.open ? styles.cartBtn : styles.blur_cartBtn}>

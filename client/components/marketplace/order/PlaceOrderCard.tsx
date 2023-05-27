@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box } from '@mui/material'
+import { Backdrop, Box, CircularProgress } from '@mui/material'
 import { fetchToken } from '../token'
 import { getMyCart, getMyConsumerProfile } from '../API'
 import LocationCard from '../location/LocationCard'
@@ -39,6 +39,7 @@ function PlaceOrderCard(props: any) {
   const [businessAddress, setBusinessAddress] = useState("")
   const [totalAmountInUSD, setTotalAmountInUSD] = useState(0)
   const [totalAmountInCELO, setTotalAmountInCELO] = useState(0)
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
 
 
@@ -53,6 +54,7 @@ function PlaceOrderCard(props: any) {
   }
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       const Token = fetchToken()
       const response = await getMyCart(Token)
@@ -106,8 +108,11 @@ function PlaceOrderCard(props: any) {
       // console.log("res2?.data.data: ", res2?.data.data.data)
       // console.log(res2)
 
+      setOpenBackdrop(false)
+
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -207,6 +212,13 @@ function PlaceOrderCard(props: any) {
               lng={location.lng}
             />
           </Box>
+
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={openBackdrop}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
 
         {
           !donation && orderSuccess ?

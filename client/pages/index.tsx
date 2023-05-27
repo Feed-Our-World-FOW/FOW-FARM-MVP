@@ -22,9 +22,9 @@ const Home: NextPage = () => {
         return
       }
       const data = me?.data.data.data
-      if(data.role === "user") {
+      if(data?.role === "user") {
         setConsumer(true)
-      } else if(data.role === "business") {
+      } else if(data?.role === "business") {
         setConsumer(false)
       }
       

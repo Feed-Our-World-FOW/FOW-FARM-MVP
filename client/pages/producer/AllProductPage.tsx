@@ -6,7 +6,7 @@ import SearchBar from '../../components/marketplace/navBar/SearchBar'
 import BottomNav from '../../components/marketplace/navBar/BottomNav'
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import ProductFilterNav from '../../components/marketplace/navBar/ProductFilterNav'
-import { getMyStockProducts, getMyOndemandProduct } from '../../components/marketplace/API'
+import { getMyStockProducts, getMyOndemandProduct, getMyBusinessProfile } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
 import ProductCardComponent from '../../components/marketplace/product/ProductCardComponent'
 
@@ -15,17 +15,21 @@ function AllProductPage() {
   const [stockProduct, setStockProduct] = useState(false)
   const [myStockProducts, setMyStockProducts] = useState<any>([{}])
   const [myOndemandProducts, setMyOndemandProducts] = useState<any>([{}])
+  const [myProfile, setMyProfile] = useState<any>({})
 
   const fetch = async () => {
     try {
       const token = fetchToken()
+      const res = await getMyBusinessProfile(token)
       const res1 = await getMyStockProducts(token)
       const res2 = await getMyOndemandProduct(token)
+      const data = res.data.data.data[0]
       const stock = res1.data.data.data
       const ondemand = res2.data.data.data
       setMyStockProducts(stock)
       setMyOndemandProducts(ondemand)
       setStockProduct(true)
+      setMyProfile(data)
       // console.log(stock)
       // console.log(ondemand)
     } catch (error) {
@@ -141,6 +145,7 @@ function AllProductPage() {
       <Box className="w-full mt-10">
         <BottomNav 
           produce={true}
+          warning={(typeof myProfile?.location === "undefined") || (typeof myProfile?.walletAddress === "undefined")}
         />
       </Box>
     </Box>

@@ -5,6 +5,8 @@ import { getMyConsumerProfile } from '../API';
 import { fetchToken } from '../token';
 import LocationCard from '../location/LocationCard';
 import { GetStaticProps } from 'next';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -21,8 +23,10 @@ function ConfirmAddressCard(props: any) {
     lng: 0
   })
   const [data, setData] = useState<any>({})
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const res = await getMyConsumerProfile(token)
@@ -33,8 +37,10 @@ function ConfirmAddressCard(props: any) {
         lng: data.location.coordinates[0]
       })
       setData(data)
+      setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -72,6 +78,14 @@ function ConfirmAddressCard(props: any) {
           lng={location.lng}
         />
       </Container>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <Box className="mt-5 w-11/12 leading-tight">
         <span className='text-2sm font-bold mr-3'>Description:</span>
         <span className='text-sm font-semibold'>{data?.location?.description}</span>

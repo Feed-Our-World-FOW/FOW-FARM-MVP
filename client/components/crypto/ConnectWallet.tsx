@@ -1,4 +1,4 @@
-import { Alert, AlertColor, Box, Paper, Snackbar } from '@mui/material'
+import { Alert, AlertColor, Backdrop, Box, CircularProgress, Paper, Snackbar } from '@mui/material'
 import React, { useState } from 'react'
 import { ethers } from 'ethers';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -26,6 +26,8 @@ function ConnectWallet(props: any) {
   const [open, setOpen] = useState(false)
   const [alertTxt, setAlertTxt] = useState('')
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [openBackdrop, setOpenBackdrop] = useState(false)
+
 
   const providerOptions = {
     walletconnect: {
@@ -59,6 +61,7 @@ function ConnectWallet(props: any) {
   }
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       if(typeof window !== 'undefined') {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -71,8 +74,10 @@ function ConnectWallet(props: any) {
         props.setBalance(setBal.slice(0, 5))
         props.setWalletAddress(address)
       }
+      setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -171,6 +176,13 @@ function ConnectWallet(props: any) {
           </Box>
         </Box>
       </Box>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
       <Snackbar open={open} autoHideDuration={4500} className='w-full mt-auto'>
         <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>

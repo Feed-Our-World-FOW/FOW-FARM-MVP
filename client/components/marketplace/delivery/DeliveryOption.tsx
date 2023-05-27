@@ -5,6 +5,8 @@ import { getSingleStockProduct, getSingleOndemandProduct } from '../API';
 import { fetchToken } from '../token';
 import router from 'next/router';
 import { GetStaticProps } from 'next';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -23,6 +25,7 @@ function DeliveryOption(props: any) {
 
   const [businessProfile, setBusinessProfile] = useState<any>({})
   const [disable, setDisable] = useState(true)
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
   const handleContinue = () => {
     props.setConfirm({
@@ -35,6 +38,7 @@ function DeliveryOption(props: any) {
   }
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       let product
@@ -47,8 +51,10 @@ function DeliveryOption(props: any) {
       setBusinessProfile(business)
       // console.log(business)
       // console.log(data)
+      setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -126,6 +132,13 @@ function DeliveryOption(props: any) {
           </Box>
         </Box>
       </Box>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
 
       <Box className={styles.container} sx={!data.ondemand ? {filter: 'blur(2px)'} : {}}>

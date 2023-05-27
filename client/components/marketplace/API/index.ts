@@ -76,12 +76,14 @@ export const getSingleStockProduct = (_id: string, _token: string, _unit: string
 export const getMyStockProducts = (_token: string) => STOCK_API.get(`/myStockProduct`, { headers: { Authorization: `Bearer ${_token}`}})
 export const updateMyStockProduct = (_token: string, _id: string, _formData: FormData) => STOCK_API.patch(`/${_id}`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
 export const createMyStockProduct = (_token: string, _formData: FormData) => STOCK_API.post(`/`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
+export const deleteStockProduct = (_token: string, _id: string) => STOCK_API.delete(`/${_id}`, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const getAllOndemandProduct = () => ONDEMAND_API.get('/')
 export const getSingleOndemandProduct = (_id: string, _token: string, _unit: string) => ONDEMAND_API.get(`/${_id}?unit=${_unit}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getMyOndemandProduct = (_token: string) => ONDEMAND_API.get(`/myOndemandProduct`, { headers: { Authorization: `Bearer ${_token}`}})
 export const updateMyOndemandProduct = (_token: string, _id: string, _formData: FormData) => ONDEMAND_API.patch(`/${_id}`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
 export const createMyOndemandProduct = (_token: string, _formData: FormData) => ONDEMAND_API.post(`/`, _formData, { headers: { Authorization: `Bearer ${_token}`}})
+export const deleteOndemandProduct = (_token: string, _id: string) => ONDEMAND_API.delete(`/${_id}`, { headers: { Authorization: `Bearer ${_token}`}})
 
 export const addProductToCart = (
   _itemId: string, 

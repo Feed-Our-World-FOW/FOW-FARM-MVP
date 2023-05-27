@@ -14,6 +14,10 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import DetailsComponent from '../../components/business/profile/DetailsComponent';
 import { ethers } from 'ethers';
+import Chip from '@mui/material/Chip';
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 interface User {
@@ -39,9 +43,11 @@ function ProducerProfile() {
   const [walletEdit, setWalletEdit] = useState(false)
   const [walletAddress, setWalletAddress] = useState('0x00000000000000000000000000000000000000000')
   const [connect, setConnect] = useState(false)
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const res = await getMyBusinessProfile(token)
@@ -52,14 +58,15 @@ function ProducerProfile() {
         email: data.user.email,
         photo: data.user.photo
       })
-      if(typeof window !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const signer = provider.getSigner()
-        const address = await signer?.getAddress()
-        setWalletAddress(address)
-      }
+      // if(typeof window !== 'undefined' && window.ethereum) {
+      //   const provider = new ethers.providers.Web3Provider(window.ethereum)
+      //   const signer = provider.getSigner()
+      //   const address = await signer?.getAddress()
+      //   setWalletAddress(address)
+      // }
 
-      // console.log(data)
+      // console.log("data: ", data)
+      setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
     }
@@ -95,7 +102,9 @@ function ProducerProfile() {
 
   const handleConnect = async () => {
     try {
-      if(typeof window !== 'undefined') {
+      if(typeof window !== 'undefined' && window.ethereum) {
+        let provider: any
+        let signer: any
         const chainId = await window.ethereum.request({ method: 'eth_chainId' })
         // Alfajores -> 0xaef3
         // CELO (Mainnet) -> 0xa4ec
@@ -107,11 +116,11 @@ function ProducerProfile() {
         }
         await window.ethereum.request({ method: 'eth_requestAccounts' })
         setConnect(true)
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const signer = provider.getSigner()
+        provider = new ethers.providers.Web3Provider(window.ethereum)
+        signer = provider.getSigner()
         const address = await signer?.getAddress()
         setWalletAddress(address)
-        // setWalletAddress()
+        
       }
     } catch (error) {
       console.log(error)
@@ -216,6 +225,14 @@ function ProducerProfile() {
             }
           </Box>
 
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={openBackdrop}
+            onClick={() => setOpenBackdrop(false)}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+
           <Box className="w-8/12 h-full flex flex-col justify-center items-center">
             {
               !userEdit ?
@@ -290,6 +307,10 @@ function ProducerProfile() {
               <Box></Box>
               <span className='text-2sm font-semibold mr-auto ml-7'>My Address</span>
               <Box className="w-full h-44 flex justify-end items-end">
+                {
+                  !myProfile?.location &&
+                  <Chip color="warning" label="Add Location" size="small" className="mr-auto" icon={<WarningAmberOutlinedIcon />} />
+                } 
                 <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setLocationEdit(true)} />
               </Box>
             </Box>
@@ -367,8 +388,12 @@ function ProducerProfile() {
           <Box className="w-full flex flex-col justify-center items-center mt-5">
             <Box className="w-full flex justify-end items-end">
               {
+                !myProfile.walletAddress &&
+                <Chip color="warning" label="Add Wallet Address" size="small" className="mr-auto" icon={<WarningAmberOutlinedIcon />} />
+              } 
+              {
                 !walletEdit ?
-                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setWalletEdit(true)} /> :
+                  <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setWalletEdit(true)} /> :
                 <AddCircleOutlineOutlinedIcon fontSize='small' onClick={handleUpdateWalletAddress} /> 
               }
             </Box>
@@ -386,6 +411,7 @@ function ProducerProfile() {
       <Box className={styles.bottomBox}>
         <BottomNav 
           produce={true}
+          warning={(typeof myProfile?.location === "undefined") || (typeof myProfile?.walletAddress === "undefined")}
         />
       </Box>
     </Box>

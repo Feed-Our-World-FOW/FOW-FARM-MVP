@@ -6,6 +6,8 @@ import { fetchToken } from '../../components/marketplace/token'
 import { Box } from '@mui/material'
 import Link from 'next/link'
 import CartProductCardComponent from '../../components/marketplace/shoppingCart/CartProductCardComponent'
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function CartPage() {
 
@@ -15,6 +17,7 @@ function CartPage() {
   const [subTotal, setSubTotal] = useState(0)
   const [reloadComponent, setReloadComponent] = useState(false)
   const [totalItems, setTotalItems] = useState(0)
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
   const handleReload = () => {
     setReloadComponent(prevState => !prevState);
@@ -22,6 +25,7 @@ function CartPage() {
 
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       const Token = fetchToken()
       const response = await getMyCart(Token)
@@ -47,8 +51,10 @@ function CartPage() {
       }else {
         setEmpty(true)
       }
+      setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -131,6 +137,14 @@ function CartPage() {
           </>
         }
       </Box>
+      
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <Box className={styles.bottomBox}>
         <button className={styles.btn}>
           <Link href={'/'}>Add Product</Link>

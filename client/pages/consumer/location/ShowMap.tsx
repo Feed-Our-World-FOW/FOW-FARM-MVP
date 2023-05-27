@@ -76,6 +76,7 @@ function ShowMap() {
       setAlertStatus('success')
       setAlertTxt('location updated')
       setDescription("")
+      history.back()
     } catch (error) {
       console.log(error)
       setOpenAlert(true)

@@ -32,6 +32,7 @@ function LoginPage() {
 
   const handleClick = async () => {
     setDisabled(true)
+    setOpenBackdrop(true)
     try {
       const login = await loginMethod({
         email: signupForm.email,
@@ -42,7 +43,6 @@ function LoginPage() {
       const expire = new Date().getTime() + Number(expireTime)
       localStorage.setItem("Token", JSON.stringify({ value: `${token}`, expires: expire }))
 
-      setOpenBackdrop(true)
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt('Successfully signed in')

@@ -6,15 +6,19 @@ import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import Link from 'next/link';
 import { fetchToken } from '../token';
 import { GetStaticProps } from 'next';
+import { Badge } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
     revalidate: 5,
     props: {
       produce: false,
+      warning: false
     }
   }
 }
+
 
 function BottomNav(props: any) {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -32,6 +36,35 @@ function BottomNav(props: any) {
       console.log(error)
     }
   }
+
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+      
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      '&::after': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        animation: 'ripple 1.2s infinite ease-in-out',
+        border: '1px solid currentColor',
+        content: '""',
+      },
+    },
+    '@keyframes ripple': {
+      '0%': {
+        transform: 'scale(.8)',
+        opacity: 1,
+      },
+      '100%': {
+        transform: 'scale(2.4)',
+        opacity: 0,
+      },
+    },
+  }));
+  
   
   useEffect(() => {
     fetch()
@@ -65,7 +98,13 @@ function BottomNav(props: any) {
 
           <Link href={'/Auth/ProducerProfile'} className={url === '/Auth/ProducerProfile' ? styles.Urlbox : styles.focus2}>
             <Box className='w-full h-full rounded-3xl flex flex-col justify-center items-center'>
-              <PermIdentityIcon fontSize='medium' />
+              {
+                props?.warning ?
+                <StyledBadge color="warning" overlap="circular" variant="dot" badgeContent=" ">
+                  <PermIdentityIcon fontSize='medium' />
+                </StyledBadge>: 
+                <PermIdentityIcon fontSize='medium' />
+              }
               <span className={styles.txt}>Profile</span>
             </Box>
           </Link> :
