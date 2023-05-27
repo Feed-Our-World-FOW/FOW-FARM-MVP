@@ -117,15 +117,13 @@ function AllFarmsCard(props: any) {
                         key={farm._id}
                       >
                         <FarmCardComponent
-                          key={farm._id}
-                          id={farm._id}
-                          name={farm.user.name}
-                          images={farm.user.photo}
-                          location={farm.location}
-                          meat={farm.meat}
-                          produce={farm.produce}
-                          ratingsAverage={farm.ratingsAverage}
-                          loading={props.loading}
+                          key={farm?._id}
+                          id={farm?._id}
+                          name={farm?.user?.name}
+                          images={farm?.user?.photo}
+                          location={farm?.location}
+                          ratingsAverage={farm?.ratingsAverage}
+                          loading={props?.loading}
                         />
                       </Link> :
                       <Box
@@ -134,15 +132,13 @@ function AllFarmsCard(props: any) {
                         onClick={() => setOpen(true)}
                       >
                         <FarmCardComponent
-                          key={farm._id}
-                          id={farm._id}
-                          name={farm.user.name}
-                          images={farm.user.photo}
-                          location={farm.location}
-                          meat={farm.meat}
-                          produce={farm.produce}
-                          ratingsAverage={farm.ratingsAverage}
-                          loading={props.loading}
+                          key={farm?._id}
+                          id={farm?._id}
+                          name={farm?.user?.name}
+                          images={farm?.user?.photo}
+                          location={farm?.location}
+                          ratingsAverage={farm?.ratingsAverage}
+                          loading={props?.loading}
                         />
                       </Box>
                     }

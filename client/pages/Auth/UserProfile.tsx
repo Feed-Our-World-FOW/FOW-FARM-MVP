@@ -85,6 +85,15 @@ function UserProfile() {
     }
   }
 
+  const handleSignOut = async () => {
+    try {
+      localStorage.setItem("Token", JSON.stringify({ value: "", expires: 0 }))
+      window.location.replace(`/`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleUpdate = async () => {
     try {
       setUserEdit(false)
@@ -120,7 +129,8 @@ function UserProfile() {
   const styles = {
     page: `flex flex-col justify-between items-center mb-10`,
     navBox: `w-screen h-20 flex justify-between items-center bg-white`,
-    profileText: `font-bold text-3sm ml-auto mr-auto`,
+    profileText: `font-bold text-3sm`,
+    signOut: `w-20 h-8 rounded-xl bg-dark-blue text-2sm font-semibold mr-3 text-white`,
     bottomBox: `w-full flex justify-center items-center mt-10`
   }
 
@@ -133,6 +143,7 @@ function UserProfile() {
             <MenuIcon />
           </Box>
           <span className={styles.profileText}>Profile</span>
+          <button className={styles.signOut} onClick={handleSignOut}>Sing out</button>
         </Paper>
 
         <Box className="border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center">
