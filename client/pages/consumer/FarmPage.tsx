@@ -111,10 +111,16 @@ function FarmPage() {
               <MonetizationOnOutlinedIcon />
             </Box>
             <Box className={styles.img_box}>
-              <ImageCard 
-                image={farmDetails?.user?.photo}
-                rounded={true}
-              />
+              {
+                farmDetails?.user?.photo ?
+                <ImageCard 
+                  image={farmDetails?.user?.photo}
+                  rounded={true}
+                /> :
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Skeleton variant="circular" width={70} height={70} />
+                </Box>
+              }
             </Box>
             <span className={styles.farm_name_txt}>{farmDetails?.user?.name}</span>
           </Box>

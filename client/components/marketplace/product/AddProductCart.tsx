@@ -40,6 +40,8 @@ function AddProductCart(props: any) {
   const [unit, setUnit] = useState("")
   const [price, setPrice] = useState(0)
 
+  const [openLoading, setOpenLoading] = useState(false)
+
   const handleIncrease = (e: any) => {
     props.setAmount((prev: number) => prev + 1)
     props.setOrderDetails({...props.orderDetails, orderQuantity: props.amount+1 })
@@ -66,7 +68,6 @@ function AddProductCart(props: any) {
       } else {
         res = await getSingleOndemandProduct(props.id, token, unit)
       }
-      // setAddedProductPrice(res.data.data.data.price)
 
       props.setOpen(true)
       setOpenBackdrop(false)
@@ -87,6 +88,7 @@ function AddProductCart(props: any) {
 
   const fetch = async () => {
     try {
+      setOpenLoading(true)
       const token = fetchToken()
       let res
       if(props.stock) {
@@ -94,11 +96,11 @@ function AddProductCart(props: any) {
       } else {
         res = await getSingleOndemandProduct(props.id, token, unit)
       }
-      // console.log(res)
-      // props.setOrderDetails({ ...props.orderDetails, orderUnit: defaultUnit })
       setPrice(res.data.data.data.price)
+      setOpenLoading(false)
     } catch (error) {
       console.log(error)
+      setOpenLoading(false)
     }
   }
 
@@ -163,10 +165,15 @@ function AddProductCart(props: any) {
       <Box className={!props.open ? styles.cartBtn : styles.blur_cartBtn}>
         <span className={styles.amount}>
           $ {
+              openLoading ?
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <CircularProgress size={25} sx={{color: 'white'}} />
+              </Box> :
               price === 0 ? 
               Number((props.amount * props.productPrice).toFixed(4)) : 
               Number((props.amount * price).toFixed(4))
             }
+            
         </span>
         <span className={styles.txt} onClick={handleAdd}>Add to cart</span>
         <span className={styles.amount} >{unit === "" ? defaultUnit : unit}</span>

@@ -4,19 +4,25 @@ import Navbar from '../../../components/marketplace/navBar/Navbar'
 import OrderCardComponent from '../../../components/marketplace/order/OrderCardComponent'
 import { getMyBuyConsumer } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function MyOrdersPage() {
   const [myBuy, setMyBuy] = useState<any>([])
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const res = await getMyBuyConsumer(token)
       const data = res.data.data.data
       setMyBuy(data)
+      setOpenBackdrop(false)
       // console.log(data)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -41,6 +47,14 @@ function MyOrdersPage() {
             noCart={true}
           />
         </Box>
+
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={openBackdrop}
+          onClick={() => setOpenBackdrop(false)}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
 
         <Box className={styles.container}>
           <Box className="w-11/12 flex justify-start items-center">

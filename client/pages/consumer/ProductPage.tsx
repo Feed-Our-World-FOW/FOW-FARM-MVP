@@ -14,6 +14,9 @@ import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import Image from 'next/image'
 import AddProductCart from '../../components/marketplace/product/AddProductCart';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Skeleton from '@mui/material/Skeleton';
 
 
 function ProductPage() {
@@ -29,7 +32,7 @@ function ProductPage() {
   const [amount, setAmount] = useState<number>(1)
   const [alertData, setAlertData] = useState<string>('')
   const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
-
+  const [openBackdrop, setOpenBackdrop] = useState(false)
   const [index, setIndex] = useState(0)
   const [reloadComponent, setReloadComponent] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -40,35 +43,13 @@ function ProductPage() {
     setReloadComponent(prevState => !prevState);
   }
 
-  // const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-  //   if (reason === 'clickaway') {
-  //     return;
-  //   }
-
-  //   setOpen(false);
-  // }
-
-
-
-  // const handleAddItemsToCart = async () => {
-  //   try {
-  //     const token = fetchToken()
-  //     const res = await addItemToCart(token, id.data)
-  //     handleReload()
-  //     setOpen(true)
-  //   } catch (error: any) {
-  //     console.log(error)
-  //     setOpen(true)
-  //     setAlertData(error.response.data.message)
-  //   }
-  // }
-
   const handleSelect = (selectedIndex: any, e: any) => {
     setIndex(selectedIndex);
   };
 
 
   const fetchStock = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const ID = id.data
@@ -79,14 +60,16 @@ function ProductPage() {
       // console.log(productData)
       setOrderDetails({...orderDetails, orderUnit: productData.unit})
       setLoading(false)
-      
+      setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
       // setAllert("warning", )
     }
   }
 
   const fetchOndemand = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const ID = id.data
@@ -98,8 +81,10 @@ function ProductPage() {
       // console.log(productData)
       
       setLoading(false)
+      setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -148,11 +133,17 @@ function ProductPage() {
           <Box className={styles.rightSmNavBox}>
             <Box className={styles.rightSmNav}>
               <Box className={styles.roundedSmImgBox}>
-                <ImageCard 
-                  image={productDetails?.businessProfile?.user?.photo}
-                  rounded={true} 
-                  // type="ondemandProduct"
-                />
+                {
+                  productDetails?.businessProfile?.user?.photo ?
+                  <ImageCard 
+                    image={productDetails?.businessProfile?.user?.photo}
+                    rounded={true} 
+                  /> :
+                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Skeleton variant="circular" width={30} height={30} />
+                    {/* <CircularProgress size={25} /> */}
+                  </Box>
+                }
               </Box>
               <span className='text-sm font-semibold ml-2'>{productDetails?.businessProfile?.user?.name}</span>
             </Box>
@@ -164,16 +155,30 @@ function ProductPage() {
           </Box>
         </Box>
 
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={openBackdrop}
+          onClick={() => setOpenBackdrop(false)}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+
         <Box className={!open ? styles.bigImgBox : styles.blur_bigImgBox}>
           <Box className="h-8 w-11/12 flex justify-center items-center">
             <span className='text-2sm font-bold'>{productDetails.name}</span>
           </Box>
           <Box className="h-52 w-11/12 flex justify-center items-center">
             <Box className="w-52 h-52">
-              <ImageCard 
-                image={productDetails.image} 
-                // type="ondemandProduct"
-              />
+              {
+                productDetails.image ?
+                <ImageCard 
+                  image={productDetails.image} 
+                /> :
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {/* <CircularProgress size={25} /> */}
+                  <Skeleton variant="circular" width={150} height={150} />
+                </Box>
+              }
             </Box>
           </Box>
           <Box className="h-10 w-11/12 flex justify-around items-center mb-3">

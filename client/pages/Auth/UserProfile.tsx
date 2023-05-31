@@ -15,6 +15,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import Link from 'next/link';
 import LocationCard from '../../components/marketplace/location/LocationCard';
 import 'animate.css'
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface User {
   name: string;
@@ -36,9 +38,11 @@ function UserProfile() {
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
   const [open, setOpen] = useState(false)
   const [previewUrl, setPreviewUrl] = useState("")
+  const [openBackdrop, setOpenBackdrop] = useState(false)
   
 
   const fetch = async () => {
+    setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const myProfile = await getMyConsumerProfile(token)
@@ -50,10 +54,11 @@ function UserProfile() {
         email: data.user.email,
         photo: data.user.photo
       })
-      
+      setOpenBackdrop(false)
       // console.log(data)
     } catch (error) {
       console.log(error)
+      setOpenBackdrop(false)
     }
   }
 
@@ -167,6 +172,13 @@ function UserProfile() {
               <Box></Box>
             }
           </Box>
+
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={openBackdrop}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
 
           <Box className="w-8/12 h-full flex flex-col justify-center items-center">
             {

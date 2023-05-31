@@ -187,7 +187,7 @@ function DonationCard(props: any) {
       </Box>
       <span className={styles.boldTxt}>Donation</span>
 
-      <Box className={styles.txtBox} onClick={fetch}>
+      <Box className={styles.txtBox} onClick={() => console.log(props)}>
         <span className={styles.semiboldTxt}>Would you like to take a few seconds to </span>
         <span className={styles.semiboldTxt}>donate and benefit organizations?</span>
         <span className={styles.semiboldTxt}>Your donation will be distributed among the</span>
