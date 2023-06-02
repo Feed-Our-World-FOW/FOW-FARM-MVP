@@ -8,6 +8,22 @@ import Web3Modal from "web3modal"
 import 'animate.css'
 import { GetStaticProps } from 'next';
 
+// import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
+// // import { Web3Modal, Web3Button, useWeb3Modal  } from '@web3modal/react'
+// import { Web3Button, useWeb3Modal  } from '@web3modal/react'
+// import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+// import { celo, celoAlfajores } from 'wagmi/chains'
+
+
+
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, WagmiConfig,  } from "wagmi";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import celoGroups from "@celo/rainbowkit-celo/lists"
+import { Alfajores, Celo, Cannoli } from "@celo/rainbowkit-celo/chains";
+import "@rainbow-me/rainbowkit/styles.css";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -29,6 +45,35 @@ function ConnectWallet(props: any) {
   const [openBackdrop, setOpenBackdrop] = useState(false)
 
 
+  // const chains = [celo, celoAlfajores]
+  // const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || 'undefined'
+
+  // const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+  // const wagmiConfig = createConfig({
+  //   autoConnect: true,
+  //   connectors: w3mConnectors({ projectId, version: 1, chains }),
+  //   publicClient
+  // })
+  // const ethereumClient = new EthereumClient(wagmiConfig, chains)
+
+
+
+  const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || 'undefined' // get one at https://cloud.walletconnect.com/app
+
+  const { chains, publicClient } = configureChains(
+    [Alfajores, Celo, Cannoli],
+    [jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }) })]
+  );
+  const connectors = celoGroups({chains, projectId, appName: typeof document === "object" && document.title || "FOW_FARM"})
+
+
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient: publicClient,
+  });
+
+
   const providerOptions = {
     walletconnect: {
       package: WalletConnectProvider,
@@ -47,17 +92,29 @@ function ConnectWallet(props: any) {
   }
 
   const connectWallet = async () => {
-    try {
-      let web3modal = new Web3Modal({
-        cacheProvider: false,
-        providerOptions
-      })
-      const web3ModalInstance = await web3modal.connect()
-      const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance)
-      // console.log(web3ModalProvider)
-    } catch (error) {
-      console.log(error)
-    }
+    // try {
+    //   let web3modal = new Web3Modal({
+    //     cacheProvider: false,
+    //     providerOptions
+    //   })
+    //   const web3ModalInstance = await web3modal.connect()
+    //   const web3ModalProvider = new ethers.providers.Web3Provider(web3ModalInstance)
+    //   // console.log(web3ModalProvider)
+    // } catch (error) {
+    //   console.log(error)
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
   const fetch = async () => {
@@ -65,7 +122,9 @@ function ConnectWallet(props: any) {
     try {
       if(typeof window !== 'undefined') {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
+        console.log("provider: ", provider)
         const signer = provider.getSigner()
+        console.log("signer: ", signer)
         // console.log("Signer: ", await signer.getAddress())
         const address = await signer?.getAddress()
         const bal = await signer?.getBalance()
@@ -140,6 +199,8 @@ function ConnectWallet(props: any) {
 
   return (
     <Paper className={styles.paper}>
+      {/* <WagmiConfig config={wagmiConfig}>
+      <RainbowKitProvider chains={chains} coolMode={true}>
       <Box className={styles.container}>
         <Box className={styles.cancellBox}>
           <ClearIcon 
@@ -160,9 +221,28 @@ function ConnectWallet(props: any) {
             <span className={styles.boldTxt}>MetaMask</span>
             <span className={styles.semiboldTxt}>Open MetaMask Mobile App</span>
           </Box>
-        </Box>
+        </Box> */}
 
-        <Box className={styles.walletBox} onClick={handleConnectTrust}>
+
+
+        {/* <WagmiConfig config={wagmiConfig}>
+          <Box className={styles.walletBox} onClick={handleConnectTrust}>
+            <Image 
+              alt="#"
+              src={`/images/TWT.png`}
+              width={30}
+              height={30}
+              className='ml-3'
+            />
+            <Box className="flex flex-col ml-3">
+              <Web3Button />
+            </Box>
+          </Box>
+        </WagmiConfig> */}
+
+        {/* <Web3Modal projectId={projectId} ethereumClient={ethereumClient} /> */}
+
+        {/* <Box className={styles.walletBox} onClick={handleConnectTrust}>
           <Image 
             alt="#"
             src={`/images/TWT.png`}
@@ -175,6 +255,12 @@ function ConnectWallet(props: any) {
             <span className={styles.semiboldTxt}>Open Trust Wallet Mobile App</span>
           </Box>
         </Box>
+
+        <Box className="flex flex-col ml-3">
+              <ConnectButton />
+            </Box>
+
+
       </Box>
 
       <Backdrop
@@ -189,6 +275,9 @@ function ConnectWallet(props: any) {
           {alertTxt}
         </Alert>
       </Snackbar>
+      </RainbowKitProvider>
+    </WagmiConfig> */}
+    {/* <Web3Modal projectId={projectId} ethereumClient={ethereumClient} /> */}
     </Paper>
   )
 }

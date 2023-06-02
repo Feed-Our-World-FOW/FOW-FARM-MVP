@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Box } from '@mui/material'
-import { ethers } from 'ethers'
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined'
-import ConnectWallet from '../../crypto/ConnectWallet'
 import { GetStaticProps } from 'next'
+import '@rainbow-me/rainbowkit/styles.css';
+import {
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import celoGroups from "@celo/rainbowkit-celo/lists"
+import { Alfajores, Celo, Cannoli } from "@celo/rainbowkit-celo/chains";
+import "@rainbow-me/rainbowkit/styles.css";
+import { useAccount } from 'wagmi'
+
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -19,18 +28,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 function CryptoCard(props: any) {
   const [connect, setConnect] = useState(false)
-  const [walletAddress, setWalletAddress] = useState('0x000......000')
-  const [balance, setBalance] = useState('0.00')
-  const [trigger, setTrigger] = useState(false)
+  const [walletAddress, setWalletAddress] = useState<any>('0x000......000')
 
-  const handleConnectWallet = async () => {
-    try {
-      setTrigger(prev => !prev)
-      props.setShowWallet(true)
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const handleContinue = () => {
     try {
@@ -47,6 +46,30 @@ function CryptoCard(props: any) {
     }
   }
 
+  const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || "undefined"
+
+  const { chains, publicClient } = configureChains(
+    [Alfajores, Celo, Cannoli],
+    [jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }) })]
+    );
+
+  const connectors = celoGroups({chains, projectId, appName: typeof document === "object" && document.title || "FOW FARM"})
+
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient: publicClient,
+  });
+
+  const { address } = useAccount()
+  
+
+  const handleCheck = async () => {
+    props.setShowWallet(false)
+    setConnect(prev => !prev)
+    setWalletAddress(address)
+  }
+
   const styles = {
     page: `w-full flex flex-col justify-center items-center`,
     container: `w-full flex flex-col justify-around items-center border-1 h-60 rounded-2xl border-light-gray mb-5`,
@@ -56,55 +79,32 @@ function CryptoCard(props: any) {
   }
   return (
     <Box className={styles.page}>
-        {
-          trigger ?
-          <Box className="w-full h-80 flex justify-center items-center">
-            <ConnectWallet
-              trigger={trigger}
-              setTrigger={setTrigger}
-              setConnect={setConnect}
-              setWalletAddress={setWalletAddress}
-              setBalance={setBalance}
-              setShowWallet={props.setShowWallet}
-              className="h-60"
-            /> 
-          </Box> :
-
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains} coolMode={true}>
           <Box className="flex flex-col justify-center items-center">
-
             <Box className={styles.container}>
-      
               <Box className="w-10/12 flex">
                 <span className='text-2sm font-normal'>
                   <b>Recomended</b> for fast, secure payments with a positive impact on the planet.
                 </span>
               </Box>
-      
-              <Box className={styles.box}>
-      
-                <Box className="w-full flex justify-between items-center">
-                  <Box>
-                    <AccountBalanceWalletOutlinedIcon fontSize='small' />
-                    <span className="text-2sm ml-2 font-normal">
-                      {walletAddress.slice(0, 5)}......{walletAddress.slice(39, 42)}
-                    </span>
-                  </Box>
-                  <span className="text-2sm font-normal">{balance} cUSD</span>
-                </Box>
-                {/* {props.setShowTerms} */}
+
+              <Box className="w-full h-11/12 flex justify-center items-center">
+                <ConnectButton />
               </Box>
-              <button className={styles.btn1} onClick={handleConnectWallet}>{connect ? `Connected` : `Connect Wallet`}</button>
+
+
             </Box>
             <Box className="w-9/12 mb-5 flex justify-between items-center">
-              <input type="checkbox" name="" id="" />
+              <input type="checkbox" name="" id="" onClick={handleCheck} />
               <span className='text-2sm font-semibold'>
                 I agree to the <span className='underline' onClick={() => props.setShowTerms(true)}>terms of the payment</span>
               </span>
             </Box>
             <button className={styles.btn} onClick={handleContinue} disabled={!connect}>Continue</button>
           </Box>
-          
-        }
+        </RainbowKitProvider>
+      </WagmiConfig>
     </Box>
   )
 }

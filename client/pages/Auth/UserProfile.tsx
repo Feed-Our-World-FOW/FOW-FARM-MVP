@@ -148,7 +148,7 @@ function UserProfile() {
             <MenuIcon />
           </Box>
           <span className={styles.profileText}>Profile</span>
-          <button className={styles.signOut} onClick={handleSignOut}>Sing out</button>
+          <button className={styles.signOut} onClick={handleSignOut}>Sign out</button>
         </Paper>
 
         <Box className="border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center">

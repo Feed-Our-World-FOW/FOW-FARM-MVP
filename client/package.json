@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@celo/rainbowkit-celo": "^1.0.0",
     "@coinbase/wallet-sdk": "^3.6.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
+    "@rainbow-me/rainbowkit": "^1.0.1",
     "@react-google-maps/api": "^2.18.1",
     "@types/googlemaps": "^3.43.3",
     "@walletconnect/web3-provider": "^1.8.0",
@@ -34,7 +36,6 @@
     "react-file-base64": "^1.0.3",
     "react-responsive-carousel": "^3.2.23",
     "react-swipeable-views-react-18-fix": "^0.14.1",
-    "sweetalert2": "^11.7.3",
     "viem": "^0.3.36",
     "wagmi": "^1.0.6",
     "web3modal": "^1.9.12"
