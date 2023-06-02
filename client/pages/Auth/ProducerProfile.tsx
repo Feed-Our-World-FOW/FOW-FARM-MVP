@@ -201,7 +201,7 @@ function ProducerProfile() {
             <MenuIcon />
           </Box>
           <span className={styles.profileText}>Profile</span>
-          <button className={styles.signOut} onClick={handleSignOut}>Sing out</button>
+          <button className={styles.signOut} onClick={handleSignOut}>Sign out</button>
         </Paper>
 
         <Box className={styles.profileContainer}>
