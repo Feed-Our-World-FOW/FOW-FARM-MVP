@@ -55,7 +55,7 @@ function ProducerProfile() {
   const [connect, setConnect] = useState(false)
   const [openBackdrop, setOpenBackdrop] = useState(false)
   // const { open, close } = useWeb3Modal()
-  const { address, isConnecting, isDisconnected, isConnected } = useAccount()
+  // const { address, isConnecting, isDisconnected, isConnected } = useAccount()
 
 
   const fetch = async () => {
@@ -131,7 +131,7 @@ function ProducerProfile() {
 
   const handleConnect = async () => {
     try {
-      setWalletAddress(address)
+      // setWalletAddress(address)
     } catch (error) {
       console.log(error)
     }
@@ -139,7 +139,7 @@ function ProducerProfile() {
 
   const handleUpdateWalletAddress = async () => {
     try {
-      setWalletAddress(address)
+      // setWalletAddress(address)
       const token = fetchToken()
       const res = await updateMyWalletAddress(token, {walletAddress})
       setWalletEdit(false)
@@ -334,13 +334,13 @@ function ProducerProfile() {
 
             <Box className={styles.infoContainer}>
               <DetailsComponent 
-                shippingRadius={myProfile.shippingRadius as number}
-                shippingCostStandard={myProfile.shippingCostStandard as number}
-                shippingTimeStandard={myProfile.shippingTimeStandard as string} 
-                shippingCostExpress={myProfile.shippingCostExpress as number}
-                shippingTimeExpress={myProfile.shippingTimeExpress as string}
-                shippingOndemandCost={myProfile.shippingOndemandCost as number}
-                shippingOndemandTime={myProfile.shippingOndemandTime as string}
+                shippingRadius={myProfile?.shippingRadius as number}
+                shippingCostStandard={myProfile?.shippingCostStandard as number}
+                shippingTimeStandard={myProfile?.shippingTimeStandard as string} 
+                shippingCostExpress={myProfile?.shippingCostExpress as number}
+                shippingTimeExpress={myProfile?.shippingTimeExpress as string}
+                shippingOndemandCost={myProfile?.shippingOndemandCost as number}
+                shippingOndemandTime={myProfile?.shippingOndemandTime as string}
               />
             </Box>
 
@@ -359,7 +359,7 @@ function ProducerProfile() {
               </Box>
               <Box className={styles.infoBox}>
                 <Box className={styles.subInfoBox}>
-                  <span className='text-2sm' onClick={() => console.log(isConnected)}>Rating</span>
+                  <span className='text-2sm'>Rating</span>
                   <Box className="flex justify-center items-center">
                     <span className='text-2sm'>{myProfile?.ratingsAverage}</span>
                     <StarBorderIcon fontSize='small' className='ml-2' />
@@ -410,7 +410,7 @@ function ProducerProfile() {
               <Box className="w-full flex flex-col justify-center items-center mt-5">
                 <Box className="w-full flex justify-end items-end">
                   {
-                    !myProfile.walletAddress &&
+                    !myProfile?.walletAddress &&
                     <Chip color="warning" label="Add Wallet Address" size="small" className="mr-auto" icon={<WarningAmberOutlinedIcon />} />
                   } 
                   {
