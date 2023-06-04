@@ -58,38 +58,38 @@ function ConnectWallet(props: any) {
 
 
 
-  const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || 'undefined' // get one at https://cloud.walletconnect.com/app
+  // const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || 'undefined' // get one at https://cloud.walletconnect.com/app
 
-  const { chains, publicClient } = configureChains(
-    [Alfajores, Celo, Cannoli],
-    [jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }) })]
-  );
-  const connectors = celoGroups({chains, projectId, appName: typeof document === "object" && document.title || "FOW_FARM"})
-
-
-  const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors,
-    publicClient: publicClient,
-  });
+  // const { chains, publicClient } = configureChains(
+  //   [Alfajores, Celo, Cannoli],
+  //   [jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }) })]
+  // );
+  // const connectors = celoGroups({chains, projectId, appName: typeof document === "object" && document.title || "FOW_FARM"})
 
 
-  const providerOptions = {
-    walletconnect: {
-      package: WalletConnectProvider,
-      options: {
-        infuraId: process.env.NEXT_PUBLIC_INFURA_ID
-      }
-    },
-    metamask: {
-      package: ethers.providers.Web3Provider,
-      options: {}
-    },
-    trust: {
-      package: ethers.providers.Web3Provider,
-      options: {}
-    }
-  }
+  // const wagmiConfig = createConfig({
+  //   autoConnect: true,
+  //   connectors,
+  //   publicClient: publicClient,
+  // });
+
+
+  // const providerOptions = {
+  //   walletconnect: {
+  //     package: WalletConnectProvider,
+  //     options: {
+  //       infuraId: process.env.NEXT_PUBLIC_INFURA_ID
+  //     }
+  //   },
+  //   metamask: {
+  //     package: ethers.providers.Web3Provider,
+  //     options: {}
+  //   },
+  //   trust: {
+  //     package: ethers.providers.Web3Provider,
+  //     options: {}
+  //   }
+  // }
 
   const connectWallet = async () => {
     // try {
@@ -117,76 +117,76 @@ function ConnectWallet(props: any) {
 
   }
 
-  const fetch = async () => {
-    setOpenBackdrop(true)
-    try {
-      if(typeof window !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        console.log("provider: ", provider)
-        const signer = provider.getSigner()
-        console.log("signer: ", signer)
-        // console.log("Signer: ", await signer.getAddress())
-        const address = await signer?.getAddress()
-        const bal = await signer?.getBalance()
-        const setBal = ethers.utils.formatEther(bal)
-        // console.log("Balance: ", await signer?.getBalance())
-        props.setBalance(setBal.slice(0, 5))
-        props.setWalletAddress(address)
-      }
-      setOpenBackdrop(false)
-    } catch (error) {
-      console.log(error)
-      setOpenBackdrop(false)
-    }
-  }
+  // const fetch = async () => {
+  //   setOpenBackdrop(true)
+  //   try {
+  //     if(typeof window !== 'undefined') {
+  //       const provider = new ethers.providers.Web3Provider(window.ethereum)
+  //       console.log("provider: ", provider)
+  //       const signer = provider.getSigner()
+  //       console.log("signer: ", signer)
+  //       // console.log("Signer: ", await signer.getAddress())
+  //       const address = await signer?.getAddress()
+  //       const bal = await signer?.getBalance()
+  //       const setBal = ethers.utils.formatEther(bal)
+  //       // console.log("Balance: ", await signer?.getBalance())
+  //       props.setBalance(setBal.slice(0, 5))
+  //       props.setWalletAddress(address)
+  //     }
+  //     setOpenBackdrop(false)
+  //   } catch (error) {
+  //     console.log(error)
+  //     setOpenBackdrop(false)
+  //   }
+  // }
 
-  const handleConnectMetamask = async () => {
-    try {
-      props.setShowWallet(false)
-      // console.log("Metamask")
-      if(typeof window !== 'undefined') {
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' })
-        // Alfajores -> 0xaef3
-        // CELO (Mainnet) -> 0xa4ec
-        if(chainId != '0xaef3') {
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0xaef3' }]
-          })
-        }
-        await window.ethereum.request({ method: 'eth_requestAccounts' })
-        props.setConnect(true)
-        props.setTrigger(false)
-        fetch()
-      }
-    } catch (error: any) {
-      console.log(error)
-      setOpen(true)
-      setAlertStatus("error")
-      setAlertTxt(`You don't have Metamask installed into your browser`)
-    }
-  }
+  // const handleConnectMetamask = async () => {
+  //   try {
+  //     props.setShowWallet(false)
+  //     // console.log("Metamask")
+  //     if(typeof window !== 'undefined') {
+  //       const chainId = await window.ethereum.request({ method: 'eth_chainId' })
+  //       // Alfajores -> 0xaef3
+  //       // CELO (Mainnet) -> 0xa4ec
+  //       if(chainId != '0xaef3') {
+  //         await window.ethereum.request({
+  //           method: 'wallet_switchEthereumChain',
+  //           params: [{ chainId: '0xaef3' }]
+  //         })
+  //       }
+  //       await window.ethereum.request({ method: 'eth_requestAccounts' })
+  //       props.setConnect(true)
+  //       props.setTrigger(false)
+  //       fetch()
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error)
+  //     setOpen(true)
+  //     setAlertStatus("error")
+  //     setAlertTxt(`You don't have Metamask installed into your browser`)
+  //   }
+  // }
 
-  const handleConnectTrust = async () => {
-    try {
-      // console.log("Trust")
-      props.setShowWallet(false)
-      connectWallet()
-      props.setConnect(true)
-      props.setTrigger(false)
-      fetch()
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const handleConnectTrust = async () => {
+  //   try {
+  //     // console.log("Trust")
+  //     props.setShowWallet(false)
+  //     connectWallet()
+  //     props.setConnect(true)
+  //     props.setTrigger(false)
+  //     fetch()
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  // const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  //   if (reason === 'clickaway') {
+  //     return;
+  //   }
 
-    setOpen(false);
-  };
+  //   setOpen(false);
+  // };
 
   const styles = {
     paper: `w-11/12 h-full mb-3 rounded-2xl flex flex-col justify-center items-center animate__animated animate__zoomIn`,
