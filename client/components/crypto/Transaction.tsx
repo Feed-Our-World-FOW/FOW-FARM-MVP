@@ -1,6 +1,6 @@
 import ABI from "../../pages/utils/FOW.json"
 import { createWalletClient, custom, parseEther } from 'viem'
-import { celo, celoAlfajores, celoCannoli } from 'viem/chains'
+import { celo, celoAlfajores } from 'viem/chains'
 
 export const transaction = async (_address: string, _amount: number): Promise<string> => {
   const client = createWalletClient({
