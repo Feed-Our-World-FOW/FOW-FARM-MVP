@@ -29,7 +29,7 @@ export const transaction = async (_address: string, _amount: number): Promise<st
       functionName: "send",
       account: address,
       args: [_address, 0],
-      value: parseEther(`${_amount}`)
+      value: parseEther(`${_amount}`) as never
     })
 
     return res
