@@ -1,18 +1,38 @@
-import { ethers } from "ethers"
 import ABI from "../../pages/utils/FOW.json"
+import { createWalletClient, custom, parseEther } from 'viem'
+import { celo, celoAlfajores, celoCannoli } from 'viem/chains'
 
 export const transaction = async (_address: string, _amount: number): Promise<string> => {
+  const client = createWalletClient({
+    chain: celoAlfajores,
+    transport: custom(window.ethereum)
+  })
+
+  const [address] = await client.getAddresses() 
+  
   try {
     const contractAddress = "0x8C50E40E757ccaa02F4Da7bB3b9B5aE17AFf55df"
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    const contract = new ethers.Contract(contractAddress, ABI.abi as any, signer)
+    const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    
+    const walletClient = createWalletClient({
+      account,
+      chain: celoAlfajores,
+      transport: custom(window.ethereum)
+    })
 
-    const Amount = ethers.utils.parseEther(`${_amount}`)
-    const response = await contract.send(_address, Amount, { value: Amount })
+    let addr = _address.slice(2)
 
-    return response.hash
+    const res = await walletClient.writeContract({
+      address: `0x${addr}`,
+      abi: ABI.abi,
+      functionName: "send",
+      account: address,
+      args: [_address, 0],
+      value: parseEther(`${_amount}`)
+    })
+
+    return res
   } catch (error) {
     console.log(error)
     return "error"
