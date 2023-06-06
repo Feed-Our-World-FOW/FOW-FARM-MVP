@@ -13,6 +13,7 @@
     "@coinbase/wallet-sdk": "^3.6.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@metamask/detect-provider": "^2.0.0",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
     "@rainbow-me/rainbowkit": "^1.0.1",
