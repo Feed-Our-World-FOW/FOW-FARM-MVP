@@ -7,7 +7,7 @@ export const transaction = async (_address: string, _amount: number): Promise<st
   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 
     // open the deeplink page 
-    window.open(`https://metamask.app.link/send/pay-${_address}?value=${_amount}e18`)
+    window.open(`https://metamask.app.link/send/pay-${_address}@0xaef3?value=${_amount}e18`)
     
     } else {
     
