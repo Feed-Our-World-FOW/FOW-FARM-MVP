@@ -47,7 +47,6 @@ function PlaceOrderCard(props: any) {
     try {
       setDonation(true)
       props.setShowDonation(true)
-      // setOrderSuccess(true)
     } catch (error) {
       console.log(error)
     }
@@ -61,9 +60,7 @@ function PlaceOrderCard(props: any) {
       const data = response.data.data.data[0]
       setSubTotal(data.subTotal)
       setTotalItems(data.items.length)
-      
       setCartItems(data.items)
-
       const res = await getMyConsumerProfile(Token)
       const data2 = res?.data?.data?.data[0]
       setLocation({
@@ -71,8 +68,6 @@ function PlaceOrderCard(props: any) {
         lng: data2?.location?.coordinates[0]
       })
       let res2
-      // console.log("props: ", props)
-    //  console.log(data)
       setUserName(data2?.user?.name)
       if(typeof routerData?.stock !== "undefined") {
         if(props?.standard && !props?.express) {
@@ -93,9 +88,6 @@ function PlaceOrderCard(props: any) {
 
       }
 
-      // console.log(({ paymentOption: "Crypto", deliveryType: "standard" }))
-      // console.log("Here is the problem: ", await getAmount(Token, "Crypto", "express" ))
-
       const addr1 = props?.walletAddress.slice(0, 14)
       const addr2 = props?.walletAddress.slice(27, 42)
       let addr = addr1 + "  ...  " + addr2
@@ -105,9 +97,6 @@ function PlaceOrderCard(props: any) {
       const data3 = res2?.data?.data?.data
       setTotalAmountInUSD(data3?.totalAmountInUSD as number)
       setTotalAmountInCELO(data3?.totalAmountInCELO as number)
-      // console.log("res2?.data.data: ", res2?.data.data.data)
-      // console.log(res2)
-
       setOpenBackdrop(false)
 
     } catch (error) {
@@ -144,7 +133,6 @@ function PlaceOrderCard(props: any) {
             standard={props?.standard}
             express={props?.express}
             setOrderSuccess={setOrderSuccess}
-            // amount={Number(Number(subTotal) + deliveryCharge).toFixed(3)}
             totalAmountInUSD={totalAmountInUSD}
             totalAmountInCELO={totalAmountInCELO}
             businessAddress={businessAddress}
@@ -194,13 +182,11 @@ function PlaceOrderCard(props: any) {
     
             <Box className="w-10/12 flex justify-between items-center mb-5">
               <span className={styles.smallTxt}>Total</span>
-              {/* <span className='text-2sm font-bold'>$ {Number(Number(subTotal) + deliveryCharge).toFixed(3)}</span> */}
               <span className='text-2sm font-bold'>$ {Number(totalAmountInUSD).toFixed(3)}</span>
             </Box>
 
             <Box className="w-10/12 flex justify-between items-center mb-5">
               <span className={styles.smallTxt}></span>
-              {/* <span className='text-2sm font-bold'>$ {Number(Number(subTotal) + deliveryCharge).toFixed(3)}</span> */}
               <span className='text-2sm font-bold'>{Number(totalAmountInCELO).toFixed(3)} CELO</span>
             </Box>
     
@@ -245,8 +231,6 @@ function PlaceOrderCard(props: any) {
             <button className={styles.bigBtn} onClick={handleOrder}>Place order now</button>
           </Box>
         }
-
-    
         </Box>
       }
     </Box>
