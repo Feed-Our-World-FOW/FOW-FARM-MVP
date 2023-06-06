@@ -41,12 +41,10 @@ function DonationCard(props: any) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
-    // console.log(event.target.value)
   };
 
   const handleChangeAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDonationAmount(event.target.value as unknown as number);
-    // console.log(event.target.value)
   };
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -62,20 +60,17 @@ function DonationCard(props: any) {
       const token = fetchToken()
 
       if(typeof router.ondemand !== 'undefined') {
-        // console.log("buydetails: ", buydetails)
         setBuydetails({
           paymentOption: "Crypto",
           deliveryType: "standard",
         })
       }else if(typeof router.stock !== 'undefined') {
         if(props.standard) {
-          // console.log("standard is true")
           setBuydetails({
             paymentOption: "Crypto",
             deliveryType: "standard",
           })
         }else if(props.express) {
-          // console.log("express is true")
           setBuydetails({
             paymentOption: "Crypto",
             deliveryType: "express",
@@ -93,11 +88,8 @@ function DonationCard(props: any) {
     try {
       fetch()
       const token = fetchToken()
-      // console.log("the hex value is: ", hx)
       const { paymentOption, deliveryType } = buydetails
       const res = await createBuy(token, { paymentOption, deliveryType, receipt: hx, paid: true })
-      
-
       window.location.replace('/')
     } catch (error) {
       console.log(error)
@@ -106,20 +98,14 @@ function DonationCard(props: any) {
 
   const handleCancell = async () => {
     try {
-
       const res = await transaction(props?.businessAddress, props?.totalAmountInCELO)
-
       if(res === 'error') {
         setOpen(true)
         setAlertTxt("Something goes wrong!!!, please reload the page!!!")
         setAlertStatus("error")
         return
       }
-
-      // console.log("res: ", res)
-      
       const buyF = await buy(res)
-      // console.log(buyF)
       props.setShowDonation(false)
       props.setDonation(false)
       props.setOrderSuccess(true)
@@ -131,29 +117,20 @@ function DonationCard(props: any) {
   const handleContinue = async() => {
     try {
       const res = await transaction("0x90545F5cFfe5a25700542b32653fc884920E1aB8", donationAmount)
-
       if(res === 'error') {
         setOpen(true)
         setAlertTxt("Something goes wrong!!!, please reload the page!!!")
         setAlertStatus("error")
         return
       }
-      
       const res2 = await transaction(props?.businessAddress, props?.totalAmountInCELO)
-
       if(res2 === 'error') {
         setOpen(true)
         setAlertTxt("Something goes wrong!!!, please reload the page!!!")
         setAlertStatus("error")
         return
       }
-
-      // console.log("res: ", res)
-      // console.log("res2: ", res2)
-      
-
       const buyF = await buy(res2)
-      // console.log(buyF)
       props.setShowDonation(false)
       props.setDonation(false)
       props.setOrderSuccess(true)

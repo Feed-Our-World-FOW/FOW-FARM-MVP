@@ -3,6 +3,10 @@ import { createWalletClient, custom, parseEther } from 'viem'
 import { celo, celoAlfajores } from 'viem/chains'
 
 export const transaction = async (_address: string, _amount: number): Promise<string> => {
+
+  const urlScheme = 'metamask://open';
+    window.open(urlScheme, 'https://fow-farm.vercel.app');
+
   const client = createWalletClient({
     chain: celoAlfajores,
     transport: custom(window.ethereum)
