@@ -2,7 +2,8 @@ import axios from "axios"
 import { LoginFormInterface, SignupFormInterface } from "../../../interface/AllFarmsInterface"
 
 // const URL = `http://localhost:5000`
-const URL = `https://fow-farm-api.onrender.com`
+const URL = `http://192.168.0.104:5000`
+// const URL = `https://fow-farm-api.onrender.com`
 
 const BUSINESS_URL = `${URL}/api/v1/business`
 const USER_URL = `${URL}/api/v1/user`
