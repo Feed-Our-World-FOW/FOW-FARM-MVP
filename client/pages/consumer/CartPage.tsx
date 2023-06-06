@@ -169,7 +169,7 @@ function CartPage() {
         </button>
 
         {
-          window && typeof window?.ethereum === "undefined" ?
+          typeof window !== "undefined" && typeof window?.ethereum === "undefined" ?
           <button className={styles.btn2} onClick={handleGoToMetamask}>
             Checkout
           </button> :
