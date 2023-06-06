@@ -58,6 +58,24 @@ function CartPage() {
     }
   }
 
+  const handleGoToMetamask = async () => {
+    try {
+      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+
+    // open the deeplink page 
+    window.open(`https://metamask.app.link/dapp/fow-farm.vercel.app/consumer/CartPage`)
+    
+    } else {
+    
+    // install metamask message
+    console.log("install Metamask")
+    
+    }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetch()
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,12 +167,20 @@ function CartPage() {
         <button className={styles.btn}>
           <Link href={'/'}>Add Product</Link>
         </button>
-        <button className={styles.btn2}>
-          <Link href={{
-            pathname: '/consumer/DeliverySteps',
-            query: sendData
-          }}>Checkout</Link>
-        </button>
+
+        {
+          typeof window?.ethereum === "undefined" ?
+          <button className={styles.btn2} onClick={handleGoToMetamask}>
+            Checkout
+          </button> :
+          <button className={styles.btn2}>
+            <Link href={{
+              pathname: '/consumer/DeliverySteps',
+              query: sendData
+            }}>Checkout</Link>
+          </button>
+        }
+
       </Box>
     </Box>
   )
