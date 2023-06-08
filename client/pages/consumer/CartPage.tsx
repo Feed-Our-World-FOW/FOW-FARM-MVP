@@ -168,7 +168,14 @@ function CartPage() {
           <Link href={'/'}>Add Product</Link>
         </button>
 
-        {
+        <button className={styles.btn2}>
+          <Link href={{
+            pathname: '/consumer/DeliverySteps',
+            query: sendData
+          }}>Checkout</Link>
+        </button>
+
+        {/*
           typeof window !== "undefined" && typeof window?.ethereum === "undefined" ?
           <button className={styles.btn2} onClick={handleGoToMetamask}>
             Checkout
@@ -179,7 +186,7 @@ function CartPage() {
               query: sendData
             }}>Checkout</Link>
           </button>
-        }
+          */}
 
       </Box>
     </Box>

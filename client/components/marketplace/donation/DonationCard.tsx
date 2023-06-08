@@ -10,6 +10,12 @@ import Router from 'next/router'
 import ClearIcon from '@mui/icons-material/Clear';
 import 'animate.css'
 import { GetStaticProps } from 'next'
+import {
+  usePrepareSendTransaction,
+  useSendTransaction,
+  useWaitForTransaction,
+} from 'wagmi'
+import { parseEther } from 'viem'
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -96,16 +102,25 @@ function DonationCard(props: any) {
     }
   }
 
+  const { config } = usePrepareSendTransaction({
+    // request: {
+      to: props?.businessAddress,
+      value: props?.totalAmountInCELO ? parseEther(`${0.051}`) : undefined,
+    // },
+  })
+  const { data, sendTransaction } = useSendTransaction(config)
+
   const handleCancell = async () => {
     try {
-      const res = await transaction(props?.businessAddress, props?.totalAmountInCELO)
-      if(res === 'error') {
-        setOpen(true)
-        setAlertTxt("Something goes wrong!!!, please reload the page!!!")
-        setAlertStatus("error")
-        return
-      }
-      const buyF = await buy(res)
+      sendTransaction?.()
+      // const res = await transaction(props?.businessAddress, props?.totalAmountInCELO)
+      // if(res === 'error') {
+      //   setOpen(true)
+      //   setAlertTxt("Something goes wrong!!!, please reload the page!!!")
+      //   setAlertStatus("error")
+      //   return
+      // }
+      // const buyF = await buy(res)
       props.setShowDonation(false)
       props.setDonation(false)
       props.setOrderSuccess(true)
@@ -116,21 +131,21 @@ function DonationCard(props: any) {
 
   const handleContinue = async() => {
     try {
-      const res = await transaction("0x90545F5cFfe5a25700542b32653fc884920E1aB8", donationAmount)
-      if(res === 'error') {
-        setOpen(true)
-        setAlertTxt("Something goes wrong!!!, please reload the page!!!")
-        setAlertStatus("error")
-        return
-      }
-      const res2 = await transaction(props?.businessAddress, props?.totalAmountInCELO)
-      if(res2 === 'error') {
-        setOpen(true)
-        setAlertTxt("Something goes wrong!!!, please reload the page!!!")
-        setAlertStatus("error")
-        return
-      }
-      const buyF = await buy(res2)
+      // const res = await transaction("0x90545F5cFfe5a25700542b32653fc884920E1aB8", donationAmount)
+      // if(res === 'error') {
+      //   setOpen(true)
+      //   setAlertTxt("Something goes wrong!!!, please reload the page!!!")
+      //   setAlertStatus("error")
+      //   return
+      // }
+      // const res2 = await transaction(props?.businessAddress, props?.totalAmountInCELO)
+      // if(res2 === 'error') {
+      //   setOpen(true)
+      //   setAlertTxt("Something goes wrong!!!, please reload the page!!!")
+      //   setAlertStatus("error")
+      //   return
+      // }
+      // const buyF = await buy(res2)
       props.setShowDonation(false)
       props.setDonation(false)
       props.setOrderSuccess(true)
