@@ -85,9 +85,9 @@ function DonationCard(props: any) {
           })
         }
       }
-      if(state2.isSuccess) {
-        console.log(res2.data?.hash)
-      }
+      // if(state2.isSuccess) {
+      //   console.log(res2.data?.hash)
+      // }
     } catch (error) {
       console.log(error)
     }
@@ -105,15 +105,46 @@ function DonationCard(props: any) {
     }
   }
 
-  const config1 = usePrepareContractWrite({
-    address: props?.businessAddress,
-    abi: ABI.abi,
-    functionName: 'send',
-    args: [props?.businessAddress, parseEther(`${props?.totalAmountInCELO}`)],
-    chainId: 44787,
-    value: parseEther(`${props?.totalAmountInCELO}`) as never
+  // const config1 = usePrepareContractWrite({
+  //   address: props?.businessAddress,
+  //   abi: ABI.abi,
+  //   functionName: 'send',
+  //   args: [props?.businessAddress, parseEther(`${props?.totalAmountInCELO}`)],
+  //   chainId: 44787,
+  //   value: parseEther(`${props?.totalAmountInCELO}`) as never
+  // })
+  // const res1 = useContractWrite(config1.config)
+
+  // const state1 = useWaitForTransaction({
+  //   hash: res1.data?.hash,
+  //   async onSuccess() {
+  //     console.log("Success: ", res1?.data?.hash)
+  //     const buyF = await buy(res1?.data?.hash as string)
+  //     props.setShowDonation(false)
+  //     props.setDonation(false)
+  //     props.setOrderSuccess(true)
+  //   }
+  // })
+
+  // const config2 = usePrepareContractWrite({
+  //   address: "0x90545F5cFfe5a25700542b32653fc884920E1aB8",
+  //   abi: ABI.abi,
+  //   functionName: 'send',
+  //   args: ["0x90545F5cFfe5a25700542b32653fc884920E1aB8", parseEther(`${donationAmount}`)],
+  //   chainId: 44787,
+  //   value: parseEther(`${donationAmount}`) as never
+  // })
+  // const res2 = useContractWrite(config2.config)
+
+  // const state2 = useWaitForTransaction({
+  //   hash: res2.data?.hash,
+  // })
+
+  const config1 = usePrepareSendTransaction({
+    to: props?.businessAddress,
+    value: props?.totalAmountInCELO ? parseEther(`${props?.totalAmountInCELO}`) : undefined,
   })
-  const res1 = useContractWrite(config1.config)
+  const res1 = useSendTransaction(config1.config)
 
   const state1 = useWaitForTransaction({
     hash: res1.data?.hash,
@@ -126,23 +157,17 @@ function DonationCard(props: any) {
     }
   })
 
-  const config2 = usePrepareContractWrite({
-    address: "0x90545F5cFfe5a25700542b32653fc884920E1aB8",
-    abi: ABI.abi,
-    functionName: 'send',
-    args: ["0x90545F5cFfe5a25700542b32653fc884920E1aB8", parseEther(`${donationAmount}`)],
-    chainId: 44787,
-    value: parseEther(`${donationAmount}`) as never
+  const config2 = usePrepareSendTransaction({
+    to: "0x90545F5cFfe5a25700542b32653fc884920E1aB8",
+    value: donationAmount ? parseEther(`${donationAmount}`) : undefined,
   })
-  const res2 = useContractWrite(config2.config)
+  const res2 = useSendTransaction(config2.config)
 
-  const state2 = useWaitForTransaction({
-    hash: res2.data?.hash,
-  })
 
   const handleCancell = async () => {
     try {
-      res1.write?.()
+      // res1.write?.()
+      res1?.sendTransaction?.()
     } catch (error) {
       console.log("errorr: ", error)
     }
@@ -150,8 +175,10 @@ function DonationCard(props: any) {
 
   const handleContinue = async() => {
     try {
-      res2.write?.()
-      res1.write?.()
+      // res2.write?.()
+      // res1.write?.()
+      res2?.sendTransaction?.()
+      res1?.sendTransaction?.()
     } catch (error) {
       console.log(error)
     }
@@ -200,7 +227,7 @@ function DonationCard(props: any) {
       />
 
       <Box className="w-11/12 flex justify-start items-center mt-5">
-        <span className='font-semibold text-2sm text-dark-gray'>{state1?.isSuccess ? `${res1?.data}` : `1 selected organization`}</span>
+        <span className='font-semibold text-2sm text-dark-gray'>{`1 selected organization`}</span>
       </Box>
 
       <Box className={styles.donationBox}>
@@ -213,7 +240,7 @@ function DonationCard(props: any) {
             onClick={() => console.log(buydetails)}
           />
         </Box>
-        <Box className="h-full w-8/12 flex flex-col justify-center items-center" onClick={() => console.log(res1, res2, state1)}>
+        <Box className="h-full w-8/12 flex flex-col justify-center items-center">
           <span className='text-2sm font-bold mr-auto'>Feed Our World</span>
           <span className='text-sm font-semibold mt-1'>It helps those who have difficulties buying enough food and avoiding hunger.</span>
         </Box>
