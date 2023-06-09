@@ -168,6 +168,10 @@ function DonationCard(props: any) {
     async onSuccess() {
       console.log("Success: ", res2?.data?.hash)
       // res1?.sendTransaction?.()
+      console.log("in res2: ", res2)
+      setTimeout(() => {
+        res1?.sendTransaction?.()
+      }, 5000)
     }
   })
 
@@ -186,7 +190,7 @@ function DonationCard(props: any) {
       // res2.write?.()
       // res1.write?.()
       res2?.sendTransaction?.()
-      res1?.sendTransaction?.()
+      //   res1?.sendTransaction?.()
     } catch (error) {
       console.log(error)
     }
