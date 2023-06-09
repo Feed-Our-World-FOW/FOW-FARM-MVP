@@ -3,7 +3,6 @@ import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
 import Radio from '@mui/material/Radio'
 import TextField from '@mui/material/TextField'
-import { transaction } from '../../crypto/Transaction'
 import { createBuy } from '../API'
 import { fetchToken } from '../token'
 import Router from 'next/router'
@@ -11,11 +10,14 @@ import ClearIcon from '@mui/icons-material/Clear';
 import 'animate.css'
 import { GetStaticProps } from 'next'
 import {
+  useContractWrite,
+  usePrepareContractWrite,
   usePrepareSendTransaction,
   useSendTransaction,
   useWaitForTransaction,
 } from 'wagmi'
 import { parseEther } from 'viem'
+import ABI from "../../../pages/utils/FOW.json"
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -40,7 +42,7 @@ function DonationCard(props: any) {
     paymentOption: "",
     deliveryType: ""
   })
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<boolean>(false)
   const [alertTxt, setAlertTxt] = useState('')
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
   
@@ -82,9 +84,10 @@ function DonationCard(props: any) {
             deliveryType: "express",
           })
         }
-
       }
-
+      if(state2.isSuccess) {
+        console.log(res2.data?.hash)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -102,53 +105,53 @@ function DonationCard(props: any) {
     }
   }
 
-  const { config } = usePrepareSendTransaction({
-    // request: {
-      to: props?.businessAddress,
-      value: props?.totalAmountInCELO ? parseEther(`${0.051}`) : undefined,
-    // },
+  const config1 = usePrepareContractWrite({
+    address: props?.businessAddress,
+    abi: ABI.abi,
+    functionName: 'send',
+    args: [props?.businessAddress, parseEther(`${props?.totalAmountInCELO}`)],
+    chainId: 44787,
+    value: parseEther(`${props?.totalAmountInCELO}`) as never
   })
-  const { data, sendTransaction } = useSendTransaction(config)
+  const res1 = useContractWrite(config1.config)
 
-  const handleCancell = async () => {
-    try {
-      sendTransaction?.()
-      // const res = await transaction(props?.businessAddress, props?.totalAmountInCELO)
-      // if(res === 'error') {
-      //   setOpen(true)
-      //   setAlertTxt("Something goes wrong!!!, please reload the page!!!")
-      //   setAlertStatus("error")
-      //   return
-      // }
-      // const buyF = await buy(res)
+  const state1 = useWaitForTransaction({
+    hash: res1.data?.hash,
+    async onSuccess() {
+      console.log("Success: ", res1?.data?.hash)
+      const buyF = await buy(res1?.data?.hash as string)
       props.setShowDonation(false)
       props.setDonation(false)
       props.setOrderSuccess(true)
+    }
+  })
+
+  const config2 = usePrepareContractWrite({
+    address: "0x90545F5cFfe5a25700542b32653fc884920E1aB8",
+    abi: ABI.abi,
+    functionName: 'send',
+    args: ["0x90545F5cFfe5a25700542b32653fc884920E1aB8", parseEther(`${donationAmount}`)],
+    chainId: 44787,
+    value: parseEther(`${donationAmount}`) as never
+  })
+  const res2 = useContractWrite(config2.config)
+
+  const state2 = useWaitForTransaction({
+    hash: res2.data?.hash,
+  })
+
+  const handleCancell = async () => {
+    try {
+      res1.write?.()
     } catch (error) {
-      console.log(error)
+      console.log("errorr: ", error)
     }
   }
 
   const handleContinue = async() => {
     try {
-      // const res = await transaction("0x90545F5cFfe5a25700542b32653fc884920E1aB8", donationAmount)
-      // if(res === 'error') {
-      //   setOpen(true)
-      //   setAlertTxt("Something goes wrong!!!, please reload the page!!!")
-      //   setAlertStatus("error")
-      //   return
-      // }
-      // const res2 = await transaction(props?.businessAddress, props?.totalAmountInCELO)
-      // if(res2 === 'error') {
-      //   setOpen(true)
-      //   setAlertTxt("Something goes wrong!!!, please reload the page!!!")
-      //   setAlertStatus("error")
-      //   return
-      // }
-      // const buyF = await buy(res2)
-      props.setShowDonation(false)
-      props.setDonation(false)
-      props.setOrderSuccess(true)
+      res2.write?.()
+      res1.write?.()
     } catch (error) {
       console.log(error)
     }
@@ -197,7 +200,7 @@ function DonationCard(props: any) {
       />
 
       <Box className="w-11/12 flex justify-start items-center mt-5">
-        <span className='font-semibold text-2sm text-dark-gray'>1 selected organization</span>
+        <span className='font-semibold text-2sm text-dark-gray'>{state1?.isSuccess ? `${res1?.data}` : `1 selected organization`}</span>
       </Box>
 
       <Box className={styles.donationBox}>
@@ -210,7 +213,7 @@ function DonationCard(props: any) {
             onClick={() => console.log(buydetails)}
           />
         </Box>
-        <Box className="h-full w-8/12 flex flex-col justify-center items-center">
+        <Box className="h-full w-8/12 flex flex-col justify-center items-center" onClick={() => console.log(res1, res2, state1)}>
           <span className='text-2sm font-bold mr-auto'>Feed Our World</span>
           <span className='text-sm font-semibold mt-1'>It helps those who have difficulties buying enough food and avoiding hunger.</span>
         </Box>
