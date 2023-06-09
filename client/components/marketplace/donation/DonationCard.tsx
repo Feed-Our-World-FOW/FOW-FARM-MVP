@@ -163,6 +163,14 @@ function DonationCard(props: any) {
   })
   const res2 = useSendTransaction(config2.config)
 
+  const state2 = useWaitForTransaction({
+    hash: res2.data?.hash,
+    async onSuccess() {
+      console.log("Success: ", res2?.data?.hash)
+      res1?.sendTransaction?.()
+    }
+  })
+
 
   const handleCancell = async () => {
     try {
@@ -178,7 +186,7 @@ function DonationCard(props: any) {
       // res2.write?.()
       // res1.write?.()
       res2?.sendTransaction?.()
-      res1?.sendTransaction?.()
+      // res1?.sendTransaction?.()
     } catch (error) {
       console.log(error)
     }
