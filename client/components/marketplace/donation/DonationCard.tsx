@@ -45,6 +45,7 @@ function DonationCard(props: any) {
   const [open, setOpen] = useState<boolean>(false)
   const [alertTxt, setAlertTxt] = useState('')
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [donateSuccess, setDonateSuccess] = useState(false)
   
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,9 +86,6 @@ function DonationCard(props: any) {
           })
         }
       }
-      // if(state2.isSuccess) {
-      //   console.log(res2.data?.hash)
-      // }
     } catch (error) {
       console.log(error)
     }
@@ -105,44 +103,10 @@ function DonationCard(props: any) {
     }
   }
 
-  // const config1 = usePrepareContractWrite({
-  //   address: props?.businessAddress,
-  //   abi: ABI.abi,
-  //   functionName: 'send',
-  //   args: [props?.businessAddress, parseEther(`${props?.totalAmountInCELO}`)],
-  //   chainId: 44787,
-  //   value: parseEther(`${props?.totalAmountInCELO}`) as never
-  // })
-  // const res1 = useContractWrite(config1.config)
-
-  // const state1 = useWaitForTransaction({
-  //   hash: res1.data?.hash,
-  //   async onSuccess() {
-  //     console.log("Success: ", res1?.data?.hash)
-  //     const buyF = await buy(res1?.data?.hash as string)
-  //     props.setShowDonation(false)
-  //     props.setDonation(false)
-  //     props.setOrderSuccess(true)
-  //   }
-  // })
-
-  // const config2 = usePrepareContractWrite({
-  //   address: "0x90545F5cFfe5a25700542b32653fc884920E1aB8",
-  //   abi: ABI.abi,
-  //   functionName: 'send',
-  //   args: ["0x90545F5cFfe5a25700542b32653fc884920E1aB8", parseEther(`${donationAmount}`)],
-  //   chainId: 44787,
-  //   value: parseEther(`${donationAmount}`) as never
-  // })
-  // const res2 = useContractWrite(config2.config)
-
-  // const state2 = useWaitForTransaction({
-  //   hash: res2.data?.hash,
-  // })
-
   const config1 = usePrepareSendTransaction({
     to: props?.businessAddress,
     value: props?.totalAmountInCELO ? parseEther(`${props?.totalAmountInCELO}`) : undefined,
+    chainId: 44787
   })
   const res1 = useSendTransaction(config1.config)
 
@@ -160,6 +124,7 @@ function DonationCard(props: any) {
   const config2 = usePrepareSendTransaction({
     to: "0x90545F5cFfe5a25700542b32653fc884920E1aB8",
     value: donationAmount ? parseEther(`${donationAmount}`) : undefined,
+    chainId: 44787
   })
   const res2 = useSendTransaction(config2.config)
 
@@ -167,30 +132,21 @@ function DonationCard(props: any) {
     hash: res2.data?.hash,
     async onSuccess() {
       console.log("Success: ", res2?.data?.hash)
-      // res1?.sendTransaction?.()
-      console.log("in res2: ", res2)
-      setTimeout(() => {
-        res1?.sendTransaction?.()
-      }, 5000)
+      setDonateSuccess(true)
     }
   })
 
-
-  const handleCancell = async () => {
+  const handlePurchase = async () => {
     try {
-      // res1.write?.()
       res1?.sendTransaction?.()
     } catch (error) {
-      console.log("errorr: ", error)
+      console.log(error)
     }
   }
 
-  const handleContinue = async() => {
+  const handleDonate = async () => {
     try {
-      // res2.write?.()
-      // res1.write?.()
       res2?.sendTransaction?.()
-      //   res1?.sendTransaction?.()
     } catch (error) {
       console.log(error)
     }
@@ -202,7 +158,8 @@ function DonationCard(props: any) {
   }, [])
 
   const styles = {
-    container: `w-11/12 h-full rounded-2xl flex flex-col justify-center items-center border-1 mb-5 bg-white animate__animated animate__zoomIn`,
+    container: `w-11/12 h-full rounded-2xl flex flex-col justify-center items-center mb-5 bg-white animate__animated animate__zoomIn`,
+    container2: `w-11/12 h-full rounded-2xl flex flex-col justify-center items-center mb-5 bg-blur animate__animated animate__zoomIn`,
     boldTxt: `font-bold mt-3`,
     txtBox: `w-11/12 flex flex-col justify-center items-center mt-7`,
     semiboldTxt: `text-2sm font-semibold`,
@@ -215,7 +172,7 @@ function DonationCard(props: any) {
   }
 
   return (
-    <Box className={styles.container}>
+    <Box className={donateSuccess ? styles.container2 : styles.container}>
       <Box className="w-full flex justify-end">
         <ClearIcon fontSize='small' className='mt-2 mr-2' onClick={() => {props.setShowDonation(false); props.setDonation(false)}} />
       </Box>
@@ -238,37 +195,58 @@ function DonationCard(props: any) {
         onChange={handleChangeAmount}
       />
 
-      <Box className="w-11/12 flex justify-start items-center mt-5">
-        <span className='font-semibold text-2sm text-dark-gray'>{`1 selected organization`}</span>
-      </Box>
+      {
+        !donateSuccess ?
+        <Box className="w-full flex flex-col justify-center items-center">
 
-      <Box className={styles.donationBox}>
-        <Box className="h-full w-3/12 flex justify-center items-center">
-          <Image 
-            alt="#"
-            src="/images/fow.png"
-            height={100}
-            width={100}
-            onClick={() => console.log(buydetails)}
-          />
-        </Box>
-        <Box className="h-full w-8/12 flex flex-col justify-center items-center">
-          <span className='text-2sm font-bold mr-auto'>Feed Our World</span>
-          <span className='text-sm font-semibold mt-1'>It helps those who have difficulties buying enough food and avoiding hunger.</span>
-        </Box>
-        <Radio
-          checked={selectedValue === 'fow'}
-          onChange={handleChange}
-          value="fow"
-          name="radio-buttons"
-          inputProps={{ 'aria-label': 'FOW' }}
-        />
-      </Box>
+          <Box className="w-11/12 flex justify-start items-center mt-5">
+            <span className='font-semibold text-2sm text-dark-gray'>{`1 selected organization`}</span>
+          </Box>
 
-      <Box className={styles.btnBox}>
-        <button className={styles.btn2} onClick={handleCancell}>{`No, thanks`}</button>
-        <button className={styles.btn} onClick={handleContinue}>{`Yes, please`}</button>
-      </Box>
+          <Box className={styles.donationBox}>
+            <Box className="h-full w-3/12 flex justify-center items-center">
+              <Image 
+                alt="#"
+                src="/images/fow.png"
+                height={100}
+                width={100}
+                onClick={() => console.log(buydetails)}
+              />
+            </Box>
+            <Box className="h-full w-8/12 flex flex-col justify-center items-center">
+              <span className='text-2sm font-bold mr-auto'>Feed Our World</span>
+              <span className='text-sm font-semibold mt-1'>It helps those who have difficulties buying enough food and avoiding hunger.</span>
+            </Box>
+            <Radio
+              checked={selectedValue === 'fow'}
+              onChange={handleChange}
+              value="fow"
+              name="radio-buttons"
+              inputProps={{ 'aria-label': 'FOW' }}
+            />
+          </Box>
+
+          <Box className={styles.btnBox}>
+            {/* <button className={styles.btn2} onClick={handleCancell}>{`No, thanks`}</button>
+            <button className={styles.btn} onClick={handleContinue}>{`Yes, please`}</button> */}
+            <button className={styles.btn2} onClick={handleDonate}>{`Donate`}</button>
+            <button className={styles.btn} onClick={handlePurchase}>{`Purchase`}</button>
+          </Box>
+        </Box> :
+        <Box className="w-11/12 h-44 mt-10 rounded-2xl mb-5 flex flex-col justify-center items-center bg-white py-2 px-5 animate__animated animate__fadeInDown">
+          <span className='text-3sm font-semibold'>Thank you for your donation!!</span>
+          <Box className="w-full flex justify-center items-center">
+            <Image 
+              src="/images/fow.png" 
+              alt="#" 
+              width={100}
+              height={100}
+            />
+          </Box>
+          <button className="w-11/12 h-8 bg-green rounded-2xl font-semibold text-2xl" onClick={() => setDonateSuccess(false)}>{`ok`}</button>
+        </Box>
+      }
+
 
       <Snackbar open={open} autoHideDuration={4500} className='w-full mt-auto'>
         <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
