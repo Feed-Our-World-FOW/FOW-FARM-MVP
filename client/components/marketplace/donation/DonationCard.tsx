@@ -10,14 +10,12 @@ import ClearIcon from '@mui/icons-material/Clear';
 import 'animate.css'
 import { GetStaticProps } from 'next'
 import {
-  useContractWrite,
-  usePrepareContractWrite,
   usePrepareSendTransaction,
   useSendTransaction,
   useWaitForTransaction,
 } from 'wagmi'
 import { parseEther } from 'viem'
-import ABI from "../../../pages/utils/FOW.json"
+import CircularProgress from '@mui/material/CircularProgress'
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -46,6 +44,8 @@ function DonationCard(props: any) {
   const [alertTxt, setAlertTxt] = useState('')
   const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
   const [donateSuccess, setDonateSuccess] = useState(false)
+  const [donateLoading, setDonateLoading] = useState(false)
+  const [purchaseLoading, setPurchaseLoading] = useState(false)
   
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,6 +115,7 @@ function DonationCard(props: any) {
     async onSuccess() {
       console.log("Success: ", res1?.data?.hash)
       const buyF = await buy(res1?.data?.hash as string)
+      setPurchaseLoading(false)
       props.setShowDonation(false)
       props.setDonation(false)
       props.setOrderSuccess(true)
@@ -133,12 +134,14 @@ function DonationCard(props: any) {
     async onSuccess() {
       console.log("Success: ", res2?.data?.hash)
       setDonateSuccess(true)
+      setDonateLoading(false)
     }
   })
 
   const handlePurchase = async () => {
     try {
       res1?.sendTransaction?.()
+      setPurchaseLoading(true)
     } catch (error) {
       console.log(error)
     }
@@ -147,6 +150,7 @@ function DonationCard(props: any) {
   const handleDonate = async () => {
     try {
       res2?.sendTransaction?.()
+      setDonateLoading(true)
     } catch (error) {
       console.log(error)
     }
@@ -167,8 +171,8 @@ function DonationCard(props: any) {
     input: `w-full h-full rounded-xl px-5 text-2sm font-semibold`,
     donationBox: `w-11/12 h-24 rounded-2xl border-1 mt-5 border-green bg-blue-white flex justify-between items-center`,
     btnBox: `w-11/12 h-10 mt-10 mb-5 flex justify-between items-center`,
-    btn: `text-2sm font-semibold w-32 border-2 rounded-3xl h-10 bg-green border-green px-3`,
-    btn2: `text-2sm font-semibold w-32 border-2 rounded-3xl h-10 px-3`,
+    btn: `text-2sm font-semibold w-32 border-2 rounded-3xl h-10 bg-green border-green px-3 flex justify-center items-center`,
+    btn2: `text-2sm font-semibold w-32 border-2 rounded-3xl h-10 px-3 flex justify-center items-center`,
   }
 
   return (
@@ -229,8 +233,12 @@ function DonationCard(props: any) {
           <Box className={styles.btnBox}>
             {/* <button className={styles.btn2} onClick={handleCancell}>{`No, thanks`}</button>
             <button className={styles.btn} onClick={handleContinue}>{`Yes, please`}</button> */}
-            <button className={styles.btn2} onClick={handleDonate}>{`Donate`}</button>
-            <button className={styles.btn} onClick={handlePurchase}>{`Purchase`}</button>
+            <Box className={styles.btn2} onClick={handleDonate}>
+              {donateLoading ? <CircularProgress color="inherit" size={20} /> : `Donate`}
+            </Box>
+            <Box className={styles.btn} onClick={handlePurchase}>
+              {purchaseLoading ? <CircularProgress color="inherit" size={20} /> :`Purchase`}
+            </Box>
           </Box>
         </Box> :
         <Box className="w-11/12 h-44 mt-10 rounded-2xl mb-5 flex flex-col justify-center items-center bg-white py-2 px-5 animate__animated animate__fadeInDown">
@@ -243,7 +251,12 @@ function DonationCard(props: any) {
               height={100}
             />
           </Box>
-          <button className="w-11/12 h-8 bg-green rounded-2xl font-semibold text-2xl" onClick={() => setDonateSuccess(false)}>{`ok`}</button>
+          <button 
+            className="w-11/12 h-8 bg-green rounded-2xl font-semibold text-2xl" 
+            onClick={() => setDonateSuccess(false)}
+          >
+            {`ok`}
+          </button>
         </Box>
       }
 
