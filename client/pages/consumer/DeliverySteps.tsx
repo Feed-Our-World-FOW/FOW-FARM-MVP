@@ -20,8 +20,6 @@ function DeliverySteps() {
     order: false,
     value: 0
   })
-  const [stock, setStock] = useState(false)
-  const [ondemand, setOndemand] = useState(false)
   const [showTerms, setShowTerms] = useState(false)
   const [showDonation, setShowDonation] = useState(false)
   const [showWallet, setShowWallet] = useState(false)
@@ -29,12 +27,6 @@ function DeliverySteps() {
   const [express, setExpress] = useState(false)
   const [walletAddress, setWalletAddress] = useState("")
 
-  const steps = [
-    'Address',
-    'Delivery',
-    'Payment',
-    'Order'
-  ];
 
   const styles = {
     page: `w-screen flex flex-col justify-center items-center`,
@@ -53,7 +45,6 @@ function DeliverySteps() {
       <Box className={showTerms || showWallet || showDonation ? styles.triggerContainer : styles.container}>
         <Box className={styles.navBox}>
           <Navbar 
-            // load={handleReload} 
             order={true}
             arrow={true}
             trigger={showTerms || showWallet || showDonation}

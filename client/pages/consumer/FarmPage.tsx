@@ -3,21 +3,28 @@ import { useRouter } from 'next/router'
 import Navbar from '../../components/marketplace/navBar/Navbar'
 import Stack from '@mui/material/Stack'
 import Link from 'next/link'
-import { getSingleBusiness } from '../../components/marketplace/API'
+import { 
+  getSingleBusiness, 
+  getMyFavouriteFarms, 
+  addFavourite, 
+  removeFavourite 
+} from '../../components/marketplace/API'
 import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
 import { getMyCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
-import Skeleton from '@mui/material/Skeleton';
+import Skeleton from '@mui/material/Skeleton'
 import { Alert, AlertColor, Box } from '@mui/material'
 import BottomNav from '../../components/marketplace/navBar/BottomNav'
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import ProductCardComponent from '../../components/marketplace/product/ProductCardComponent'
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined'
 import ProductFilterNav from '../../components/marketplace/navBar/ProductFilterNav'
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
+import Favorite from '@mui/icons-material/Favorite'
+import Checkbox from '@mui/material/Checkbox'
 
 
 function FarmPage() {
@@ -32,6 +39,9 @@ function FarmPage() {
   const [loading, setLoading] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
   const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [favourite, setFavourite] = useState<boolean>(false)
+
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
   const handleReload = () => {
     setReloadComponent(prevState => !prevState);
@@ -48,10 +58,19 @@ function FarmPage() {
   const fetch = async () => {
     try {
       const token = fetchToken()
-      // console.log(id.data)
       setToken(token)
       const x = await getSingleBusiness(id.data, token)
-      const data = x.data.data.data
+      const y = await getMyFavouriteFarms(token)
+
+      const data = x?.data?.data?.data
+      const favouriteFarmData = y?.data?.data?.data
+      // console.log(favouriteFarmData)
+
+      favouriteFarmData?.farms.map((i: any) => {
+        if(i.businessAccount._id === id.data) {
+          setFavourite(true)
+        }
+      })
 
       const response = await getMyCart(token)
       if(response.data.data.data.length > 0) {
@@ -59,11 +78,25 @@ function FarmPage() {
         setCartItems(cartData)
       }
       
-      // console.log("Data",data)
       setShowStockProduct(true)
 
       setFarmDetails(data)
       setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleFavourite = async () => {
+    setFavourite(prev => !prev)
+    let res
+    try {
+      if(favourite) {
+        res = await removeFavourite(Token, id.data as string)
+      }else {
+        res = await addFavourite(Token, id.data as string)
+      }
+      // console.log(res)
     } catch (error) {
       console.log(error)
     }
@@ -107,7 +140,13 @@ function FarmPage() {
         <Box className={styles.top_container}>
           <Box className={styles.top_sub_container}>
             <Box className={styles.top_sub_box}>
-              <FavoriteBorderOutlinedIcon />
+              <Checkbox {...label} 
+                icon={<FavoriteBorder />} 
+                checkedIcon={<Favorite sx={{color: "#ff6d75"}} />} 
+                checked={favourite}
+                onClick={handleFavourite}
+              />
+
               <MonetizationOnOutlinedIcon />
             </Box>
             <Box className={styles.img_box}>

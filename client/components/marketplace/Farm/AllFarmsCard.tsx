@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, Skeleton, Typography } from '@mui/material'
 import Link from 'next/link'
 import FarmCardComponent from './FarmCardComponent'
 import { fetchToken } from '../token'

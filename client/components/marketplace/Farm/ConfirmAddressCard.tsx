@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Box, Container } from '@mui/material';
 import { getMyConsumerProfile } from '../API';
 import { fetchToken } from '../token';
 import LocationCard from '../location/LocationCard';
 import { GetStaticProps } from 'next';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Alert, AlertColor, Box, Container, IconButton, Snackbar } from '@mui/material';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {
@@ -24,19 +24,21 @@ function ConfirmAddressCard(props: any) {
   })
   const [data, setData] = useState<any>({})
   const [openBackdrop, setOpenBackdrop] = useState(false)
+  const [alertTxt, setAlertTxt] = useState('')
+  const [alertStatus, setAlertStatus] = useState<AlertColor>("success" || "warning" || "info" || "error")
+  const [open, setOpen] = useState(false)
 
   const fetch = async () => {
     setOpenBackdrop(true)
     try {
       const token = fetchToken()
       const res = await getMyConsumerProfile(token)
-      const data = res.data.data.data[0]
-      // console.log(data)
+      const mapData = res.data.data.data[0]
       setLocation({
-        lat: data.location.coordinates[1],
-        lng: data.location.coordinates[0]
+        lat: mapData?.location?.coordinates[1],
+        lng: mapData?.location?.coordinates[0]
       })
-      setData(data)
+      setData(mapData)
       setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
@@ -44,15 +46,34 @@ function ConfirmAddressCard(props: any) {
     }
   }
 
-  const handleContinue = () => {
-    props.setConfirm({
-      address: true,
-      payment: false,
-      debitCard: false,
-      order: false,
-      value: 1
-    })
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   }
+
+  const handleContinue = () => {
+    console.log("map: ", data.location === undefined)
+
+    if(data.location === undefined) {
+      // console.log("error")
+      setOpen(true)
+      setAlertStatus("warning")
+      setAlertTxt("Please update your delivery location!!!")
+    }else {
+      props.setConfirm({
+        address: true,
+        payment: false,
+        debitCard: false,
+        order: false,
+        value: 1
+      })
+    }
+    
+  }
+
 
   useEffect(() => {
     fetch()
@@ -90,6 +111,13 @@ function ConfirmAddressCard(props: any) {
         <span className='text-2sm font-bold mr-3'>Description:</span>
         <span className='text-sm font-semibold'>{data?.location?.description}</span>
       </Box>
+
+      <Snackbar open={open} autoHideDuration={4500} className='w-full'>
+        <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
+          {alertTxt}
+        </Alert>
+      </Snackbar>
+
       <Box className="w-11/12 flex justify-around items-center mt-20 mb-3">
         <button className={styles.btn1}>
           <Link href={"/consumer/location/ShowMap"}>Update Address</Link>

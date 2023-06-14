@@ -120,6 +120,10 @@ function Navbar(props: any) {
               <Box className={styles.cartless}>
                 <span className={styles.headTxt}>Add Product On demand</span> 
               </Box> :
+              props.myFavourite ?
+              <Box className={styles.cartless}>
+                <span className={styles.headTxt}>Favourite Farms</span> 
+              </Box> :
               props.product ?
               <span className={styles.headTxt}>Product</span> : 
               props.order ?

@@ -12,6 +12,7 @@ const CART_URL = `${URL}/api/v1/cart`
 const CONSUMER_URL = `${URL}/api/v1/consumer`
 const BUY_URL = `${URL}/api/v1/buy`
 const REVIEW_URL = `${URL}/api/v1/reviews`
+const FAVOURITE_URL = `${URL}/api/v1/favourite`
 
 
 const BUSINESS_API = axios.create({ baseURL: BUSINESS_URL })
@@ -22,6 +23,7 @@ const CART_API = axios.create({ baseURL: CART_URL })
 const CONSUMER_API = axios.create({ baseURL: CONSUMER_URL })
 const BUY_API = axios.create({ baseURL: BUY_URL })
 const REVIEW_API = axios.create({ baseURL: REVIEW_URL })
+const FAVOURITE_API = axios.create({ baseURL: FAVOURITE_URL })
 
 
 export const signupMethod = (signupDetails: SignupFormInterface) => USER_API.post(`/signup`, signupDetails)
@@ -150,16 +152,6 @@ export const getAmount = (
   { headers: { Authorization: `Bearer ${_token}` }}
 )
 
-// export const getAmount = (
-//   _token: string,
-//   _details: {
-//     paymentOption: string,
-//     deliveryType: string,
-//   }
-// ) => BUY_API.get(`/getAmount`, _details as any, { headers: { Authorization: `Bearer ${_token}`}})
-
-
-
 export const getReviewForFarm = (_token: string, _farmId: string) => REVIEW_API.get(`/farm/${_farmId}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const createReviewForFarm = (
   _token: string, 
@@ -170,4 +162,8 @@ export const createReviewForFarm = (
   }
 ) => REVIEW_API.post(`/farm/${_farmId}`, _details, { headers: { Authorization: `Bearer ${_token}`}})
 
+
+export const addFavourite = (_token: string, _farmId: string) => FAVOURITE_API.post(`/${_farmId}`, {}, { headers: { Authorization: `Bearer ${_token}`}})
+export const removeFavourite = (_token: string, _farmId: string) => FAVOURITE_API.delete(`/${_farmId}`, { headers: { Authorization: `Bearer ${_token}`}})
+export const getMyFavouriteFarms = (_token: string) => FAVOURITE_API.get('/', { headers: { Authorization: `Bearer ${_token}`}})
 

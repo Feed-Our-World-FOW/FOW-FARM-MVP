@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper'
 import Avatar from '@mui/material/Avatar';
 import { Alert, AlertColor, Box, Container, IconButton, Snackbar } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
-import { updateMe, getMyConsumerProfile } from '../../components/marketplace/API';
+import { updateMe, getMyConsumerProfile, getMyFavouriteFarms } from '../../components/marketplace/API';
 import { fetchToken } from '../../components/marketplace/token';
 import BottomNav from '../../components/marketplace/navBar/BottomNav';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -17,6 +17,7 @@ import LocationCard from '../../components/marketplace/location/LocationCard';
 import 'animate.css'
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { deepOrange } from '@mui/material/colors';
 
 interface User {
   name: string;
@@ -39,6 +40,7 @@ function UserProfile() {
   const [open, setOpen] = useState(false)
   const [previewUrl, setPreviewUrl] = useState("")
   const [openBackdrop, setOpenBackdrop] = useState(false)
+  const [favourite, setFavourite] = useState(0)
   
 
   const fetch = async () => {
@@ -46,7 +48,9 @@ function UserProfile() {
     try {
       const token = fetchToken()
       const myProfile = await getMyConsumerProfile(token)
-
+      const fav = await getMyFavouriteFarms(token)
+      setFavourite(fav.data.data.data?.farms.length)
+      
       const data = myProfile.data.data.data[0]
       setMyProfile(data)
       setUserDetails({
@@ -55,7 +59,6 @@ function UserProfile() {
         photo: data.user.photo
       })
       setOpenBackdrop(false)
-      // console.log(data)
     } catch (error) {
       console.log(error)
       setOpenBackdrop(false)
@@ -156,7 +159,7 @@ function UserProfile() {
             <Avatar 
               alt={myProfile?.user?.name} 
               src={img ? previewUrl : myProfile?.user?.photo} 
-              sx={{ width: 56, height: 56 }} 
+              sx={{ width: 56, height: 56, bgcolor: deepOrange[500] }} 
               className='animate__animated animate__rubberBand'
             />
             {
@@ -204,16 +207,6 @@ function UserProfile() {
                 /> :
                 <span className='text-sm font-bold'>{myProfile?.user?.name}</span>
               }
-              {/*
-                userEdit ?
-                <TextField 
-                  id="standard-basic" 
-                  label={myProfile?.user?.email} 
-                  variant="standard" 
-                  onChange={(e: any) => setUserDetails({...userDetails, email: e.target.value})} 
-                /> :
-                <span className='text-sm font-semibold overflow-hidden'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
-            */}
 
               {
                 userEdit ?
@@ -269,7 +262,6 @@ function UserProfile() {
           }
         </Box>
 
-
         <Box className='border-1 border-light-gray w-full h-48 rounded-2xl mt-5 flex flex-col justify-around items-center'>
           
           <Box className="w-10/12 rounded-2xl h-12 flex justify-around items-center">
@@ -284,17 +276,13 @@ function UserProfile() {
           </Box>
           <Box className="border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center mb-5">
             <span className='text-sm'>My favourite</span>
-            <span className='text-sm'>{myProfile?.favourite}</span>
-            <Box className="ml-7">
+            <span className='text-sm'>{favourite}</span>
+            <Link href={`/consumer/FavouriteFarmsPage`} className="ml-7">
               <ArrowForwardIosIcon fontSize='small' />
-            </Box>
+            </Link>
           </Box>
           
         </Box>
-
-        {/* <button className="w-full h-9 rounded-3xl bg-green flex justify-center items-center mt-5">
-          <span className='text-3sm font-bold text-white'>Connect Wallet</span>
-        </button> */}
 
         <Snackbar open={open} autoHideDuration={4500} className='w-full'>
           <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
@@ -302,11 +290,6 @@ function UserProfile() {
           </Alert>
         </Snackbar>
 
-        
-
-
-
-        
       </Container>
       <Box className={styles.bottomBox}>
         <BottomNav />

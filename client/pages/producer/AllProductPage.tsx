@@ -1,4 +1,3 @@
-import { Box } from '@mui/material'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/marketplace/navBar/Navbar'
@@ -9,6 +8,7 @@ import ProductFilterNav from '../../components/marketplace/navBar/ProductFilterN
 import { getMyStockProducts, getMyOndemandProduct, getMyBusinessProfile } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
 import ProductCardComponent from '../../components/marketplace/product/ProductCardComponent'
+import { Box, Skeleton, Typography } from '@mui/material'
 
 
 function AllProductPage() {
@@ -16,6 +16,8 @@ function AllProductPage() {
   const [myStockProducts, setMyStockProducts] = useState<any>([{}])
   const [myOndemandProducts, setMyOndemandProducts] = useState<any>([{}])
   const [myProfile, setMyProfile] = useState<any>({})
+  const [loading, setLoading] = useState<boolean>(true)
+  const array = [1, 2, 3, 4, 5]
 
   const fetch = async () => {
     try {
@@ -29,9 +31,8 @@ function AllProductPage() {
       setMyStockProducts(stock)
       setMyOndemandProducts(ondemand)
       setStockProduct(true)
+      setLoading(false)
       setMyProfile(data)
-      // console.log(stock)
-      // console.log(ondemand)
     } catch (error) {
       console.log(error)
     }
@@ -63,7 +64,6 @@ function AllProductPage() {
           produce={true} 
           setStockProduct={setStockProduct}
         />
-        {/* <FilterNav setShowFarm={setShowFarm} /> */}
       </Box>
       <Box className={styles.navBox3} sx={{marginTop: '124px'}}>
         <SearchBar />
@@ -97,7 +97,36 @@ function AllProductPage() {
 
       <Box className={styles.scrollingBox}>
         {
-          stockProduct ?
+          loading ? 
+          array.map((i: any) => {
+            return (
+              <Box 
+                className='w-11/12 h-24 rounded-xl flex justify-between items-center mb-5 border-1 border-light-gray' 
+                key={i}
+              >
+                <Skeleton animation="wave" variant="circular" width={50} height={50} />
+                <Box className='w-8/12 h-full flex flex-col ml-3'>
+                  <Skeleton animation="wave" width="70%">
+                    <Typography>-</Typography>
+                  </Skeleton>
+                  <Skeleton animation="wave" width="30%">
+                    <Typography>-</Typography>
+                  </Skeleton>
+                  <Skeleton animation="wave" width="30%">
+                    <Typography>-</Typography>
+                  </Skeleton>
+                  <Skeleton animation="wave" width="70%">
+                    <Typography>-</Typography>
+                  </Skeleton>
+                </Box>
+                <Box className="h-full w-16 flex justify-center items-center">
+                  <Skeleton animation="wave" width={50} height={50} />
+                </Box>
+              </Box>
+            )
+          }) :
+
+          !loading && stockProduct ?
           myStockProducts.map((product: any) => {
             return (
               <Box 
