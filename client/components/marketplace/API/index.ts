@@ -29,6 +29,8 @@ const FAVOURITE_API = axios.create({ baseURL: FAVOURITE_URL })
 export const signupMethod = (signupDetails: SignupFormInterface) => USER_API.post(`/signup`, signupDetails)
 export const loginMethod = (loginDetails: LoginFormInterface) => USER_API.post('/login', loginDetails)
 
+export const forgotPassword = (_email: string) => USER_API.post('/forgotPassword', { email: _email })
+
 export const updateMe = (
   _token: string,
   formData: FormData

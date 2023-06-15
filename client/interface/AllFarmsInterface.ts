@@ -36,6 +36,11 @@ export interface LoginFormInterface {
   password: string
 }
 
+export interface ResetPasswordInterface {
+  password: string,
+  passwordConfirm: string
+}
+
 export interface CommentInterface {
   createAt: string,
   product: string,

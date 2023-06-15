@@ -3,17 +3,20 @@ import Image from 'next/image'
 import TextField from '@mui/material/TextField'
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
-import { LoginFormInterface } from '../../interface/AllFarmsInterface'
-import { loginMethod } from '../../components/marketplace/API'
+import { ResetPasswordInterface } from '../../interface/AllFarmsInterface'
 import { Alert, AlertColor, Snackbar } from '@mui/material'
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { forgotPassword } from '../../components/marketplace/API';
+import { useRouter } from 'next/router';
+import axios from "axios"
 
-function LoginPage() {
-  const [signupForm, setSignupForm] = useState<LoginFormInterface>({
-    email: '',
-    password: ''
+function ResetPassword() {
+  const router = useRouter()
+  const data = router.query
+
+  const [resetForm, setresetForm] = useState<ResetPasswordInterface>({
+    password: '',
+    passwordConfirm: ''
   })
   const [disabled, setDisabled] = useState<boolean>(false)
   const expireTime = process.env.NEXT_PUBLIC_TOKEN_EXPIRE_TIME || 0
@@ -35,19 +38,15 @@ function LoginPage() {
     setDisabled(true)
     setOpenBackdrop(true)
     try {
-      const login = await loginMethod({
-        email: signupForm.email,
-        password: signupForm.password
+      const res = await axios.patch(`${data.URL}`, {
+        password: resetForm.password,
+        passwordConfirm: resetForm.passwordConfirm
       })
-
-      const token = login.data.token
-      const expire = new Date().getTime() + Number(expireTime)
-      localStorage.setItem("Token", JSON.stringify({ value: `${token}`, expires: expire }))
 
       setOpen(true)
       setAlertStatus("success")
-      setAlertTxt('Successfully signed in')
-      window.location.replace('/')
+      setAlertTxt('Successfully reset password!!')
+      window.location.replace('/Auth/LoginPage')
       
     } catch (error: any) {
       console.log(error)
@@ -58,27 +57,9 @@ function LoginPage() {
     }
   }
 
-  const handleForgotPassword = async () => {
-    try {
-      if(signupForm.email === '') {
-        setOpen(true)
-        setAlertStatus("warning")
-        setAlertTxt('Please enter your email address!!!')
-        return
-      }
-
-      await forgotPassword(signupForm.email)
-      setOpen(true)
-      setAlertStatus("info")
-      setAlertTxt('An email is sent to your mail box!!!')
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
-    setSignupForm((prev) => ({
+    setresetForm((prev) => ({
       ...prev,
       [name]: value
     }))
@@ -100,8 +81,8 @@ function LoginPage() {
       <Box className={styles.container}>
         <Box className={styles.top_container}>
           <Box className={styles.big_txt_box}>
-            <span className={styles.big_txt}>Welcome</span>
-            <span className={styles.big_txt}>Back!</span>
+            <span className={styles.big_txt}>Reset</span>
+            <span className={styles.big_txt}>Password!</span>
           </Box>
           <Image 
             alt="background"
@@ -133,46 +114,42 @@ function LoginPage() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={signupForm.email}
-            onChange={handleInputChange}
-            sx={{
-              borderRadius: '10px'
-            }}
-          />  
-          <TextField
-            margin="normal"
-            required
-            fullWidth
             name="password"
-            label="Password"
+            label="New Password"
             type="password"
             id="password"
             autoComplete="current-password"
-            value={signupForm.password}
+            error={ resetForm.password.length > 0 && resetForm.password.length < 8 }
+            value={resetForm.password}
             onChange={handleInputChange}
             sx={{
               borderRadius: '10px'
             }}
           />
-          <Box className="w-full flex justify-end">
-            <span className="text-2sm font-semibold cursor-pointer" onClick={handleForgotPassword}>Forgot password?</span>
-          </Box>
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="passwordConfirm"
+            label="Confirm Password"
+            type="password"
+            id="ConfirmPassword"
+            autoComplete="current-password"
+            error={ resetForm.passwordConfirm.length > 0 && resetForm.password !== resetForm.passwordConfirm }
+            value={resetForm.passwordConfirm}
+            onChange={handleInputChange}
+            sx={{
+              borderRadius: '10px'
+            }}
+          />
+          
           <Box className={styles.btn_box}>
             <button className={styles.btn} onClick={handleClick}>
-              <span className="text-3sm font-semibold">Sign In</span>
+              <span className="text-3sm font-semibold">Reset</span>
             </button>
           </Box>
-          <Box className={styles.small_box}>
-            <span className='text-3sm font-semibold'>{`Don't have an account?`}</span>
-            <Link href={"/Auth/SignupPage"}>
-              <span className='text-3sm font-bold'>{`Sign Up`}</span>
-            </Link>
-          </Box>
+          
         </Box>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -190,5 +167,5 @@ function LoginPage() {
     )
   }
 
-  export default LoginPage
+  export default ResetPassword
   
