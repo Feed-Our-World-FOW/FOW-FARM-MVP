@@ -52,7 +52,8 @@ function WriteCommentCardComponent(props: any) {
       console.log(error)
       setOpen(true)
       setAlertStatus("error")
-      setAlertTxt(`${error.response.data.message}`)
+      // setAlertTxt(`${error.response.data.message}`)
+      setAlertTxt(`You have already give review to this farm`)
     }
   }
 

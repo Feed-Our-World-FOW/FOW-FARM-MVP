@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState, FormEvent } from 'react'
 import Image from 'next/image'
 import TextField from '@mui/material/TextField'
-import Link from '@mui/material/Link'
+import Link from 'next/link'
 import Box from '@mui/material/Box'
 import { ResetPasswordInterface } from '../../interface/AllFarmsInterface'
 import { Alert, AlertColor, Snackbar } from '@mui/material'

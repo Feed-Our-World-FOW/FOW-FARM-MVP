@@ -7,11 +7,12 @@ import {
   getSingleBusiness, 
   getMyFavouriteFarms, 
   addFavourite, 
-  removeFavourite 
+  removeFavourite, 
+  getMyCart,
+  distance
 } from '../../components/marketplace/API'
 import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
-import { getMyCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
 import Skeleton from '@mui/material/Skeleton'
 import { Alert, AlertColor, Box } from '@mui/material'
@@ -40,6 +41,7 @@ function FarmPage() {
   const [open, setOpen] = useState<boolean>(false)
   const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
   const [favourite, setFavourite] = useState<boolean>(false)
+  const [farmDistance, setFarmDistance] = useState(0)
 
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -64,7 +66,12 @@ function FarmPage() {
 
       const data = x?.data?.data?.data
       const favouriteFarmData = y?.data?.data?.data
-      // console.log(favouriteFarmData)
+      // console.log(data)
+
+      const dis = await distance(token, data.id, "mi")
+      if(dis) {
+        setFarmDistance(dis.data.data.data)
+      }
 
       favouriteFarmData?.farms.map((i: any) => {
         if(i.businessAccount._id === id.data) {
@@ -184,7 +191,7 @@ function FarmPage() {
             </Box>
             <Box className={styles.statBox}>
               <LocationOnOutlinedIcon />
-              <span className='text-sm font-semibold'>100 KM</span>
+              <span className='text-sm font-semibold'>{farmDistance ? `${Math.round(farmDistance)} mi` : "100 mi"} </span>
             </Box>
           </Box>
         </Box>

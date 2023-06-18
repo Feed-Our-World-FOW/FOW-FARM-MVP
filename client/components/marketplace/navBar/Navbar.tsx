@@ -137,7 +137,9 @@ function Navbar(props: any) {
                 <span className={styles.headTxt}>{props?.ids && (props.ids).slice(16, 24)}</span> 
               </Box> :
               props.rating ?
-              <span className={styles.headTxt}>Rating</span> : 
+              <Box className={styles.cartless}>
+                <span className={styles.headTxt}>Rating</span> 
+              </Box>: 
               <span className={styles.headTxt}>Discover</span>
             }
             {

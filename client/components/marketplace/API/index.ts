@@ -75,6 +75,12 @@ export const updateMyWalletAddress = (
   }
 ) => BUSINESS_API.patch(`/myProfile`, _details, { headers: { Authorization: `Bearer ${_token}`}})
 
+export const distance = (
+  _token: string, 
+  _id: string, 
+  _unit: string
+) => BUSINESS_API.get(`/distance/${_id}/unit/${_unit}`, { headers: { Authorization: `Bearer ${_token}`}})
+
 export const getAllStockProduct = () => STOCK_API.get('/')
 export const getSingleStockProduct = (_id: string, _token: string, _unit: string) => STOCK_API.get(`/${_id}?unit=${_unit}`, { headers: { Authorization: `Bearer ${_token}`}})
 export const getMyStockProducts = (_token: string) => STOCK_API.get(`/myStockProduct`, { headers: { Authorization: `Bearer ${_token}`}})

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
 import TextField from '@mui/material/TextField'
-import Link from '@mui/material/Link'
+import Link from 'next/link'
 import Box from '@mui/material/Box'
 import { SignupFormInterface } from '../../interface/AllFarmsInterface'
 import { signupMethod } from '../../components/marketplace/API'

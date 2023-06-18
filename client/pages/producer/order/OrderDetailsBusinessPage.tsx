@@ -52,6 +52,13 @@ function OrderDetailsBusinessPage() {
     }
   }
 
+  const handleStartDelivery = () => {
+    window.open(
+      `https://www.google.com/maps/dir/?api=1&destination=${Number(orderDetails?.consumerProfile?.location?.coordinates[1])},${Number(orderDetails?.consumerProfile?.location?.coordinates[0])}`, 
+      "_blank"
+    )
+  }
+
   useEffect(() => {
     fetch()
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -183,6 +190,10 @@ function OrderDetailsBusinessPage() {
             lng={Number(orderDetails?.consumerProfile?.location?.coordinates[0])}
           />
         </Box>
+
+        <button className="w-10/12 h-8 rounded-2xl bg-golden text-2sm font-semibold" onClick={handleStartDelivery}>
+          Start delivery
+        </button>
 
         <Box className={styles.container2}>
           <Box className="w-10/12 flex justify-start items-center mt-3">

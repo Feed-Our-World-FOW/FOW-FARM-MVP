@@ -1,4 +1,4 @@
-import { Alert, AlertColor, Avatar, Box, Container, IconButton, Link, Paper, Snackbar, TextField } from '@mui/material'
+import { Alert, AlertColor, Avatar, Box, Container, IconButton, Paper, Snackbar, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import { fetchToken } from '../../components/marketplace/token';
@@ -21,6 +21,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import "@rainbow-me/rainbowkit/styles.css";
 import { useAccount } from 'wagmi'
+import Link from 'next/link';
 
 
 interface User {
@@ -338,7 +339,13 @@ function ProducerProfile() {
                 <span className='text-2sm'>{myProfile?.ratingsAverage}</span>
                 <StarBorderIcon fontSize='small' className='ml-2' />
               </Box>
-              <ArrowForwardIosIcon />
+              <Link href={{
+                pathname: `/producer/comment/AllMyComments`,
+                query: { id: myProfile._id, ratingsAverage: myProfile?.ratingsAverage, ratingsQuantity: myProfile?.ratingsQuantity }
+              }}
+              >
+                <ArrowForwardIosIcon className="text-black" />
+              </Link>
             </Box>
           </Box>
         </Box>
