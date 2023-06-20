@@ -22,7 +22,6 @@ function OrderDetailsPage() {
       const res = await getSingleBuy(token, data.id as string)
       const details = res.data.data.data
       setOrderDetails(details)
-      // console.log(details)
     } catch (error) {
       console.log(error)
     }
@@ -61,7 +60,6 @@ function OrderDetailsPage() {
             noCart={true}
           />
         </Box>
-
         <Box className={styles.headerBox}>
           <span className='text-2sm'>Ordered by</span>
           <Box className={styles.headerBar}>
@@ -82,17 +80,14 @@ function OrderDetailsPage() {
             <span className='text-2sm ml-3'>{orderDetails?.consumerProfile?.user?.name}</span>
           </Box>
         </Box>
-
         <Box className="w-full flex justify-center items-center mt-5">
           <span className='text-2sm font-bold'>Status</span>
         </Box>
-
         <Box className={styles.darkBarBox}>
           <Box className={styles.darkBar}>
             <span className='text-3sm text-white'>{orderDetails?.delivered ? "2. Delivered" : "1. New"}</span>
           </Box>
         </Box>
-
         <Box className={styles.detailsContainer}>
           <Box className="w-10/12 mt-2">
             <span className='text-2sm font-bold'>{orderDetails?.cart?.items.length} Products</span>
@@ -112,40 +107,31 @@ function OrderDetailsPage() {
               })
             }
           </Box>
-
           <Box className="w-11/12 border-1 mt-5 mb-5 border-light-gray"></Box>
-    
           <Box className="w-10/12 flex justify-between items-center">
             <span className={styles.smallTxt}>Subtotal</span>
             <span className={styles.smallTxt}>$ {Number(orderDetails?.cart?.subTotal).toFixed(3)}</span>
           </Box>
-  
           <Box className="w-10/12 flex justify-between items-center">
             <span className={styles.smallTxt}>Shipping</span>
             <span className={styles.smallTxt}>$ {Number(Number(orderDetails?.totalAmount) - Number(orderDetails?.cart?.subTotal)).toFixed(3)}</span>
           </Box>
-  
           <Box className="w-11/12 border-1 mt-5 mb-5 border-light-gray"></Box>
-  
           <Box className="w-10/12 flex justify-between items-center mb-5">
             <span className={styles.smallTxt}>Total</span>
             <span className='text-2sm font-bold'>$ {Number(orderDetails?.totalAmount).toFixed(3)}</span>
           </Box>
-
         </Box>
-
         <Box className={styles.container1}>
           <LocationCard 
             lat={Number(orderDetails?.consumerProfile?.location?.coordinates[1])}
             lng={Number(orderDetails?.consumerProfile?.location?.coordinates[0])}
           />
         </Box>
-
         <Box className={styles.container2}>
           <Box className="w-10/12 flex justify-start items-center mt-3">
             <span className='text-2sm font-bold'>Payment</span>
           </Box>
-
           <Box className="w-10/12 flex flex-col justify-center items-start mt-3 mb-3">
             <span className='text-2sm font-semibold'>{orderDetails?.consumerProfile?.user?.name}</span>
             <span className='text-2sm mt-1'>
@@ -155,12 +141,9 @@ function OrderDetailsPage() {
                   {`Go to explorer>>`}
                 </a>
               </button>
-              {/* {orderDetails?.receipt} */}
             </span>
           </Box>
-          
         </Box>
-
       </Box>
     </Box>
   )

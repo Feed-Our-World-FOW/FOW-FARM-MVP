@@ -231,8 +231,6 @@ function DonationCard(props: any) {
           </Box>
 
           <Box className={styles.btnBox}>
-            {/* <button className={styles.btn2} onClick={handleCancell}>{`No, thanks`}</button>
-            <button className={styles.btn} onClick={handleContinue}>{`Yes, please`}</button> */}
             <Box className={styles.btn2} onClick={handleDonate}>
               {donateLoading ? <CircularProgress color="inherit" size={20} /> : `Donate`}
             </Box>

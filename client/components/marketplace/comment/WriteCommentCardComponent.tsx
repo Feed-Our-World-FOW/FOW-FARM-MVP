@@ -38,10 +38,6 @@ function WriteCommentCardComponent(props: any) {
       const token = fetchToken()
       const farmId = data.data as string
       const res = await createReviewForFarm(token, farmId, reviewDetails)
-      // console.log(reviewDetails)
-      // console.log(res)
-
-      // console.log(farmId)
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt(`Your review got added successfully!!!`)
@@ -52,7 +48,6 @@ function WriteCommentCardComponent(props: any) {
       console.log(error)
       setOpen(true)
       setAlertStatus("error")
-      // setAlertTxt(`${error.response.data.message}`)
       setAlertTxt(`You have already give review to this farm`)
     }
   }
@@ -90,7 +85,6 @@ function WriteCommentCardComponent(props: any) {
           name="simple-controlled"
           value={reviewDetails.rating}
           onChange={(event, newValue) => {
-            // setValue(newValue);
             setReviewDetails({...reviewDetails, rating: newValue})
           }}
           size="small"
@@ -109,7 +103,6 @@ function WriteCommentCardComponent(props: any) {
             <Avatar
               sx={{ bgcolor: deepOrange[500] }}
               alt={props?.userName}
-              // onClick={() => console.log(props.userName)}
               src="/broken-image.jpg"
             />
 

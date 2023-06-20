@@ -38,55 +38,34 @@ function FarmPage() {
   const [cartItems, setCartItems] = useState([])
   const [reloadComponent, setReloadComponent] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
-  const [open, setOpen] = useState<boolean>(false)
-  const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
   const [favourite, setFavourite] = useState<boolean>(false)
   const [farmDistance, setFarmDistance] = useState(0)
 
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-  const handleReload = () => {
-    setReloadComponent(prevState => !prevState);
-  }
-
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  }
-
   const fetch = async () => {
     try {
       const token = fetchToken()
       setToken(token)
-      const x = await getSingleBusiness(id.data, token)
-      const y = await getMyFavouriteFarms(token)
-
-      const data = x?.data?.data?.data
-      const favouriteFarmData = y?.data?.data?.data
-      // console.log(data)
-
+      const singleBusiness = await getSingleBusiness(id.data, token)
+      const favFarm = await getMyFavouriteFarms(token)
+      const data = singleBusiness?.data?.data?.data
+      const favouriteFarmData = favFarm?.data?.data?.data
       const dis = await distance(token, data.id, "mi")
       if(dis) {
         setFarmDistance(dis.data.data.data)
       }
-
       favouriteFarmData?.farms.map((i: any) => {
         if(i.businessAccount._id === id.data) {
           setFavourite(true)
         }
       })
-
       const response = await getMyCart(token)
       if(response.data.data.data.length > 0) {
         const cartData = response.data.data.data[0].items
         setCartItems(cartData)
       }
-      
       setShowStockProduct(true)
-
       setFarmDetails(data)
       setLoading(false)
     } catch (error) {
@@ -103,12 +82,10 @@ function FarmPage() {
       }else {
         res = await addFavourite(Token, id.data as string)
       }
-      // console.log(res)
     } catch (error) {
       console.log(error)
     }
   }
-
 
   useEffect(() => {
     fetch()
@@ -143,7 +120,6 @@ function FarmPage() {
             load={reloadComponent} 
           />
         </Box>
-
         <Box className={styles.top_container}>
           <Box className={styles.top_sub_container}>
             <Box className={styles.top_sub_box}>
@@ -153,7 +129,6 @@ function FarmPage() {
                 checked={favourite}
                 onClick={handleFavourite}
               />
-
               <MonetizationOnOutlinedIcon />
             </Box>
             <Box className={styles.img_box}>
@@ -195,13 +170,11 @@ function FarmPage() {
             </Box>
           </Box>
         </Box>
-
         <Box className="w-full mt-2">
           <ProductFilterNav 
             setShowStockProduct={setShowStockProduct}
           />
         </Box>
-
         <Box className="w-10/12 mt-3 justify-start items-center">
           <span className='font-semibold text-3sm textdark-gray'>
             {farmDetails.allProduct && farmDetails.allProduct.length} products
@@ -238,7 +211,6 @@ function FarmPage() {
             })
             :
             showStockProduct ?
-
             farmDetails.stockProducts.map((product: any, index: any) => {
               const sendData = {
                 data: product._id,
@@ -252,7 +224,6 @@ function FarmPage() {
                       query: sendData
                     }} 
                   >
-                    
                     <ProductCardComponent
                       key={product._id} 
                       type={"stock"}
@@ -266,7 +237,6 @@ function FarmPage() {
                 </Box>
               )
             }) :
-
             farmDetails.ondemandProducts.map((product: any, index: any) => {
               const sendData = {
                 data: product._id,
@@ -280,7 +250,6 @@ function FarmPage() {
                       query: sendData
                     }} 
                   >
-                    
                     <ProductCardComponent
                       key={product._id} 
                       type={"ondemand"}
@@ -295,7 +264,6 @@ function FarmPage() {
               )
             })
           }
-
         </Box>
       </Box>
       <Box className={styles.bottomBox}>

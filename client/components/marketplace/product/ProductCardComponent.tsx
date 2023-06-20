@@ -36,7 +36,6 @@ function ProductCardComponent(props: any) {
         <Box className="w-14 h-14 rounded-full">
           <ImageCard 
             image={props.images}
-            // type='products'
           />
         </Box>
       </Box>
@@ -54,14 +53,12 @@ function ProductCardComponent(props: any) {
           <Box className="w-2/12 h-full flex justify-center items-center">
             {
               props.stockProduct ?
-
               <Link href={{
                 pathname: `/producer/AddStockProduct`,
                 query: { data: "patch", id: props.id, unit: props.unit }
               }}>
                 <ModeEditOutlinedIcon />
               </Link> :
-
               <Link href={{
                 pathname: `/producer/AddOndemandProduct`,
                 query: { data: "patch", id: props.id, unit: props.unit }
@@ -75,7 +72,6 @@ function ProductCardComponent(props: any) {
           </Box>
         }
       </Box>
-      
     </Paper>
   )
 }

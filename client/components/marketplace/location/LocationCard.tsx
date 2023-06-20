@@ -34,25 +34,21 @@ function LocationCard(props: any) {
 
   return (
     <Box className="w-full h-full rounded-2xl">
-       {/* <LoadScript
-          googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`}
-        > */}
-          {isLoaded && <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={myLocation}
-            zoom={10}
-            options={{
-              zoomControl: false,
-              mapTypeControl: false,
-              streetViewControl: false,
-              fullscreenControl: false,
-            }}
-          >
-            <MarkerF
-              position={myLocation}
-            />
-          </GoogleMap>}
-        {/* </LoadScript> */}
+      {isLoaded && <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={myLocation}
+        zoom={10}
+        options={{
+          zoomControl: false,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+        }}
+      >
+        <MarkerF
+          position={myLocation}
+        />
+      </GoogleMap>}
     </Box>
   )
 }

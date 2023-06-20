@@ -53,12 +53,7 @@ function ProductCard(props: any) {
               size='small' 
               value={props.ratingsAverage} 
             />
-            {/* <span>12</span> */}
           </Stack>
-          {/* <div className="flex justify-center items-center w-10">
-            <span className='text-2sm ml-3 mr-2'>({props.ratingsQuantity})</span>
-            <PeopleIcon fontSize='small' />
-          </div> */}
         </span>
         <Box className="flex justify-center items-center w-10">
           <span className='text-2sm ml-3 mr-2'>({props.ratingsQuantity})</span>
@@ -67,7 +62,6 @@ function ProductCard(props: any) {
         <span className='font-bold text-sm'>${props.price}</span>
       </Box>
       <Box className="flex justify-center items-center">
-        {/* <AddShoppingCartIcon fontSize='small' /> */}
       </Box>
     </Box>
   )

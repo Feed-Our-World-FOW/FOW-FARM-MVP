@@ -7,12 +7,10 @@ import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import ImageCard from '../../components/marketplace/Img/ImageCard'
 import { fetchToken } from '../../components/marketplace/token'
 import { Box } from '@mui/material'
-import Alert, { AlertColor } from '@mui/material/Alert'
 import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
 import BottomNav from '../../components/marketplace/navBar/BottomNav'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import Image from 'next/image'
 import AddProductCart from '../../components/marketplace/product/AddProductCart';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -30,10 +28,7 @@ function ProductPage() {
     orderUnit: ''
   })
   const [amount, setAmount] = useState<number>(1)
-  const [alertData, setAlertData] = useState<string>('')
-  const [alertType, setalertType] = useState<AlertColor>("success" || "warning" || "info" || "error")
   const [openBackdrop, setOpenBackdrop] = useState(false)
-  const [index, setIndex] = useState(0)
   const [reloadComponent, setReloadComponent] = useState(false)
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false)
@@ -42,11 +37,6 @@ function ProductPage() {
   const handleReload = () => {
     setReloadComponent(prevState => !prevState);
   }
-
-  const handleSelect = (selectedIndex: any, e: any) => {
-    setIndex(selectedIndex);
-  };
-
 
   const fetchStock = async () => {
     setOpenBackdrop(true)
@@ -57,14 +47,12 @@ function ProductPage() {
       const  productData = product.data.data.data
       setStock(true)
       setProductDetails(productData)
-      // console.log(productData)
       setOrderDetails({...orderDetails, orderUnit: productData.unit})
       setLoading(false)
       setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
       setOpenBackdrop(false)
-      // setAllert("warning", )
     }
   }
 
@@ -78,8 +66,6 @@ function ProductPage() {
       setStock(false)
       setProductDetails(productData)
       setOrderDetails({...orderDetails, orderUnit: productData.unit})
-      // console.log(productData)
-      
       setLoading(false)
       setOpenBackdrop(false)
     } catch (error) {
@@ -95,12 +81,12 @@ function ProductPage() {
     } else if(id.type === "ondemand") {
       fetchOndemand()
     }
-    // handleReload()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id.data])
 
   const styles = {
-    page: `w-screen flex flex-col justify-around items-center max-w-md`,
+    page: `w-full flex flex-col justify-between items-center`,
+    container: `w-screen flex flex-col justify-around items-center max-w-md`,
     navBox: `w-full px-4 z-50`,
     blur_navBox: `w-full px-4 z-50 blur-sm`,
     bottomBox: `w-full flex justify-center items-center mt-10`,
@@ -117,9 +103,8 @@ function ProductPage() {
   }
 
   return (
-    <div className="w-full flex flex-col justify-between items-center">
-
-      <Box className={styles.page}>
+    <Box className={styles.page}>
+      <Box className={styles.container}>
         <Box className={!open ? styles.navBox : styles.blur_navBox}>
           <Navbar
             arrow={true}
@@ -127,7 +112,6 @@ function ProductPage() {
             load={handleReload}
           />
         </Box>
-
         <Box className={!open ? styles.smNavBox : styles.blur_smNavBox}>
           <span className='text-2sm font-semibold'>Produced by</span>
           <Box className={styles.rightSmNavBox}>
@@ -141,20 +125,17 @@ function ProductPage() {
                   /> :
                   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Skeleton variant="circular" width={30} height={30} />
-                    {/* <CircularProgress size={25} /> */}
                   </Box>
                 }
               </Box>
               <span className='text-sm font-semibold ml-2'>{productDetails?.businessProfile?.user?.name}</span>
             </Box>
-
             <Box className={styles.smRatingBox}>
               <span className='text-2sm font-semibold'>{productDetails.ratingsAverage}</span>
               <StarOutlineOutlinedIcon fontSize='small' />
             </Box>
           </Box>
         </Box>
-
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={openBackdrop}
@@ -162,7 +143,6 @@ function ProductPage() {
         >
           <CircularProgress color="inherit" />
         </Backdrop>
-
         <Box className={!open ? styles.bigImgBox : styles.blur_bigImgBox}>
           <Box className="h-8 w-11/12 flex justify-center items-center">
             <span className='text-2sm font-bold'>{productDetails.name}</span>
@@ -175,7 +155,6 @@ function ProductPage() {
                   image={productDetails.image} 
                 /> :
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {/* <CircularProgress size={25} /> */}
                   <Skeleton variant="circular" width={150} height={150} />
                 </Box>
               }
@@ -196,7 +175,6 @@ function ProductPage() {
             </Box>
           </Box>
         </Box>
-
         <Box className="w-full flex justify-center items-center">
           <AddProductCart 
             productPrice={productDetails.price}
@@ -212,14 +190,11 @@ function ProductPage() {
             setOpen={setOpen}
           />
         </Box>
-
-        
-
       </Box>
       <Box className={!open ? styles.bottomBox : styles.blur_bottomBox}>
         <BottomNav />
       </Box>
-    </div>
+    </Box>
   )
 }
 

@@ -30,7 +30,6 @@ function BottomNav(props: any) {
       if(token) {
         setLoggedIn(true)
       }
-      // console.log(window.location)
       setUrl(window.location.pathname)
     } catch (error) {
       console.log(error)

@@ -34,7 +34,6 @@ function FarmCardComponent(props: any) {
           <ImageCard 
             image={props?.images}
             rounded={true}
-            // type='farms'
           />
         </Box>
       </Box>

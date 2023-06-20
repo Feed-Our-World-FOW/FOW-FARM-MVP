@@ -50,15 +50,11 @@ function ConfirmAddressCard(props: any) {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   }
 
   const handleContinue = () => {
-    console.log("map: ", data.location === undefined)
-
     if(data.location === undefined) {
-      // console.log("error")
       setOpen(true)
       setAlertStatus("warning")
       setAlertTxt("Please update your delivery location!!!")
@@ -71,7 +67,6 @@ function ConfirmAddressCard(props: any) {
         value: 1
       })
     }
-    
   }
 
 

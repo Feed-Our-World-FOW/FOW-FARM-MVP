@@ -23,29 +23,20 @@ function CartPage() {
     setReloadComponent(prevState => !prevState);
   }
 
-
   const fetch = async () => {
     setOpenBackdrop(true)
     try {
       const Token = fetchToken()
       const response = await getMyCart(Token)
       const data = response.data.data.data[0]
-      // console.log(response)
       setSubTotal(data.subTotal)
       setTotalItems(data.items.length)
-
       setCartItems(data.items)
-      // console.log(data.items)
-
       if(data.items[0].ondemandProduct) {
-        
         setSendData({ondemand: data.items[0].ondemandProduct.id})
-        
       } else if(data.items[0].stockProduct) {
         setSendData({stock: data.items[0].stockProduct.id})
-        
       }
-
       if(data.items.length > 0) {
         setEmpty(false)
       }else {
@@ -58,30 +49,13 @@ function CartPage() {
     }
   }
 
-  const handleGoToMetamask = async () => {
-    try {
-      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-
-    // open the deeplink page 
-    window.open(`https://metamask.app.link/dapp/fow-farm.vercel.app/consumer/CartPage`)
-    
-    } else {
-    
-    // install metamask message
-    console.log("install Metamask")
-    
-    }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
     fetch()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadComponent])
 
   const styles = {
+    main: `w-screen min-h-screen flex flex-col justify-between items-center`,
     page: `w-screen flex flex-col justify-center items-center max-w-md`,
     navBox: `w-full px-4 z-50`,
     totalBox: `mt-36 flex pt-5 pb-5 pl-3 w-11/12`,
@@ -93,8 +67,7 @@ function CartPage() {
   }
 
   return (
-    <Box className="w-screen min-h-screen flex flex-col justify-between items-center">
-
+    <Box className={styles.main}>
       <Box className={styles.page}>
         <Box className={styles.navBox}>
           <Navbar 
@@ -155,39 +128,22 @@ function CartPage() {
           </>
         }
       </Box>
-      
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-
       <Box className={styles.bottomBox}>
         <button className={styles.btn}>
           <Link href={'/'}>Add Product</Link>
         </button>
-
         <button className={styles.btn2}>
           <Link href={{
             pathname: '/consumer/DeliverySteps',
             query: sendData
           }}>Checkout</Link>
         </button>
-
-        {/*
-          typeof window !== "undefined" && typeof window?.ethereum === "undefined" ?
-          <button className={styles.btn2} onClick={handleGoToMetamask}>
-            Checkout
-          </button> :
-          <button className={styles.btn2}>
-            <Link href={{
-              pathname: '/consumer/DeliverySteps',
-              query: sendData
-            }}>Checkout</Link>
-          </button>
-          */}
-
       </Box>
     </Box>
   )

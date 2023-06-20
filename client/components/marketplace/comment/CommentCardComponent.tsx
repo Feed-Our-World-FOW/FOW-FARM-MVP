@@ -22,7 +22,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 
 function CommentCardComponent(props: any) {
-  // const [value, setValue] = useState<number | null>(2);
 
   const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {

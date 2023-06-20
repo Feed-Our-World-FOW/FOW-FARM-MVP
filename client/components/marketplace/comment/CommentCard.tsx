@@ -47,7 +47,6 @@ function CommentCard(props:any) {
         <p className='font-semibold text-2sm'>{`Reviewed on ${props?.createdAt}`}</p>
         <p className='text-sm'>{props?.review}</p>
       </div>
-      {/* <div className="border-b-2 w-10/12"></div> */}
     </Box>
   )
 }

@@ -46,9 +46,7 @@ function ProducerProfile() {
   const [openModal, setOpen] = useState(false)
   const [walletEdit, setWalletEdit] = useState(false)
   const [walletAddress, setWalletAddress] = useState<any>('0x00000000000000000000000000000000000000000')
-  const [connect, setConnect] = useState(false)
   const [openBackdrop, setOpenBackdrop] = useState(false)
-  // const { open, close } = useWeb3Modal()
   const { address, isConnecting, isDisconnected, isConnected } = useAccount()
 
 
@@ -64,14 +62,6 @@ function ProducerProfile() {
         email: data.user.email,
         photo: data.user.photo
       })
-      // if(typeof window !== 'undefined' && window.ethereum) {
-      //   const provider = new ethers.providers.Web3Provider(window.ethereum)
-      //   const signer = provider.getSigner()
-      //   const address = await signer?.getAddress()
-      //   setWalletAddress(address)
-      // }
-
-      // console.log("data: ", data)
       setOpenBackdrop(false)
     } catch (error) {
       console.log(error)
@@ -82,7 +72,6 @@ function ProducerProfile() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   }
 
@@ -90,7 +79,6 @@ function ProducerProfile() {
     try {
       setImg(true)
       const selectedFile = e.target.files?.[0]
-
       if(selectedFile) {
         setUserDetails({...userDetails, photo: selectedFile})
         const reader: any = new FileReader()
@@ -99,13 +87,10 @@ function ProducerProfile() {
           setPreviewUrl(reader.result)
         }
       }
-
-
     } catch (error) {
       console.log(error)
     }
   }
-
 
   const handleConnect = async () => {
     try {
@@ -119,7 +104,6 @@ function ProducerProfile() {
     try {
       setWalletAddress(address)
       const token = fetchToken()
-      // const res = await updateMyWalletAddress(token, {walletAddress})
       const res = await updateMyWalletAddress(token, {walletAddress: address as string})
       setWalletEdit(false)
       fetch()
@@ -148,12 +132,11 @@ function ProducerProfile() {
       formData.append('name', userDetails.name)
       formData.append('email', userDetails.email)
       const res = await updateMe(token, formData)
-
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt('Successfully updated your profile!!!')
-      
       window.location.reload()
+
     } catch (error: any) {
       console.log(error)
       setOpen(true)
@@ -168,33 +151,40 @@ function ProducerProfile() {
   }, [])
 
   const styles = {
+    main: `w-screen flex flex-col justify-center items-center`,
     page: `flex flex-col justify-between items-center mb-10`,
     navBox: `w-screen h-20 flex justify-between items-center bg-white`,
     profileText: `font-bold text-3sm`,
     signOut: `w-20 h-8 rounded-xl bg-dark-blue text-2sm font-semibold mr-3 text-white`,
     bottomBox: `w-full flex justify-center items-center mt-10`,
     profileContainer: `border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center`,
+    subProfileContainer: `w-3/12 h-full flex justify-center items-center`,
     infoContainer: `border-1 border-light-gray w-full rounded-2xl flex justify-around items-center mt-5 flex flex-col justify-around items-center`,
     mapContainer: `border-1 border-light-gray w-full h-52 rounded-2xl flex justify-center items-center mt-5`,
     recordContainer: `border-1 border-light-gray w-full h-48 rounded-2xl flex flex-col justify-center items-center mt-5`,
     infoBox: `border-1 border-light-gray h-14 rounded-2xl w-11/12 flex justify-center items-center mt-2 mb-2`,
     subInfoBox: `w-11/12 flex justify-between items-center`,
     walletBtn: `border-1 w-full rounded-2xl border-light-gray mt-5 flex flex-col justify-around items-center mb-5`,
+    accountBox: `w-8/12 h-full flex flex-col justify-center items-center`,
+    producerTxt: `text-sm text-light-gray mb-auto mt-3`,
   }
 
   return (
-    <Box className='w-screen flex flex-col justify-center items-center'>
+    <Box className={styles.main}>
       <Container className={styles.page} maxWidth="sm">
         <Paper className={styles.navBox} elevation={0}>
           <Box className="ml-3" >
             <MenuIcon />
           </Box>
           <span className={styles.profileText}>Profile</span>
-          <button className={styles.signOut} onClick={handleSignOut}>Sign out</button>
+          <button 
+            className={styles.signOut} 
+            onClick={handleSignOut}
+          >Sign out</button>
         </Paper>
 
         <Box className={styles.profileContainer}>
-          <Box className="w-3/12 h-full flex justify-center items-center">
+          <Box className={styles.subProfileContainer}>
             <Avatar 
               alt={myProfile?.user?.name} 
               src={img ? previewUrl : myProfile?.user?.photo} 
@@ -203,7 +193,12 @@ function ProducerProfile() {
             />
             {
               userEdit ?
-              <IconButton color="primary" aria-label="upload picture" component="label" className='absolute mt-9 ml-12'>
+              <IconButton 
+                color="primary" 
+                aria-label="upload picture" 
+                component="label" 
+                className='absolute mt-9 ml-12'
+              >
                 <input 
                   hidden accept="image/*" 
                   type="file" 
@@ -223,10 +218,10 @@ function ProducerProfile() {
             <CircularProgress color="inherit" />
           </Backdrop>
 
-          <Box className="w-8/12 h-full flex flex-col justify-center items-center">
+          <Box className={styles.accountBox}>
             {
               !userEdit ?
-              <span className='text-sm text-light-gray mb-auto mt-3'>Account type: Producer</span>:
+              <span className={styles.producerTxt}>Account type: Producer</span>:
               <span></span>
             }
             <Box className="w-full flex flex-col justify-center items-center mt-4">
@@ -259,15 +254,21 @@ function ProducerProfile() {
             <Box className="w-full flex justify-end">
               {
                 userEdit ?
-                <AddCircleOutlineOutlinedIcon fontSize='small' onClick={handleUpdate} className='mt-3' /> :
-                <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setUserEdit(true)} />
+                <AddCircleOutlineOutlinedIcon 
+                  fontSize='small' 
+                  onClick={handleUpdate} 
+                  className='mt-3' 
+                /> :
+                <ModeEditOutlineOutlinedIcon 
+                  fontSize='small' 
+                  onClick={() => setUserEdit(true)} 
+                />
               }
             </Box>
           </Box>
         </Box>
 
         <Box className={styles.mapContainer}>
-
           {
             locationEdit ?
             <Box className="w-full h-full flex flex-col justify-center items-center">
@@ -299,7 +300,13 @@ function ProducerProfile() {
               <Box className="w-full h-44 flex justify-end items-end">
                 {
                   !myProfile?.location &&
-                  <Chip color="warning" label="Add Location" size="small" className="mr-auto" icon={<WarningAmberOutlinedIcon />} />
+                  <Chip 
+                    color="warning" 
+                    label="Add Location" 
+                    size="small" 
+                    className="mr-auto" 
+                    icon={<WarningAmberOutlinedIcon />} 
+                  />
                 } 
                 <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setLocationEdit(true)} />
               </Box>
@@ -341,7 +348,11 @@ function ProducerProfile() {
               </Box>
               <Link href={{
                 pathname: `/producer/comment/AllMyComments`,
-                query: { id: myProfile._id, ratingsAverage: myProfile?.ratingsAverage, ratingsQuantity: myProfile?.ratingsQuantity }
+                query: { 
+                  id: myProfile._id, 
+                  ratingsAverage: myProfile?.ratingsAverage, 
+                  ratingsQuantity: myProfile?.ratingsQuantity 
+                }
               }}
               >
                 <ArrowForwardIosIcon className="text-black" />
@@ -364,19 +375,7 @@ function ProducerProfile() {
                   </span>
                 </Box>
 
-                {/* <button 
-                  className='w-11/12 bg-green rounded-2xl h-8 text-2sm font-semibold mt-3'
-                  onClick={handleConnect}
-                >
-                  {
-                    connect ?
-                    `Connected` :
-                    `Connect wallet`
-                  }
-                </button> */}
-
                 <Box onClick={handleConnect} className='mt-3'>
-                  {/* <Web3Button /> */}
                   <ConnectButton />
                 </Box>
 
@@ -392,12 +391,24 @@ function ProducerProfile() {
             <Box className="w-full flex justify-end items-end">
               {
                 !myProfile?.walletAddress &&
-                <Chip color="warning" label="Add Wallet Address" size="small" className="mr-auto" icon={<WarningAmberOutlinedIcon />} />
+                <Chip 
+                  color="warning" 
+                  label="Add Wallet Address" 
+                  size="small" 
+                  className="mr-auto" 
+                  icon={<WarningAmberOutlinedIcon />} 
+                />
               } 
               {
                 !walletEdit ?
-                  <ModeEditOutlineOutlinedIcon fontSize='small' onClick={() => setWalletEdit(true)} /> :
-                <AddCircleOutlineOutlinedIcon fontSize='small' onClick={handleUpdateWalletAddress} /> 
+                  <ModeEditOutlineOutlinedIcon 
+                    fontSize='small' 
+                    onClick={() => setWalletEdit(true)} 
+                  /> :
+                <AddCircleOutlineOutlinedIcon 
+                  fontSize='small' 
+                  onClick={handleUpdateWalletAddress} 
+                /> 
               }
             </Box>
           </Box>
@@ -414,7 +425,10 @@ function ProducerProfile() {
       <Box className={styles.bottomBox}>
         <BottomNav 
           produce={true}
-          warning={(typeof myProfile?.location === "undefined") || (typeof myProfile?.walletAddress === "undefined")}
+          warning={
+            (typeof myProfile?.location === "undefined") || 
+            (typeof myProfile?.walletAddress === "undefined")
+          }
         />
       </Box>     
     </Box>

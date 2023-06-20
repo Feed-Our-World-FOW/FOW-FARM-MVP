@@ -29,14 +29,12 @@ function ShowMap() {
   const onMarkerDragEnd = (event: any) => {
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
-
     setCurrentPosition({ lat, lng });
   }
 
   const handleFindMyLocation = () => {
     try {
       setOpen(true)
-      // console.log("start")
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           setCurrentPosition({
@@ -107,10 +105,6 @@ function ShowMap() {
         >
           <CircularProgress color="inherit" />
         </Backdrop>
-
-        {/* <LoadScript
-          googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`}
-        > */}
           {isLoaded && <GoogleMap
             mapContainerStyle={containerStyle}
             center={currentPosition}
@@ -125,8 +119,6 @@ function ShowMap() {
               onDragEnd={onMarkerDragEnd}
             />
           </GoogleMap>}
-        {/* </LoadScript> */}
-
         <Box className="w-full flex justify-center items-center mt-5">
           <TextField 
             id="outlined-basic" 
@@ -142,7 +134,6 @@ function ShowMap() {
           <button className={styles.btn} onClick={handleAddMyLocation}>Add my location</button>
         </Box>
       </Box>
-
       <Snackbar open={openAlert} autoHideDuration={4500} className='w-full'>
         <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
           {alertTxt}

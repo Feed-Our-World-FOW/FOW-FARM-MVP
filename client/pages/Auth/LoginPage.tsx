@@ -26,7 +26,6 @@ function LoginPage() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
     setOpenBackdrop(false);
   };
@@ -39,11 +38,9 @@ function LoginPage() {
         email: signupForm.email,
         password: signupForm.password
       })
-
       const token = login.data.token
       const expire = new Date().getTime() + Number(expireTime)
       localStorage.setItem("Token", JSON.stringify({ value: `${token}`, expires: expire }))
-
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt('Successfully signed in')

@@ -19,7 +19,6 @@ function SignupPage() {
   const [open, setOpen] = useState(false);
   const [openBacldrop, setOpenBackdrop] = useState(false)
 
-
   const handleChange = (event: SelectChangeEvent) => {
     setAccType(event.target.value as string)
     setSignupForm({ ...signupForm, role: event.target.value as string })
@@ -38,7 +37,6 @@ function SignupPage() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
     setOpenBackdrop(false);
   };
@@ -47,7 +45,6 @@ function SignupPage() {
   const handleClick = async () => {
     setDisabled(true)
     setOpenBackdrop(true)
-    
     try {
       const signup = await signupMethod({
         role: signupForm.role,
@@ -60,24 +57,20 @@ function SignupPage() {
       const token = signup.data.token
       const expire = new Date().getTime() + Number(expireTime)
       localStorage.setItem("Token", JSON.stringify({ value: `${token}`, expires: expire }))
-
       if(signupForm.role === "user") {
         await createMyConsumerProfile(token)
       } else if(signupForm.role === "business") {
         await createMyBusinessProfile(token)
       }
-
       signupForm.name = ''
       signupForm.email = ''
       signupForm.password = ''
       signupForm.passwordConfirm = ''
-
-      
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt('Successfully signed in')
       window.location.replace('/')
-
+      
     } catch (error: any) {
       console.log(error)
       setOpen(true)
@@ -217,12 +210,14 @@ function SignupPage() {
             </Link>
           </Box> 
         </Box>
+
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={openBacldrop}
         >
           <CircularProgress color="inherit" />
         </Backdrop>
+
         <Snackbar open={open} autoHideDuration={4500} className='w-full'>
           <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
             {alertTxt}

@@ -50,7 +50,6 @@ function UserProfile() {
       const myProfile = await getMyConsumerProfile(token)
       const fav = await getMyFavouriteFarms(token)
       setFavourite(fav.data.data.data?.farms.length)
-      
       const data = myProfile.data.data.data[0]
       setMyProfile(data)
       setUserDetails({
@@ -77,7 +76,6 @@ function UserProfile() {
     try {
       setImg(true)
       const selectedFile = e.target.files?.[0]
-
       if(selectedFile) {
         setUserDetails({...userDetails, photo: selectedFile})
         const reader: any = new FileReader()
@@ -86,8 +84,6 @@ function UserProfile() {
           setPreviewUrl(reader.result)
         }
       }
-
-
     } catch (error) {
       console.log(error)
     }
@@ -112,13 +108,10 @@ function UserProfile() {
       }
       formdata.append('name', userDetails.name)
       formdata.append('email', userDetails.email)
-
       await updateMe(token, formdata)
-
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt('Successfully updated your profile!!!')
-      
       window.location.reload()
     } catch (error: any) {
       console.log(error)
@@ -135,17 +128,36 @@ function UserProfile() {
 
 
   const styles = {
+    main: `w-screen flex flex-col justify-center items-center`,
     page: `flex flex-col justify-between items-center mb-10`,
     navBox: `w-screen h-20 flex justify-between items-center bg-white`,
+    topBox: `border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center`,
+    topSubBox: `w-3/12 h-full flex justify-center items-center`,
+    accountBox: `w-8/12 h-full flex flex-col justify-center items-center`,
+    accountSubBox: `w-full flex flex-col justify-center items-center`,
     profileText: `font-bold text-3sm`,
     signOut: `w-20 h-8 rounded-xl bg-dark-blue text-2sm font-semibold mr-3 text-white`,
-    bottomBox: `w-full flex justify-center items-center mt-10`
+    bottomBox: `w-full flex justify-center items-center mt-10`,
+    recordBox: `border-1 border-light-gray w-full h-48 rounded-2xl mt-5 flex flex-col justify-around items-center`,
+    subRecord: `w-10/12 rounded-2xl h-12 flex justify-around items-center`,
+    topSubRecordBox: `border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center`,
+    bottomSubRecordBox: `border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center mb-5`,
+    accountTypeTxt: `text-sm text-light-gray mb-auto mt-3`,
+    clearBox: `w-full flex justify-end items-end mt-1 mr-1`,
+    emailTxt: `text-2sm font-semibold overflow-hidden ml-2`,
+    emailTxtEdit: `text-sm font-semibold overflow-hidden`,
+    addressBox: `border-1 border-light-gray w-full h-52 rounded-2xl mt-5 flex flex-col justify-center items-center`,
+    locationEditBox: `w-full h-full flex flex-col justify-center items-center`,
+    locationClear: `w-full flex justify-end items-start mb-auto mt-2 mr-4`,
+    addLocationLink: `w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10`,
+    addLocationTxt: `text-3sm text-white font-semibold`,
+    
+
   }
 
   return (
-    <Box className='w-screen flex flex-col justify-center items-center'>
+    <Box className={styles.main}>
       <Container className={styles.page} maxWidth="sm">
-
         <Paper className={styles.navBox} elevation={0}>
           <Box className="ml-3" >
             <MenuIcon />
@@ -154,8 +166,8 @@ function UserProfile() {
           <button className={styles.signOut} onClick={handleSignOut}>Sign out</button>
         </Paper>
 
-        <Box className="border-1 border-light-gray w-full min-h-24 rounded-2xl flex justify-around items-center">
-          <Box className="w-3/12 h-full flex justify-center items-center">
+        <Box className={styles.topBox}>
+          <Box className={styles.topSubBox}>
             <Avatar 
               alt={myProfile?.user?.name} 
               src={img ? previewUrl : myProfile?.user?.photo} 
@@ -164,7 +176,12 @@ function UserProfile() {
             />
             {
               userEdit ?
-              <IconButton color="primary" aria-label="upload picture" component="label" className='absolute mt-9 ml-12'>
+              <IconButton 
+                color="primary" 
+                aria-label="upload picture" 
+                component="label" 
+                className='absolute mt-9 ml-12'
+              >
                 <input 
                   hidden accept="image/*" 
                   type="file" 
@@ -183,16 +200,16 @@ function UserProfile() {
             <CircularProgress color="inherit" />
           </Backdrop>
 
-          <Box className="w-8/12 h-full flex flex-col justify-center items-center">
+          <Box className={styles.accountBox}>
             {
               !userEdit ?
-              <span className='text-sm text-light-gray mb-auto mt-3'>Account type: Consumer</span>:
+              <span className={styles.accountTypeTxt}>Account type: Consumer</span>:
               <span></span>
             }
-            <Box className="w-full flex flex-col justify-center items-center">
+            <Box className={styles.accountSubBox}>
               {
                 userEdit ?
-                <Box className="w-full flex justify-end items-end mt-1 mr-1" onClick={() => setUserEdit(false)}>
+                <Box className={styles.clearBox} onClick={() => setUserEdit(false)}>
                   <ClearIcon fontSize='small' />
                 </Box> :
                 <Box></Box>
@@ -207,14 +224,13 @@ function UserProfile() {
                 /> :
                 <span className='text-sm font-bold'>{myProfile?.user?.name}</span>
               }
-
               {
                 userEdit ?
                 <Box className="w-full">
                   <span className='text-2sm font-semibold'>Email:</span>
-                  <span className='text-2sm font-semibold overflow-hidden ml-2'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
+                  <span className={styles.emailTxt}>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
                 </Box> :
-                <span className='text-sm font-semibold overflow-hidden'>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
+                <span className={styles.emailTxtEdit}>{(`${myProfile?.user?.email}`).slice(0,35)}</span>
               }
             </Box>
             <Box className="w-full flex justify-end">
@@ -227,18 +243,19 @@ function UserProfile() {
           </Box>
         </Box>
 
-
-        <Box className='border-1 border-light-gray w-full h-52 rounded-2xl mt-5 flex flex-col justify-center items-center'>
-
+        <Box className={styles.addressBox}>
           {
             locationEdit ?
-            <Box className="w-full h-full flex flex-col justify-center items-center">
-              <Box className="w-full flex justify-end items-start mb-auto mt-2 mr-4">
+            <Box className={styles.locationEditBox}>
+              <Box className={styles.locationClear}>
                 <ClearIcon fontSize='small' onClick={() => {setLocationEdit(false)}} />
               </Box>
               <span></span>
-              <Link href={'/consumer/location/ShowMap'} className='w-52 h-9 flex justify-center items-center bg-green rounded-2xl mb-10'>
-                <span className='text-3sm text-white font-semibold'>Add location</span>
+              <Link 
+                href={'/consumer/location/ShowMap'} 
+                className={styles.addLocationLink}
+              >
+                <span className={styles.addLocationTxt}>Add location</span>
               </Link>
             </Box> 
             :
@@ -262,26 +279,24 @@ function UserProfile() {
           }
         </Box>
 
-        <Box className='border-1 border-light-gray w-full h-48 rounded-2xl mt-5 flex flex-col justify-around items-center'>
-          
-          <Box className="w-10/12 rounded-2xl h-12 flex justify-around items-center">
+        <Box className={styles.recordBox}>
+          <Box className={styles.subRecord}>
             <span className='text-sm font-semibold mr-auto'>Record</span>
           </Box>
-          <Box className="border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center">
+          <Box className={styles.topSubRecordBox}>
             <span className='text-sm'>My Orders</span>
             <span className='text-sm'>{myProfile?.orders}</span>
             <Link href={`/consumer/orders/MyOrdersPage`} className="ml-7">
               <ArrowForwardIosIcon fontSize='small' />
             </Link>
           </Box>
-          <Box className="border-1 border-light-gray w-11/12 rounded-2xl h-12 flex justify-around items-center mb-5">
+          <Box className={styles.bottomSubRecordBox}>
             <span className='text-sm'>My favourite</span>
             <span className='text-sm'>{favourite}</span>
             <Link href={`/consumer/FavouriteFarmsPage`} className="ml-7">
               <ArrowForwardIosIcon fontSize='small' />
             </Link>
           </Box>
-          
         </Box>
 
         <Snackbar open={open} autoHideDuration={4500} className='w-full'>

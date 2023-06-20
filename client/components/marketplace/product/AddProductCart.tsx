@@ -39,7 +39,6 @@ function AddProductCart(props: any) {
   const [openBackdrop, setOpenBackdrop] = useState(false)
   const [unit, setUnit] = useState("")
   const [price, setPrice] = useState(0)
-
   const [openLoading, setOpenLoading] = useState(false)
 
   const handleIncrease = (e: any) => {
@@ -68,9 +67,9 @@ function AddProductCart(props: any) {
       } else {
         res = await getSingleOndemandProduct(props.id, token, unit)
       }
-
       props.setOpen(true)
       setOpenBackdrop(false)
+
     } catch (error: any) {
       setOpenBackdrop(false)
       setOpen(true)
@@ -161,7 +160,6 @@ function AddProductCart(props: any) {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-
       <Box className={!props.open ? styles.cartBtn : styles.blur_cartBtn}>
         <span className={styles.amount}>
           $ {
@@ -181,10 +179,7 @@ function AddProductCart(props: any) {
 
       {
         props.open ?
-
-        // <Paper className='box'>
         <Paper className='animate__animated animate__bounceInDown absolute mt-32 w-11/12 border-1 rounded-3xl'>
-          
           <Box className="flex flex-col justify-center items-center rounded-3xl p-5">
             <span className='text-3sm font-bold'>Added To Cart!</span>
             <Box className='mt-5 mb-1'>

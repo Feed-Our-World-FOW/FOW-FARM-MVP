@@ -42,7 +42,6 @@ function PlaceOrderCard(props: any) {
   const [openBackdrop, setOpenBackdrop] = useState(false)
 
 
-
   const handleOrder = async () => {
     try {
       setDonation(true)
@@ -85,7 +84,6 @@ function PlaceOrderCard(props: any) {
         setDeliveryCharge(data?.items[0]?.ondemandProduct?.businessProfile?.shippingOndemandCost)
         setBusinessAddress(data?.items[0]?.ondemandProduct?.businessProfile?.walletAddress)
         res2 = await getAmount(Token, "Crypto", "standard" )
-
       }
 
       const addr1 = props?.walletAddress.slice(0, 14)

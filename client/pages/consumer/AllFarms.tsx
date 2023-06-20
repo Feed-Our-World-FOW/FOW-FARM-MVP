@@ -13,9 +13,9 @@ function AllFarms() {
   const [allFarms, setAllFarms] = useState([{}])
   const [allStockProducts, setAllStockProducts] = useState([{}])
   const [allOndemandProducts, setAllOndemandProducts] = useState([{}])
-
   const [loading, setLoading] = useState(true)
   const [showFarm, setShowFarm] = useState(true)
+  
   let array = [1, 2, 3, 4, 5]
 
   const fetchAllFarms = async () => {
@@ -23,7 +23,6 @@ function AllFarms() {
       const x = await getAllBusiness()
       const res: any = await getAllStockProduct()
       const res2: any = await getAllOndemandProduct()
-
       const data = x.data.data.data
       const stockProductData = res.data.data.data
       const ondemandData = res2.data.data.data
@@ -31,7 +30,6 @@ function AllFarms() {
       setAllStockProducts(stockProductData)
       setAllOndemandProducts(ondemandData)
       setLoading(false)
-      // console.log(data)
     } catch (error) {
       console.log(error)
     }

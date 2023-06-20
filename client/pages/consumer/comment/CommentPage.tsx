@@ -25,7 +25,6 @@ function CommentPage() {
       setReviews(rating)
       setPhoto(mySelf?.photo)
       setName(mySelf?.name)
-      // console.log(mySelf)
     } catch (error) {
       console.log(error)
     }

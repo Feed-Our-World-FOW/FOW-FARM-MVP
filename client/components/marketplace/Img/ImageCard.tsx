@@ -12,11 +12,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 }
 
-
 function ImageCard(props: any) {
 
   const myLoader = () => {
-    // return `http://localhost:5000/public/img/${props.type}/${props.image}`
     return `${props.image}`
   }
 

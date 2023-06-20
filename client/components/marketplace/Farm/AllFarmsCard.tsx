@@ -28,7 +28,6 @@ function AllFarmsCard(props: any) {
       if(token) {
         setTokenExists(true)
       }
-      // console.log("props.allFarms: ", props.allFarms)
     } catch (error) {
       console.log(error)
     }
@@ -38,7 +37,6 @@ function AllFarmsCard(props: any) {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
 
@@ -49,18 +47,17 @@ function AllFarmsCard(props: any) {
   const styles = {
     page: `w-screen flex flex-col justify-around items-center max-w-md`,
     navBox: `w-full px-4 z-50`,
-
     bannerBox: `w-full h-full border-1 w-11/12 h-44 rounded-xl drop-shadow-lg bg-white flex justify-center items-center`,
     catagorieBox: `w-full h-20 flex items-center`,
     top5: `rounded-xl bg-white ml-5 w-full h-70`,
     catagorieSubImg: `w-16 h-16 ml-3 rounded-lg bg-white drop-shadow-lg active:drop-shadow-0.5lg`,
-    // allFarms: `w-full grid grid-cols-2 gap-y-3 gap-x-2 mobile:ml-2 mobileL:ml-4 z-0`,
     filterBox: `border-2 w-full h-20 mb-2 flex justify-start items-center`,
     scrollingBox: `w-full flex flex-col justify-around items-center max-w-md relative z-0 mt-44`,
     allFarms: `w-full flex flex-col justify-center items-center`,
     farmCardBox: `w-full flex justify-center items-center relative z-0 mt-5 mb-10 p-0`,
     filter: `w-20 h-20 rounded-full border-2`
   }
+  
   return (
     <Box className="w-full p-0">
       <Box className={styles.farmCardBox}>

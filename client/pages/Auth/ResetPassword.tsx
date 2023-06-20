@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState, FormEvent } from 'react'
 import Image from 'next/image'
 import TextField from '@mui/material/TextField'
-import Link from 'next/link'
 import Box from '@mui/material/Box'
 import { ResetPasswordInterface } from '../../interface/AllFarmsInterface'
 import { Alert, AlertColor, Snackbar } from '@mui/material'
@@ -29,7 +28,6 @@ function ResetPassword() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
     setOpenBackdrop(false);
   };
@@ -42,12 +40,11 @@ function ResetPassword() {
         password: resetForm.password,
         passwordConfirm: resetForm.passwordConfirm
       })
-
       setOpen(true)
       setAlertStatus("success")
       setAlertTxt('Successfully reset password!!')
       window.location.replace('/Auth/LoginPage')
-      
+
     } catch (error: any) {
       console.log(error)
       setOpen(true)
@@ -149,14 +146,15 @@ function ResetPassword() {
               <span className="text-3sm font-semibold">Reset</span>
             </button>
           </Box>
-          
         </Box>
+
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={openBacldrop}
         >
           <CircularProgress color="inherit" />
         </Backdrop>
+
         <Snackbar open={open} autoHideDuration={4500} className='w-full'>
           <Alert variant="filled" onClose={handleClose} severity={alertStatus} className='w-11/12'>
             {alertTxt}

@@ -23,7 +23,6 @@ function CryptoCard(props: any) {
   const [connect, setConnect] = useState(false)
   const { address } = useAccount()
 
-
   const handleContinue = () => {
     try {
       props.setConfirm({
@@ -64,7 +63,6 @@ function CryptoCard(props: any) {
           <Box className="w-full h-11/12 flex justify-center items-center">
             <ConnectButton />
           </Box>
-
 
         </Box>
         <Box className="w-9/12 mb-5 flex justify-between items-center">
