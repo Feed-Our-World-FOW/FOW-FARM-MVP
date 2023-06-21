@@ -16,18 +16,19 @@ FOW-FARM: Connect producers, consumers, and cut food waste. Our mobile site, pow
 
 # 🥑 UI / UX
 <p style="display: flex; justify-content: space-between;">
- <img src="./img/consumer1.png" width="40%" />
- <img src="./img/consumer2.png" width="40%" />
-</p>
-
-<p style="display: flex; justify-content: space-between;">
- <img src="./img/producer1.png" width="40%" />
- <img src="./img/product1.png" width="40%" />
-</p>
-
-<p align="center">
- <img src="./img/profile1.png" width="40%" />
+ <img src="./img/Frame 1.png" width="100%" />
 </p>
 
 # 🛠️ Local development
+For local development do following...
 
+```sh
+  git clone https://github.com/Ankush263/FOW-FARM.git
+  cd FOW-FARM/client
+  npm install
+```
+then create a `.env` file and paste from `env.txt` file inside `client` folder. Fill all those empty project Id's and API key's and then run,
+
+```sh
+  yarn dev
+```
