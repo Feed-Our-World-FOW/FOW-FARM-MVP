@@ -19,6 +19,14 @@ FOW-FARM: Connect producers, consumers, and cut food waste. Our mobile site, pow
  <img src="./img/Frame 1.png" width="100%" />
 </p>
 
+# 👇 Prerequisites
+
+Before installation, please make sure you have already installed the following tools:
+
+- [Git](https://git-scm.com/downloads)
+- [NodeJs](https://nodejs.org/en/download/)
+
+
 # 🛠️ Local development
 For local development do following...
 
@@ -32,3 +40,12 @@ then create a `.env` file and paste from `env.txt` file inside `client` folder. 
 ```sh
   yarn dev
 ```
+
+# 👨‍💻 Contributing
+
+- Contributions make the open source community such an amazing place to learn, inspire, and create.
+- Any contributions you make are **greatly appreciated**.
+
+
+# ⛑️ Maintainer
+[Ankush Banik](https://github.com/Ankush263)
