@@ -1,9 +1,7 @@
-import { Alert, AlertColor, Box, Snackbar, styled } from '@mui/material'
+import { Alert, AlertColor, Box, Snackbar, styled, Rating, Avatar } from '@mui/material'
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import React, { useState } from 'react'
-import Rating from '@mui/material/Rating';
 import ImageCard from '../Img/ImageCard';
-import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors'
 import { fetchToken } from '../token';
 import { useRouter } from 'next/router';

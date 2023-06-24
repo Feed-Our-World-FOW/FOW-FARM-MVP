@@ -1,14 +1,9 @@
-import { Box } from '@mui/material'
+import { Box, Avatar } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { getSingleBuy } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
-import { 
-  Navbar,
-  ImageCard,
-  LocationCard
-} from '../../../components/marketplace'
-import Avatar from '@mui/material/Avatar'
+import { Navbar, ImageCard, LocationCard } from '../../../components/marketplace'
 import { deepOrange } from '@mui/material/colors'
 import { updateMyOrderPaid } from '../../../components/marketplace/API'
 import { updateMyOrderDelivery } from '../../../components/marketplace/API'

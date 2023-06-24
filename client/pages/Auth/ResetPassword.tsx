@@ -1,11 +1,7 @@
 import React, { ChangeEvent, useState, FormEvent } from 'react'
 import Image from 'next/image'
-import TextField from '@mui/material/TextField'
-import Box from '@mui/material/Box'
 import { ResetPasswordInterface } from '../../interface/AllFarmsInterface'
-import { Alert, AlertColor, Snackbar } from '@mui/material'
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Alert, AlertColor, Snackbar, TextField, Box, Backdrop, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router';
 import axios from "axios"
 

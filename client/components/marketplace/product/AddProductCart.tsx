@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Alert, Box, Paper, Snackbar } from '@mui/material'
+import { Alert, Box, Paper, Snackbar, IconButton, Backdrop, CircularProgress } from '@mui/material'
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import IconButton from '@mui/material/IconButton';
 import { getSingleOndemandProduct, getSingleStockProduct } from '../API';
 import { fetchToken } from '../token';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { addProductToCart } from '../API';
 import 'animate.css'
 import { GetStaticProps } from 'next';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {

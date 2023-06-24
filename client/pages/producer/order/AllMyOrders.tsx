@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { getMyOrdersProducer } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
-import OrderCardComponentBusiness from '../../../components/business/order/OrderCardComponentBusiness'
+import { OrderCardComponentBusiness } from '../../../components/business'
 import { Navbar } from '../../../components/marketplace'
 
 function AllMyOrders() {

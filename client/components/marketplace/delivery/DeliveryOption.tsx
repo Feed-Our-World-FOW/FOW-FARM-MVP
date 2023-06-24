@@ -1,12 +1,10 @@
-import { Box } from '@mui/material'
+import { Box, Backdrop, CircularProgress } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import { getSingleStockProduct, getSingleOndemandProduct } from '../API';
 import { fetchToken } from '../token';
 import router from 'next/router';
 import { GetStaticProps } from 'next';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {

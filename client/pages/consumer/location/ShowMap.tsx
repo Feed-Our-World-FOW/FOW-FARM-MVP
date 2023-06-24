@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, useJsApiLoader } from '@react-google-maps/api';
-import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
+import { Alert, AlertColor, Box, Snackbar, Backdrop, CircularProgress, TextField } from '@mui/material';
 import {MarkerF} from '@react-google-maps/api'
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import TextField from '@mui/material/TextField';
 import { updateMyConsumerProfileLocation } from '../../../components/marketplace/API';
 import { fetchToken } from '../../../components/marketplace/token';
 

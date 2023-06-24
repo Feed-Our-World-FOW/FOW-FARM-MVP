@@ -1,22 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { 
-  Navbar,
-  ImageCard,
-  BottomNav,
-  AddProductCart
-} from '../../components/marketplace'
+import { Navbar, ImageCard, BottomNav, AddProductCart } from '../../components/marketplace'
 import { getSingleStockProduct, getSingleOndemandProduct } from '../../components/marketplace/API'
 import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import { fetchToken } from '../../components/marketplace/token'
-import { Box } from '@mui/material'
+import { Box, Backdrop, CircularProgress, Skeleton } from '@mui/material'
 import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import Backdrop from '@mui/material/Backdrop'
-import CircularProgress from '@mui/material/CircularProgress'
-import Skeleton from '@mui/material/Skeleton'
 
 
 function ProductPage() {

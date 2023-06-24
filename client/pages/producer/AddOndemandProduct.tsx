@@ -1,28 +1,13 @@
-import { Alert, AlertColor, Box, Button, IconButton, Snackbar } from '@mui/material'
+import { Alert, AlertColor, Box, Button, IconButton, Snackbar, Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { 
-  Navbar,
-  BottomNav
-} from '../../components/marketplace';
+import { Navbar, BottomNav } from '../../components/marketplace';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { fetchToken } from '../../components/marketplace/token';
 import { OndemandProduct } from '../../interface/AllFarmsInterface';
-import { 
-  getSingleOndemandProduct, 
-  updateMyOndemandProduct, 
-  createMyOndemandProduct,
-  deleteOndemandProduct
-} from '../../components/marketplace/API';
+import { getSingleOndemandProduct, updateMyOndemandProduct, createMyOndemandProduct, deleteOndemandProduct } from '../../components/marketplace/API';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 
 function AddOndemandProduct() {

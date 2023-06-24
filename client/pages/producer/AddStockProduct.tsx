@@ -1,28 +1,13 @@
-import { Alert, AlertColor, Box, Button, IconButton, Snackbar } from '@mui/material'
+import { Alert, AlertColor, Box, Button, IconButton, Snackbar, Backdrop, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
-import { 
-  Navbar,
-  BottomNav
-} from '../../components/marketplace';
+import { Navbar, BottomNav } from '../../components/marketplace';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import { StockProduct } from '../../interface/AllFarmsInterface';
 import { fetchToken } from '../../components/marketplace/token';
-import{ 
-  getSingleStockProduct, 
-  updateMyStockProduct, 
-  createMyStockProduct, 
-  deleteStockProduct 
-} from '../../components/marketplace/API';
+import{ getSingleStockProduct, updateMyStockProduct, createMyStockProduct, deleteStockProduct } from '../../components/marketplace/API';
 import Image from 'next/image';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 
 function AddStockProduct() {

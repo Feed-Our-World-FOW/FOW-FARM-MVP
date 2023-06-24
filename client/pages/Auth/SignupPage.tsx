@@ -1,14 +1,10 @@
 import React, { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
-import TextField from '@mui/material/TextField'
 import Link from 'next/link'
-import Box from '@mui/material/Box'
 import { SignupFormInterface } from '../../interface/AllFarmsInterface'
 import { signupMethod } from '../../components/marketplace/API'
-import { Alert, AlertColor, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar } from '@mui/material'
+import { Alert, AlertColor, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, Backdrop, CircularProgress, Box, TextField } from '@mui/material'
 import { createMyConsumerProfile, createMyBusinessProfile } from '../../components/marketplace/API'
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 
 
 function SignupPage() {

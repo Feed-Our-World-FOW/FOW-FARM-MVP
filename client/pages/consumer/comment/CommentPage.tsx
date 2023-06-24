@@ -1,10 +1,6 @@
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import { 
-  Navbar, 
-  CommentCardComponent,
-  WriteCommentCardComponent
-} from '../../../components/marketplace';
+import { Navbar, CommentCardComponent, WriteCommentCardComponent } from '../../../components/marketplace';
 import { getReviewForFarm, getMe } from '../../../components/marketplace/API';
 import { useRouter } from 'next/router';
 import { fetchToken } from '../../../components/marketplace/token';

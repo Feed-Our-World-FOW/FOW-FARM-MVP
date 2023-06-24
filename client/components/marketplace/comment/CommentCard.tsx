@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import Rating from '@mui/material/Rating'
-import Stack from '@mui/material/Stack'
-import { Box } from '@mui/material'
+import { Box, Rating, Stack } from '@mui/material'
 import { GetStaticProps } from 'next'
 
 

@@ -1,21 +1,14 @@
-import { Alert, AlertColor, Box, Snackbar } from '@mui/material'
+import { Alert, AlertColor, Box, Snackbar, Radio, TextField, CircularProgress } from '@mui/material'
 import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
-import Radio from '@mui/material/Radio'
-import TextField from '@mui/material/TextField'
 import { createBuy } from '../API'
 import { fetchToken } from '../token'
 import Router from 'next/router'
 import ClearIcon from '@mui/icons-material/Clear';
 import 'animate.css'
 import { GetStaticProps } from 'next'
-import {
-  usePrepareSendTransaction,
-  useSendTransaction,
-  useWaitForTransaction,
-} from 'wagmi'
+import { usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from 'wagmi'
 import { parseEther } from 'viem'
-import CircularProgress from '@mui/material/CircularProgress'
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {

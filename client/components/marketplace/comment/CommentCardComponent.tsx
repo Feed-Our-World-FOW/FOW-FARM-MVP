@@ -1,9 +1,7 @@
-import { Box, Typography, styled } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Typography, styled, Rating, Avatar } from '@mui/material'
+import React from 'react'
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import Rating from '@mui/material/Rating';
 import ImageCard from '../Img/ImageCard';
-import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors'
 import { GetStaticProps } from 'next';
 

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Paper from '@mui/material/Paper'
-import Avatar from '@mui/material/Avatar';
-import { Alert, AlertColor, Box, Container, IconButton, Snackbar } from '@mui/material';
+import { Alert, AlertColor, Box, Container, IconButton, TextField, Snackbar, Paper, Avatar, Backdrop, CircularProgress } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import { updateMe, getMyConsumerProfile, getMyFavouriteFarms } from '../../components/marketplace/API';
 import { fetchToken } from '../../components/marketplace/token';
@@ -10,12 +8,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import TextField from '@mui/material/TextField';
 import ClearIcon from '@mui/icons-material/Clear';
 import Link from 'next/link';
 import 'animate.css'
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import { deepOrange } from '@mui/material/colors';
 
 interface User {

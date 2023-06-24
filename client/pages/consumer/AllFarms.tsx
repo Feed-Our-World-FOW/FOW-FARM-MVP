@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getAllBusiness, getAllStockProduct, getAllOndemandProduct } from '../../components/marketplace/API'
-import { 
-  Navbar,
-  BottomNav,
-  AllFarmsCard,
-  FilterNav,
-  SearchBar,
-  AllProducts
-} from '../../components/marketplace'
+import { Navbar, BottomNav, AllFarmsCard, FilterNav, SearchBar, AllProducts } from '../../components/marketplace'
 import { Box } from '@mui/material'
 
 

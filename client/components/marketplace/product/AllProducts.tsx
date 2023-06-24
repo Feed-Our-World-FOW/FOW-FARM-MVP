@@ -1,8 +1,7 @@
-import { Box, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, Skeleton, Typography, Alert, Snackbar } from '@mui/material'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import ProductCardComponent from './ProductCardComponent'
-import { Alert, Snackbar } from '@mui/material'
 import { fetchToken } from '../token'
 import { GetStaticProps } from 'next'
 

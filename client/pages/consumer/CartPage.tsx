@@ -3,10 +3,8 @@ import { Navbar, CartProductCardComponent } from '../../components/marketplace'
 import Image from 'next/image'
 import { getMyCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
-import { Box } from '@mui/material'
+import { Box, Backdrop, CircularProgress } from '@mui/material'
 import Link from 'next/link'
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 
 function CartPage() {
 

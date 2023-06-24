@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Badge, { BadgeProps } from '@mui/material/Badge'
-import { styled } from '@mui/material/styles'
-import IconButton from '@mui/material/IconButton'
 import { getMyCart } from '../API'
 import { fetchToken } from '../token'
-import { Box } from '@mui/material'
+import { Box, BadgeProps, styled, IconButton, Badge } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';

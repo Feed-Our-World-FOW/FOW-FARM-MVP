@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Skeleton, Typography } from '@mui/material'
+import { Box, Skeleton, Typography, Alert, Snackbar } from '@mui/material'
 import Link from 'next/link'
 import FarmCardComponent from './FarmCardComponent'
 import { fetchToken } from '../token'
-import { Alert, Snackbar } from '@mui/material'
 import { GetStaticProps } from 'next'
 
 export const getStaticProps: GetStaticProps = async (context) => {

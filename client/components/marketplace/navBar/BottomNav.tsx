@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Box from '@mui/material/Box';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import Link from 'next/link';
 import { fetchToken } from '../token';
 import { GetStaticProps } from 'next';
-import { Badge } from '@mui/material';
+import { Badge, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const getStaticProps: GetStaticProps = async (context) => {

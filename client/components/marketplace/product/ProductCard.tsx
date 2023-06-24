@@ -1,11 +1,7 @@
 import React from 'react'
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import Rating from '@mui/material/Rating'
-import Stack from '@mui/material/Stack'
 import ImageCard from '../Img/ImageCard'
 import PeopleIcon from '@mui/icons-material/People'
-import Link from 'next/link'
-import { Box } from '@mui/material'
+import { Box, Rating, Stack } from '@mui/material'
 import { GetStaticProps } from 'next'
 
 export const getStaticProps: GetStaticProps = async (context) => {

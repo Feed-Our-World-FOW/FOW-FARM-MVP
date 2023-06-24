@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Avatar } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { getSingleBuy } from '../../../components/marketplace/API'
@@ -8,7 +8,6 @@ import {
   ImageCard,
   LocationCard
 } from '../../../components/marketplace'
-import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors'
 
 

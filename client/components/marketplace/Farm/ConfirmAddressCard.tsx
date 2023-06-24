@@ -4,9 +4,7 @@ import { getMyConsumerProfile } from '../API';
 import { fetchToken } from '../token';
 import LocationCard from '../location/LocationCard';
 import { GetStaticProps } from 'next';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, AlertColor, Box, Container, IconButton, Snackbar } from '@mui/material';
+import { Alert, AlertColor, Box, Container, Snackbar, Backdrop, CircularProgress } from '@mui/material';
 
 export const getStaticProps: GetStaticProps = async (context) => {
   return {

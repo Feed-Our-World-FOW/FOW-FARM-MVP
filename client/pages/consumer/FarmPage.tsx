@@ -1,33 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { 
-  Navbar,
-  ImageCard,
-  BottomNav,
-  ProductCardComponent,
-  ProductFilterNav
-} from '../../components/marketplace'
+import { Navbar, ImageCard, BottomNav, ProductCardComponent, ProductFilterNav } from '../../components/marketplace'
 import Stack from '@mui/material/Stack'
 import Link from 'next/link'
-import { 
-  getSingleBusiness, 
-  getMyFavouriteFarms, 
-  addFavourite, 
-  removeFavourite, 
-  getMyCart,
-  distance
-} from '../../components/marketplace/API'
+import { getSingleBusiness, getMyFavouriteFarms, addFavourite, removeFavourite, getMyCart, distance } from '../../components/marketplace/API'
 import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
 import { fetchToken } from '../../components/marketplace/token'
-import Skeleton from '@mui/material/Skeleton'
-import { Alert, AlertColor, Box } from '@mui/material'
+import { Skeleton, Box, Checkbox } from '@mui/material'
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
 import Favorite from '@mui/icons-material/Favorite'
-import Checkbox from '@mui/material/Checkbox'
 
 
 function FarmPage() {

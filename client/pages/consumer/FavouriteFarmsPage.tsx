@@ -1,10 +1,6 @@
 import { Box } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import Backdrop from '@mui/material/Backdrop'
-import { 
-  Navbar,
-  FavouriteCardComponent
-} from '../../components/marketplace'
+import { Navbar, FavouriteCardComponent } from '../../components/marketplace'
 import { fetchToken } from '../../components/marketplace/token'
 import { getMyFavouriteFarms } from '../../components/marketplace/API'
 
