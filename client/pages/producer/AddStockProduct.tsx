@@ -1,18 +1,19 @@
 import { Alert, AlertColor, Box, Button, IconButton, Snackbar } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
-import Navbar from '../../components/marketplace/navBar/Navbar'
+import { 
+  Navbar,
+  BottomNav
+} from '../../components/marketplace';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
-import BottomNav from '../../components/marketplace/navBar/BottomNav';
 import { StockProduct } from '../../interface/AllFarmsInterface';
 import { fetchToken } from '../../components/marketplace/token';
-import
-  { 
-    getSingleStockProduct, 
-    updateMyStockProduct, 
-    createMyStockProduct, 
-    deleteStockProduct 
-  } from '../../components/marketplace/API';
+import{ 
+  getSingleStockProduct, 
+  updateMyStockProduct, 
+  createMyStockProduct, 
+  deleteStockProduct 
+} from '../../components/marketplace/API';
 import Image from 'next/image';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Backdrop from '@mui/material/Backdrop';
@@ -132,8 +133,6 @@ function AddStockProduct() {
       formData.append('organic', productDetails.organic)
 
       const res = await createMyStockProduct(token, formData)
-      // console.log(formData)
-      // console.log(productDetails)
 
       setOpen(true)
       setAlertStatus("success")
@@ -234,7 +233,6 @@ function AddStockProduct() {
             <span className='text-2sm font-bold text-dark-gray'>{`1. in stock`}</span>
           </Box>
         </Box>
-
         {
           data.data === "patch"
           &&
@@ -242,10 +240,6 @@ function AddStockProduct() {
             <DeleteOutlineOutlinedIcon fontSize='medium' color='error' onClick={() => setOpenDialog(true)} />
           </Box>
         }
-
-
-
-
         <Dialog
           open={openDialog}
           onClose={handleCloseDialog}
@@ -275,9 +269,6 @@ function AddStockProduct() {
         >
           <CircularProgress color="inherit" />
         </Backdrop>
-
-
-
 
         <Box className={styles.subContainer}>
           <Box className={styles.txtBox}>
@@ -399,7 +390,6 @@ function AddStockProduct() {
               <span className={styles.boldTxt}>Organic</span>
             </Box>
             <Box className={styles.sminputBox}>
-              {/* <input type="number" className={styles.input} /> */}
               <select 
                 name="organic" 
                 className={styles.input}

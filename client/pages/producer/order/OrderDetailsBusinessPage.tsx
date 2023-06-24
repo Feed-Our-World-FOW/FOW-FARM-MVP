@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { getSingleBuy } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
-import Navbar from '../../../components/marketplace/navBar/Navbar'
-import ImageCard from '../../../components/marketplace/Img/ImageCard'
-import LocationCard from '../../../components/marketplace/location/LocationCard'
+import { 
+  Navbar,
+  ImageCard,
+  LocationCard
+} from '../../../components/marketplace'
 import Avatar from '@mui/material/Avatar'
 import { deepOrange } from '@mui/material/colors'
 import { updateMyOrderPaid } from '../../../components/marketplace/API'
@@ -22,7 +24,6 @@ function OrderDetailsBusinessPage() {
     try {
       const token = fetchToken()
       const res = await updateMyOrderDelivery(token, data.id as string, { delivered: true })
-      // console.log(res)
       history.back()
     } catch (error) {
       console.log(error)
@@ -33,7 +34,6 @@ function OrderDetailsBusinessPage() {
     try {
       const token = fetchToken()
       const res = await updateMyOrderPaid(token, data.id as string, { paid: true })
-      // console.log(res)
       history.back()
     } catch (error) {
       console.log(error)
@@ -46,7 +46,6 @@ function OrderDetailsBusinessPage() {
       const res = await getSingleBuy(token, data.id as string)
       const details = res.data.data.data
       setOrderDetails(details)
-      // console.log(details)
     } catch (error) {
       console.log(error)
     }

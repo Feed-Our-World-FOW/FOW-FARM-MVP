@@ -4,8 +4,6 @@ import AllProductPage from './producer/AllProductPage'
 import { fetchToken } from '../components/marketplace/token'
 import React, { useState, useEffect } from 'react'
 import { getMe } from '../components/marketplace/API'
-// import Web3Modal from "web3modal"
-// import { ethers } from 'ethers'
 
 const Home: NextPage = () => {
   const [consumer, setConsumer] = useState(true)
@@ -27,8 +25,6 @@ const Home: NextPage = () => {
       } else if(data?.role === "business") {
         setConsumer(false)
       }
-      
-      // console.log(data.role === "user")
     } catch (error) {
       console.log(error)
     }

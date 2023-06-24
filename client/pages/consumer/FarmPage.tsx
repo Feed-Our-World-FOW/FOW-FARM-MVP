@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Navbar from '../../components/marketplace/navBar/Navbar'
+import { 
+  Navbar,
+  ImageCard,
+  BottomNav,
+  ProductCardComponent,
+  ProductFilterNav
+} from '../../components/marketplace'
 import Stack from '@mui/material/Stack'
 import Link from 'next/link'
 import { 
@@ -12,17 +18,13 @@ import {
   distance
 } from '../../components/marketplace/API'
 import { RouterQueryInterface } from '../../interface/AllFarmsInterface'
-import ImageCard from '../../components/marketplace/Img/ImageCard'
 import { fetchToken } from '../../components/marketplace/token'
 import Skeleton from '@mui/material/Skeleton'
 import { Alert, AlertColor, Box } from '@mui/material'
-import BottomNav from '../../components/marketplace/navBar/BottomNav'
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-import ProductCardComponent from '../../components/marketplace/product/ProductCardComponent'
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined'
-import ProductFilterNav from '../../components/marketplace/navBar/ProductFilterNav'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
 import Favorite from '@mui/icons-material/Favorite'
 import Checkbox from '@mui/material/Checkbox'

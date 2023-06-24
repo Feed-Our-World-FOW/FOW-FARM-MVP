@@ -1,7 +1,9 @@
 import { Alert, AlertColor, Box, Button, IconButton, Snackbar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import Navbar from '../../components/marketplace/navBar/Navbar'
-import BottomNav from '../../components/marketplace/navBar/BottomNav';
+import { 
+  Navbar,
+  BottomNav
+} from '../../components/marketplace';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -127,8 +129,6 @@ function AddOndemandProduct() {
       formData.append('organic', productDetails.organic)
 
       const res = await createMyOndemandProduct(token, formData)
-      // console.log(formData)
-      // console.log(productDetails)
 
       setOpen(true)
       setAlertStatus("success")
@@ -230,7 +230,6 @@ function AddOndemandProduct() {
             <span className='text-2sm font-bold text-dark-gray'>{`2. on demand`}</span>
           </Box>
         </Box>
-
         {
           data.data === "patch"
           &&
@@ -238,10 +237,6 @@ function AddOndemandProduct() {
             <DeleteOutlineOutlinedIcon fontSize='medium' color='error' onClick={() => setOpenDialog(true)} />
           </Box>
         }
-
-
-
-
         <Dialog
           open={openDialog}
           onClose={handleCloseDialog}
@@ -271,9 +266,6 @@ function AddOndemandProduct() {
         >
           <CircularProgress color="inherit" />
         </Backdrop>
-
-
-        
 
         <Box className={styles.subContainer}>
           <Box className={styles.txtBox}>
@@ -327,7 +319,6 @@ function AddOndemandProduct() {
             </IconButton>
           </Box>
         </Box>
-
 
         <Box className={styles.verticalSubContainer}>
           <Box className={styles.smallSubBox}>

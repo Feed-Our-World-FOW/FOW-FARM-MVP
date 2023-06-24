@@ -1,10 +1,12 @@
 import { Box } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import Backdrop from '@mui/material/Backdrop';
-import Navbar from '../../components/marketplace/navBar/Navbar'
-import FavouriteCardComponent from '../../components/marketplace/favourite/FavouriteCardComponent';
-import { fetchToken } from '../../components/marketplace/token';
-import { getMyFavouriteFarms } from '../../components/marketplace/API';
+import Backdrop from '@mui/material/Backdrop'
+import { 
+  Navbar,
+  FavouriteCardComponent
+} from '../../components/marketplace'
+import { fetchToken } from '../../components/marketplace/token'
+import { getMyFavouriteFarms } from '../../components/marketplace/API'
 
 function FavouriteFarmsPage() {
   const [allFarms, setAllFarms] = useState([])

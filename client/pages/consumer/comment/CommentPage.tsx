@@ -1,8 +1,10 @@
 import { Box, Typography } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import Navbar from '../../../components/marketplace/navBar/Navbar'
-import CommentCardComponent from '../../../components/marketplace/comment/CommentCardComponent';
-import WriteCommentCardComponent from '../../../components/marketplace/comment/WriteCommentCardComponent';
+import { 
+  Navbar, 
+  CommentCardComponent,
+  WriteCommentCardComponent
+} from '../../../components/marketplace';
 import { getReviewForFarm, getMe } from '../../../components/marketplace/API';
 import { useRouter } from 'next/router';
 import { fetchToken } from '../../../components/marketplace/token';

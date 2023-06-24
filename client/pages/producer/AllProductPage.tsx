@@ -1,13 +1,15 @@
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import Navbar from '../../components/marketplace/navBar/Navbar'
-import SearchBar from '../../components/marketplace/navBar/SearchBar'
-import BottomNav from '../../components/marketplace/navBar/BottomNav'
+import { 
+  Navbar,
+  SearchBar,
+  BottomNav,
+  ProductCardComponent
+} from '../../components/marketplace';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import ProductFilterNav from '../../components/marketplace/navBar/ProductFilterNav'
 import { getMyStockProducts, getMyOndemandProduct, getMyBusinessProfile } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
-import ProductCardComponent from '../../components/marketplace/product/ProductCardComponent'
 import { Box, Skeleton, Typography } from '@mui/material'
 
 

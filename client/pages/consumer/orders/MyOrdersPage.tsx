@@ -1,7 +1,6 @@
 import { Box } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import Navbar from '../../../components/marketplace/navBar/Navbar'
-import OrderCardComponent from '../../../components/marketplace/order/OrderCardComponent'
+import { Navbar, OrderCardComponent } from '../../../components/marketplace'
 import { getMyBuyConsumer } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
 import Backdrop from '@mui/material/Backdrop';

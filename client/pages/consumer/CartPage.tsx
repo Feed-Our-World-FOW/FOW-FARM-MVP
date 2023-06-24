@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Navbar from '../../components/marketplace/navBar/Navbar'
+import { Navbar, CartProductCardComponent } from '../../components/marketplace'
 import Image from 'next/image'
 import { getMyCart } from '../../components/marketplace/API'
 import { fetchToken } from '../../components/marketplace/token'
 import { Box } from '@mui/material'
 import Link from 'next/link'
-import CartProductCardComponent from '../../components/marketplace/shoppingCart/CartProductCardComponent'
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 

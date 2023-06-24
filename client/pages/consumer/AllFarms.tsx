@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { getAllBusiness, getAllStockProduct, getAllOndemandProduct } from '../../components/marketplace/API'
-import Navbar from '../../components/marketplace/navBar/Navbar'
+import { 
+  Navbar,
+  BottomNav,
+  AllFarmsCard,
+  FilterNav,
+  SearchBar,
+  AllProducts
+} from '../../components/marketplace'
 import { Box } from '@mui/material'
-import BottomNav from '../../components/marketplace/navBar/BottomNav'
-import AllFarmsCard from '../../components/marketplace/Farm/AllFarmsCard'
-import FilterNav from '../../components/marketplace/navBar/FilterNav'
-import SearchBar from '../../components/marketplace/navBar/SearchBar'
-import AllProducts from '../../components/marketplace/product/AllProducts'
+
 
 function AllFarms() {
 

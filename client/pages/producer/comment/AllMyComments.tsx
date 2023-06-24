@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { getReviewForFarm } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
 import { useRouter } from 'next/router'
-import Navbar from '../../../components/marketplace/navBar/Navbar'
-import CommentCardComponent from '../../../components/marketplace/comment/CommentCardComponent'
+import { Navbar, CommentCardComponent } from '../../../components/marketplace'
 
 function AllMyComments() {
   const router = useRouter()

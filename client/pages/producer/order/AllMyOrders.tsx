@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { getMyOrdersProducer } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
 import OrderCardComponentBusiness from '../../../components/business/order/OrderCardComponentBusiness'
-import Navbar from '../../../components/marketplace/navBar/Navbar'
+import { Navbar } from '../../../components/marketplace'
 
 function AllMyOrders() {
   const [myBuy, setMyBuy] = useState<any>([])
@@ -14,7 +14,6 @@ function AllMyOrders() {
       const res = await getMyOrdersProducer(token)
       const data = res.data.data.data
       setMyBuy(data)
-      // console.log("data: ", data)
     } catch (error) {
       console.log(error)
     }

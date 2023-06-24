@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { getSingleBuy } from '../../../components/marketplace/API'
 import { fetchToken } from '../../../components/marketplace/token'
-import Navbar from '../../../components/marketplace/navBar/Navbar'
-import ImageCard from '../../../components/marketplace/Img/ImageCard'
-import LocationCard from '../../../components/marketplace/location/LocationCard'
+import { 
+  Navbar,
+  ImageCard,
+  LocationCard
+} from '../../../components/marketplace'
 import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors'
 

@@ -5,7 +5,7 @@ import { Alert, AlertColor, Box, Container, IconButton, Snackbar } from '@mui/ma
 import { PhotoCamera } from '@mui/icons-material';
 import { updateMe, getMyConsumerProfile, getMyFavouriteFarms } from '../../components/marketplace/API';
 import { fetchToken } from '../../components/marketplace/token';
-import BottomNav from '../../components/marketplace/navBar/BottomNav';
+import { BottomNav, LocationCard } from '../../components/marketplace';
 import MenuIcon from '@mui/icons-material/Menu';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -13,7 +13,6 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import TextField from '@mui/material/TextField';
 import ClearIcon from '@mui/icons-material/Clear';
 import Link from 'next/link';
-import LocationCard from '../../components/marketplace/location/LocationCard';
 import 'animate.css'
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';

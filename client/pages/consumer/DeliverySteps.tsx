@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
-import ConfirmAddressCard from '../../components/marketplace/Farm/ConfirmAddressCard'
-import ChoosePaymentOptionCard from '../../components/marketplace/Payment/ChoosePaymentOptionCard'
-import PlaceOrderCard from '../../components/marketplace/order/PlaceOrderCard'
-import Navbar from '../../components/marketplace/navBar/Navbar'
+import { 
+  ConfirmAddressCard,
+  ChoosePaymentOptionCard,
+  PlaceOrderCard,
+  Navbar,
+  DeliveryOption,
+  Terms
+} from '../../components/marketplace'
 import WhereToVoteOutlinedIcon from '@mui/icons-material/WhereToVoteOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import DeliveryOption from '../../components/marketplace/delivery/DeliveryOption'
-import Terms from '../../components/marketplace/terms/Terms'
 
 function DeliverySteps() {
 
