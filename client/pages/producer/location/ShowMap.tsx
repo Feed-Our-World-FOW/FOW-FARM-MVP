@@ -8,23 +8,23 @@ import {
 	Backdrop,
 	CircularProgress,
 	TextField,
+	Button,
 } from '@mui/material';
 import { MarkerF } from '@react-google-maps/api';
 import { updateMyBusinessProfileLocation } from '../../../components/marketplace/API';
 import { fetchToken } from '../../../components/marketplace/token';
 
-function ShowMap() {
-	const center = {
-		lat: 37.7749,
-		lng: -122.4194,
-	};
+const center = {
+	lat: 37.7749,
+	lng: -122.4194,
+};
+
+const ShowMap = () => {
 	const [currentPosition, setCurrentPosition] = useState(center);
 	const [open, setOpen] = useState(false);
 	const [description, setDescription] = useState('');
 	const [alertTxt, setAlertTxt] = useState('');
-	const [alertStatus, setAlertStatus] = useState<AlertColor>(
-		'success' || 'warning' || 'info' || 'error'
-	);
+	const [alertStatus, setAlertStatus] = useState<AlertColor>('success');
 	const [openAlert, setOpenAlert] = useState(false);
 
 	const containerStyle = {
@@ -35,14 +35,12 @@ function ShowMap() {
 	const onMarkerDragEnd = (event: any) => {
 		const lat = event.latLng.lat();
 		const lng = event.latLng.lng();
-
 		setCurrentPosition({ lat, lng });
 	};
 
 	const handleFindMyLocation = () => {
 		try {
 			setOpen(true);
-			// console.log("start")
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition((position) => {
 					setCurrentPosition({
@@ -66,7 +64,6 @@ function ShowMap() {
 		if (reason === 'clickaway') {
 			return;
 		}
-
 		setOpenAlert(false);
 	};
 
@@ -116,9 +113,6 @@ function ShowMap() {
 					<CircularProgress color="inherit" />
 				</Backdrop>
 
-				{/* <LoadScript
-          googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`}
-        > */}
 				{isLoaded && (
 					<GoogleMap
 						mapContainerStyle={containerStyle}
@@ -135,7 +129,6 @@ function ShowMap() {
 						/>
 					</GoogleMap>
 				)}
-				{/* </LoadScript> */}
 
 				<Box className="w-full flex justify-center items-center mt-5">
 					<TextField
@@ -147,13 +140,14 @@ function ShowMap() {
 						onChange={(e: any) => setDescription(e.target.value)}
 					/>
 				</Box>
+
 				<Box className={styles.btn_box}>
-					<button className={styles.btn} onClick={handleFindMyLocation}>
+					<Button className={styles.btn} onClick={handleFindMyLocation}>
 						Find my location
-					</button>
-					<button className={styles.btn} onClick={handleAddMyLocation}>
+					</Button>
+					<Button className={styles.btn} onClick={handleAddMyLocation}>
 						Add my location
-					</button>
+					</Button>
 				</Box>
 			</Box>
 
@@ -169,6 +163,6 @@ function ShowMap() {
 			</Snackbar>
 		</Box>
 	);
-}
+};
 
 export default ShowMap;

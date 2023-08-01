@@ -1,4 +1,4 @@
-import { Box, Avatar } from '@mui/material';
+import { Box, Avatar, Button } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getSingleBuy } from '../../../components/marketplace/API';
@@ -9,10 +9,12 @@ import {
 	LocationCard,
 } from '../../../components/marketplace';
 import { deepOrange } from '@mui/material/colors';
-import { updateMyOrderPaid } from '../../../components/marketplace/API';
-import { updateMyOrderDelivery } from '../../../components/marketplace/API';
+import {
+	updateMyOrderPaid,
+	updateMyOrderDelivery,
+} from '../../../components/marketplace/API';
 
-function OrderDetailsBusinessPage() {
+const OrderDetailsBusinessPage = () => {
 	const router = useRouter();
 	const data = router.query;
 
@@ -42,7 +44,7 @@ function OrderDetailsBusinessPage() {
 		}
 	};
 
-	const fetch = async () => {
+	const fetchOrderDetails = async () => {
 		try {
 			const token = fetchToken();
 			const res = await getSingleBuy(token, data.id as string);
@@ -63,7 +65,7 @@ function OrderDetailsBusinessPage() {
 	};
 
 	useEffect(() => {
-		fetch();
+		fetchOrderDetails();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router]);
 
@@ -270,6 +272,6 @@ function OrderDetailsBusinessPage() {
 			</Box>
 		</Box>
 	);
-}
+};
 
 export default OrderDetailsBusinessPage;

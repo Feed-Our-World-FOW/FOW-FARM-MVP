@@ -28,7 +28,7 @@ import {
 import Image from 'next/image';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-function AddStockProduct() {
+const AddStockProduct = () => {
 	const router = useRouter();
 	const data = router.query;
 
@@ -47,9 +47,7 @@ function AddStockProduct() {
 	const [previewUrl, setPreviewUrl] = useState('');
 	const [image, setImage] = useState(false);
 	const [alertTxt, setAlertTxt] = useState('');
-	const [alertStatus, setAlertStatus] = useState<AlertColor>(
-		'success' || 'warning' || 'info' || 'error'
-	);
+	const [alertStatus, setAlertStatus] = useState<AlertColor>('success');
 	const [open, setOpen] = useState(false);
 	const [openDialog, setOpenDialog] = useState(false);
 	const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -59,12 +57,10 @@ function AddStockProduct() {
 		try {
 			const token = fetchToken();
 			const id = data.id as string;
-
 			const formData = new FormData();
 
-			if (productDetails.image) {
-				formData.append('image', productDetails.image);
-			}
+			// Append form data with product details
+			formData.append('image', productDetails?.image);
 			formData.append('product', productDetails.product);
 			formData.append('name', productDetails.name);
 			formData.append('batch', productDetails.batch);
@@ -125,9 +121,8 @@ function AddStockProduct() {
 			const token = fetchToken();
 			const formData = new FormData();
 
-			if (productDetails.image) {
-				formData.append('image', productDetails.image);
-			}
+			// Append form data with product details
+			formData.append('image', productDetails?.image);
 			formData.append('product', productDetails.product);
 			formData.append('name', productDetails.name);
 			formData.append('batch', productDetails.batch);
@@ -167,7 +162,6 @@ function AddStockProduct() {
 		if (reason === 'clickaway') {
 			return;
 		}
-
 		setOpen(false);
 	};
 
@@ -189,7 +183,7 @@ function AddStockProduct() {
 		}
 	};
 
-	const fetch = async () => {
+	const fetchProductData = async () => {
 		try {
 			const token = fetchToken();
 			const id = data.id as string;
@@ -204,7 +198,7 @@ function AddStockProduct() {
 
 	useEffect(() => {
 		if (data.data === 'patch') {
-			fetch();
+			fetchProductData();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
@@ -487,6 +481,6 @@ function AddStockProduct() {
 			</Box>
 		</Box>
 	);
-}
+};
 
 export default AddStockProduct;

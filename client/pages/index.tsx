@@ -6,36 +6,33 @@ import React, { useState, useEffect } from 'react';
 import { getMe } from '../components/marketplace/API';
 
 const Home: NextPage = () => {
-	const [consumer, setConsumer] = useState(true);
+	const [isConsumer, setIsConsumer] = useState(true);
 
-	const fetch = async () => {
+	const fetchData = async () => {
 		try {
 			const token = fetchToken();
-			let me;
-			if (token) {
-				me = await getMe(token);
-			} else if (typeof token === 'undefined') {
-				setConsumer(true);
+
+			if (!token) {
+				setIsConsumer(true);
 				return;
 			}
-			const data = me?.data.data.data;
-			if (data?.role === 'user') {
-				setConsumer(true);
-			} else if (data?.role === 'business') {
-				setConsumer(false);
-			}
+
+			const me = await getMe(token);
+			const userRole = me?.data?.data?.data?.role;
+
+			setIsConsumer(userRole === 'user');
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	};
 
 	useEffect(() => {
-		fetch();
+		fetchData();
 	}, []);
 
 	return (
 		<div className="flex flex-col justify-center items-center">
-			{consumer ? <AllFarms /> : <AllProductPage />}
+			{isConsumer ? <AllFarms /> : <AllProductPage />}
 		</div>
 	);
 };

@@ -5,10 +5,10 @@ import { fetchToken } from '../../../components/marketplace/token';
 import { OrderCardComponentBusiness } from '../../../components/business';
 import { Navbar } from '../../../components/marketplace';
 
-function AllMyOrders() {
+const AllMyOrders = () => {
 	const [myBuy, setMyBuy] = useState<any>([]);
 
-	const fetch = async () => {
+	const fetchMyOrders = async () => {
 		try {
 			const token = fetchToken();
 			const res = await getMyOrdersProducer(token);
@@ -20,13 +20,28 @@ function AllMyOrders() {
 	};
 
 	useEffect(() => {
-		fetch();
+		fetchMyOrders();
 	}, []);
 
 	const styles = {
 		page: `w-screen max-w-md flex flex-col justify-center items-center`,
 		navBox: `w-full px-4 z-50`,
 		container: `w-full flex flex-col justify-center items-center mt-24`,
+	};
+
+	const renderOrderCards = (delivered: boolean) => {
+		return myBuy.map((order: any) => {
+			if (order.delivered === delivered) {
+				return (
+					<OrderCardComponentBusiness
+						key={order._id}
+						id={order._id}
+						createdAt={order.createdAt}
+					/>
+				);
+			}
+			return null;
+		});
 	};
 
 	return (
@@ -41,41 +56,17 @@ function AllMyOrders() {
 						<span className="text-2sm font-bold">New</span>
 					</Box>
 
-					<Box className="mt-5 w-11/12">
-						{myBuy.map((i: any) => {
-							if (!i.delivered) {
-								return (
-									<OrderCardComponentBusiness
-										key={i._id}
-										id={i._id}
-										createdAt={i.createdAt}
-									/>
-								);
-							}
-						})}
-					</Box>
+					<Box className="mt-5 w-11/12">{renderOrderCards(false)}</Box>
 
 					<Box className="w-11/12 flex justify-start items-center mt-5">
 						<span className="text-2sm font-bold">Delivered</span>
 					</Box>
 
-					<Box className="mt-5 w-11/12">
-						{myBuy.map((i: any) => {
-							if (i.delivered) {
-								return (
-									<OrderCardComponentBusiness
-										key={i._id}
-										id={i._id}
-										createdAt={i.createdAt}
-									/>
-								);
-							}
-						})}
-					</Box>
+					<Box className="mt-5 w-11/12">{renderOrderCards(true)}</Box>
 				</Box>
 			</Box>
 		</Box>
 	);
-}
+};
 
 export default AllMyOrders;
